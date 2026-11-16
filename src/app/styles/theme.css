@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f5f7;
+  --color-surface-sunk: #e9ebef;
+  --color-motion: #eef1f5;
+  --color-border: #e4e6eb;
+  --color-border-strong: #c9ced6;
+  --color-text: #101418;
+  --color-text-muted: #6b7280;
+  --color-primary: #0a66c2;
+  --color-primary-hover: #08529b;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #1c4e80;
+  --color-accent-foreground: #ffffff;
+  --color-danger: #b42318;
+  --color-danger-foreground: #ffffff;
+  --color-success: #067647;
+  --color-success-foreground: #ffffff;
+  --color-chip-amber-bg: #ffefd9;
+  --color-chip-amber-text: #8a4b0f;
+  --color-chip-teal-bg: #e3eefa;
+  --color-chip-teal-text: #0b539b;
+  --color-chip-coral-bg: #fde8e6;
+  --color-chip-coral-text: #9a3412;
+  --radius-card: 0.75rem;
+  --radius-control: 0.375rem;
+  --radius-chip: 9999px;
+  --shadow-soft: 0 1px 2px rgb(16 20 24 / 0.06);
+  --shadow-lift: 0 2px 8px rgb(16 20 24 / 0.1);
+  --shadow-float: 0 4px 16px rgb(16 20 24 / 0.12);
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.hero-warm {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgb(10 102 194 / 0.06), transparent 60%),
+    linear-gradient(160deg, #ffffff 0%, #f4f5f7 100%);
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgb(16 20 24 / 0.08) 0.5px, transparent 0.6px);
+  background-size: 8px 8px;
+}
+
+[data-contrast='high'] {
+  --color-surface: #000000;
+  --color-surface-muted: #0f1115;
+  --color-surface-sunk: #000000;
+  --color-motion: #241a10;
+  --color-border: #ffffff;
+  --color-border-strong: #ffffff;
+  --color-text: #ffffff;
+  --color-text-muted: #e5e7eb;
+  --color-primary: #7fb2e5;
+  --color-primary-hover: #a8ccf0;
+  --color-primary-foreground: #101418;
+  --color-accent: #7fb2e5;
+  --color-danger: #ff9d9d;
+  --color-success: #86e0a8;
+  --shadow-soft: none;
+  --shadow-lift: none;
+  --shadow-float: none;
+}
+
+[data-font-size='large'] {
+  font-size: 1.125rem;
+}
+
+[data-font-size='xlarge'] {
+  font-size: 1.25rem;
+}
+
+html {
+  font-size: 100%;
+}
+
+@keyframes floaty {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.floaty {
+  animation-name: floaty;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.active-pressable {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 64, 1);
+}
+
+.active-pressable:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Базовые цвета документа из токенов — наследуются всем текстом，
+   режим высокой контрастности переопределяет их через [data-contrast] */
+body {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+}

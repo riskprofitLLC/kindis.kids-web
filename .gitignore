@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+.tmp-shots/
+.playwright-mcp/
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
