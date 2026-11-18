@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "test:watch": "vitest",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"*.ts\" \"*.js\" \"*.mjs\" \"*.json\"",
     "lint": "eslint src",
     "test:coverage": "vitest run --coverage"
   },
@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-  "private": "true",
+  "private": true,
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",
     "@radix-ui/react-checkbox": "^1.4.1",
