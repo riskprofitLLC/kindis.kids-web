@@ -10,6 +10,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Детали заказа:состав,адрес,статус,отмена в допустимых статусах.
 export default function OrderDetailPage() {
@@ -19,7 +20,11 @@ export default function OrderDetailPage() {
   const [reason, setReason] = useState('')
 
   if (order.isPending) {
-    return <Skeleton className="h-40 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-40 w-full" />
+      </LoadingRegion>
+    )
   }
 
   if (order.isError || !order.data) {

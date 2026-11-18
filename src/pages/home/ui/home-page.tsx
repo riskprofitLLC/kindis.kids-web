@@ -6,6 +6,7 @@ import { ProductCard } from '@/features/catalog/ui/product-card'
 import type { CategoryNode, ProductCard as ProductCardModel } from '@/shared/api/catalog-api'
 import { routes } from '@/shared/config/routes'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Эмодзи направлений каталога — по slug реального дерева, с запасным вариантом.
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -26,7 +27,9 @@ function GridSkeleton({ count, className }: { count: number; className: string }
     <ul className={className}>
       {Array.from({ length: count }).map((_, index) => (
         <li key={index}>
-          <Skeleton className="h-full w-full rounded-card" />
+          <LoadingRegion>
+            <Skeleton className="h-full w-full rounded-card" />
+          </LoadingRegion>
         </li>
       ))}
     </ul>

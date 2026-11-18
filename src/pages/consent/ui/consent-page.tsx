@@ -55,7 +55,8 @@ export default function ConsentPage() {
       )}
 
       {authenticated && profiles.isPending && (
-        <div className="space-y-3">
+        <div aria-busy="true" className="space-y-3">
+          <span className="sr-only">Загружаем…</span>
           <Skeleton className="h-16 w-full" />
           <Skeleton className="h-16 w-full" />
         </div>

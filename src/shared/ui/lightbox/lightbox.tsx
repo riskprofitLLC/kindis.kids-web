@@ -35,6 +35,11 @@ export function Lightbox({ open, onOpenChange, title, onPrev, onNext, children }
             'rounded-card border border-border bg-surface p-4',
           )}
         >
+          {/* Описание обязательно для aria-describedby：визуально скрыто */}
+          <DialogPrimitive.Description className="sr-only">
+            Просмотр медиа крупно. Закрытие — Esc или кнопка «Закрыть».
+          </DialogPrimitive.Description>
+
           <div className="mb-3 flex items-center justify-between gap-2">
             <DialogPrimitive.Title className="text-sm font-medium text-text">
               {title}

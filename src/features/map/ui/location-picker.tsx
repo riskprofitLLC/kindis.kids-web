@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from 'react'
 import { reverseGeocode } from '@/features/map/lib/reverse-geocode'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Карта грузится лениво — maplibre не тянется в начальный бандл.
 const LocationMap = lazy(() => import('@/features/map/ui/location-map'))
@@ -47,7 +48,13 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
     <fieldset className="flex flex-col gap-2">
       <legend className="text-sm font-medium text-text">Место сделки</legend>
 
-      <Suspense fallback={<Skeleton className="h-64 w-full rounded-card" />}>
+      <Suspense
+        fallback={
+          <LoadingRegion>
+            <Skeleton className="h-64 w-full rounded-card" />
+          </LoadingRegion>
+        }
+      >
         <LocationMap
           latitude={value.latitude}
           longitude={value.longitude}

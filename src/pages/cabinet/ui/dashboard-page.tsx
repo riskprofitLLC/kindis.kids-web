@@ -10,6 +10,7 @@ import { formatDate, formatPrice } from '@/shared/lib/format'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card/card'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Рабочий стол:продавцу — сводка по его витрине,покупателю — быстрые ссылки.
 export default function DashboardPage() {
@@ -21,7 +22,11 @@ export default function DashboardPage() {
   const isSeller = (profiles.data ?? []).length > 0
 
   if (profiles.isPending) {
-    return <Skeleton className="h-32 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-32 w-full" />
+      </LoadingRegion>
+    )
   }
 
   return (
@@ -41,7 +46,11 @@ function SellerSummary() {
   })
 
   if (dashboard.isPending || !dashboard.data) {
-    return <Skeleton className="h-24 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-24 w-full" />
+      </LoadingRegion>
+    )
   }
 
   const summary = dashboard.data

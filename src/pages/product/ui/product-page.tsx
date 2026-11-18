@@ -24,7 +24,8 @@ export default function ProductPage() {
 
   if (product.isPending) {
     return (
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-2">
+      <div aria-busy="true" className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-2">
+        <span className="sr-only">Загружаем…</span>
         <Skeleton className="aspect-square w-full" />
         <div className="flex flex-col gap-3">
           <Skeleton className="h-6 w-2/3" />

@@ -4,6 +4,7 @@ import { adminApi } from '@/shared/api/admin-api'
 import { formatDate } from '@/shared/lib/format'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Журнал обращений к специальным данным — только для админа.
 export default function AdminAuditPage() {
@@ -13,7 +14,11 @@ export default function AdminAuditPage() {
   })
 
   if (audit.isPending) {
-    return <Skeleton className="h-40 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-40 w-full" />
+      </LoadingRegion>
+    )
   }
 
   if (audit.isError) {

@@ -5,6 +5,7 @@ import { formatPrice } from '@/shared/lib/format'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card/card'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Аналитика витрины:просмотры и продажи по дням из /seller/stats.
 export default function AnalyticsPage() {
@@ -14,7 +15,11 @@ export default function AnalyticsPage() {
   })
 
   if (stats.isPending) {
-    return <Skeleton className="h-48 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-48 w-full" />
+      </LoadingRegion>
+    )
   }
 
   if (stats.isError || !stats.data) {

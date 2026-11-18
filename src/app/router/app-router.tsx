@@ -42,7 +42,8 @@ import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
 function PageFallback() {
   return (
-    <div className="mx-auto max-w-3xl space-y-4 p-8">
+    <div aria-busy="true" className="mx-auto max-w-3xl space-y-4 p-8">
+      <span className="sr-only">Загружаем…</span>
       <Skeleton className="h-8 w-1/2" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-2/3" />

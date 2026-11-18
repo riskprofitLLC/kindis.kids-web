@@ -15,6 +15,7 @@ import { Button } from '@/shared/ui/button/button'
 import { Card } from '@/shared/ui/card/card'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Карта грузится отдельным чанком — начальная загрузка каталога остаётся лёгкой.
 const CatalogMap = lazy(() => import('@/features/map/ui/catalog-map'))
@@ -161,7 +162,13 @@ export default function CatalogPage() {
           {(items.length > 0 || catalog.isPending) && (
             <>
               {/* Карта с пинами городов выдачи — ленивый чанк */}
-              <Suspense fallback={<Skeleton className="h-64 w-full rounded-card lg:h-80" />}>
+              <Suspense
+                fallback={
+                  <LoadingRegion>
+                    <Skeleton className="h-64 w-full rounded-card lg:h-80" />
+                  </LoadingRegion>
+                }
+              >
                 <CatalogMap products={items} />
               </Suspense>
               <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
@@ -174,7 +181,9 @@ export default function CatalogPage() {
                   Array.from({ length: 4 }).map((_, index) => (
                     <li key={`skeleton-${index}`}>
                       {/* Скелетон карточки на время загрузки */}
-                      <Skeleton className="aspect-square w-full rounded-card" />
+                      <LoadingRegion>
+                        <Skeleton className="aspect-square w-full rounded-card" />
+                      </LoadingRegion>
                     </li>
                   ))}
               </ul>

@@ -7,6 +7,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Избранное покупателя.
 export default function FavoritesPage() {
@@ -17,7 +18,9 @@ export default function FavoritesPage() {
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {Array.from({ length: 3 }).map((_, index) => (
           <li key={`skeleton-${index}`}>
-            <Skeleton className="aspect-[3/4] w-full" />
+            <LoadingRegion>
+              <Skeleton className="aspect-[3/4] w-full" />
+            </LoadingRegion>
           </li>
         ))}
       </ul>

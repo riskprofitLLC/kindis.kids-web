@@ -1,19 +1,49 @@
-import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { useAddresses } from '@/features/profile/model/use-addresses'
 import { Button } from '@/shared/ui/button/button'
+import { FormField } from '@/shared/ui/form-field/form-field'
+import { Input } from '@/shared/ui/input/input'
 
-// Адресная книга:сохранённые адреса покупателя для оформления заказа.
+// Название，город，улица и дом обязательны；индекс — шесть цифр，если указан.
+const addressSchema = z.object({
+  label: z.string().trim().min(1, 'Укажите название'),
+  city: z.string().trim().min(1, 'Укажите город'),
+  street: z.string().trim().min(1, 'Укажите улицу'),
+  house: z.string().trim().min(1, 'Укажите дом'),
+  apartment: z.string().trim(),
+  zip: z
+    .string()
+    .trim()
+    .refine((value) => value === '' || /^\d{6}$/.test(value), 'Индекс — 6 цифр'),
+})
+
+type AddressValues = z.infer<typeof addressSchema>
+
+const emptyValues: AddressValues = {
+  label: '',
+  city: '',
+  street: '',
+  house: '',
+  apartment: '',
+  zip: '',
+}
+
+// Адресная книга：сохранённые адреса покупателя для оформления заказа.
 export function AddressBook() {
   const { items, add, remove } = useAddresses()
-  const [label, setLabel] = useState('')
-  const [city, setCity] = useState('')
-  const [street, setStreet] = useState('')
-  const [house, setHouse] = useState('')
-  const [apartment, setApartment] = useState('')
-  const [zip, setZip] = useState('')
 
-  const canSave = Boolean(label.trim() && city.trim() && street.trim() && house.trim())
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<AddressValues>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: emptyValues,
+  })
 
   return (
     <div className="flex flex-col gap-3">
@@ -39,68 +69,58 @@ export function AddressBook() {
       )}
 
       {/* Форма добавления — компактная сетка */}
-      <div className="grid gap-2 sm:grid-cols-2">
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Название (дом, работа)"
-          value={label}
-          onChange={(event) => setLabel(event.target.value)}
-        />
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Город"
-          value={city}
-          onChange={(event) => setCity(event.target.value)}
-        />
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Улица"
-          value={street}
-          onChange={(event) => setStreet(event.target.value)}
-        />
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Дом"
-          value={house}
-          onChange={(event) => setHouse(event.target.value)}
-        />
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Квартира"
-          value={apartment}
-          onChange={(event) => setApartment(event.target.value)}
-        />
-        <input
-          className="min-h-11 rounded-md border border-border px-3 text-sm"
-          placeholder="Индекс"
-          value={zip}
-          onChange={(event) => setZip(event.target.value)}
-        />
-      </div>
-
-      <Button
-        type="button"
-        className="self-start"
-        disabled={!canSave}
-        onClick={() => {
-          add({
-            label: label.trim(),
-            city: city.trim(),
-            street: street.trim(),
-            house: house.trim(),
-            apartment: apartment.trim(),
-            zip: zip.trim(),
-          })
-          setLabel('')
-          setCity('')
-          setStreet('')
-          setHouse('')
-          setApartment('')
-          setZip('')
+      <form
+        className="grid gap-2 sm:grid-cols-2"
+        onSubmit={(event) => {
+          void handleSubmit((values) => {
+            add(values)
+            reset(emptyValues)
+          })(event)
         }}
       >
-        Добавить адрес
-      </Button>
+        <FormField name="label" label="Название" error={errors.label?.message}>
+          {(props) => (
+            <Input {...props} {...register('label')} placeholder="Дом，работа" />
+          )}
+        </FormField>
+
+        <FormField name="city" label="Город" error={errors.city?.message}>
+          {(props) => (
+            <Input {...props} {...register('city')} autoComplete="address-level2" />
+          )}
+        </FormField>
+
+        <FormField name="street" label="Улица" error={errors.street?.message}>
+          {(props) => (
+            <Input {...props} {...register('street')} autoComplete="address-level1" />
+          )}
+        </FormField>
+
+        <div className="grid grid-cols-3 gap-2">
+          <FormField name="house" label="Дом" error={errors.house?.message}>
+            {(props) => <Input {...props} {...register('house')} />}
+          </FormField>
+
+          <FormField name="apartment" label="Квартира" error={errors.apartment?.message}>
+            {(props) => <Input {...props} {...register('apartment')} />}
+          </FormField>
+
+          <FormField name="zip" label="Индекс" error={errors.zip?.message}>
+            {(props) => (
+              <Input
+                {...props}
+                {...register('zip')}
+                inputMode="numeric"
+                autoComplete="postal-code"
+              />
+            )}
+          </FormField>
+        </div>
+
+        <Button type="submit" className="self-start">
+          Добавить адрес
+        </Button>
+      </form>
     </div>
   )
 }

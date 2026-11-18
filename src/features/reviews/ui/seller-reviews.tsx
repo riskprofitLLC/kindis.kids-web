@@ -2,6 +2,7 @@ import { useSellerReviews } from '@/features/reviews/model/use-reviews'
 import { ReviewList } from '@/features/reviews/ui/review-list'
 import { StarRating } from '@/features/reviews/ui/star-rating'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 interface SellerReviewsProps {
   slug: string
@@ -12,7 +13,11 @@ export function SellerReviews({ slug }: SellerReviewsProps) {
   const reviews = useSellerReviews(slug)
 
   if (reviews.isPending) {
-    return <Skeleton className="h-20 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-20 w-full" />
+      </LoadingRegion>
+    )
   }
 
   const data = reviews.data

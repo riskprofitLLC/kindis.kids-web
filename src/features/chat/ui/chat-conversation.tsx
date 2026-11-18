@@ -6,6 +6,7 @@ import { sellerApi } from '@/shared/api/seller-api'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Реального времени нет - опрашиваем переписку раз в 5 секунд.
 const POLL_MS = 5000
@@ -44,7 +45,11 @@ export function ChatConversation({ orderId }: ChatConversationProps) {
   })
 
   if (messages.isPending) {
-    return <Skeleton className="h-24 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-24 w-full" />
+      </LoadingRegion>
+    )
   }
 
   const items = messages.data ?? []

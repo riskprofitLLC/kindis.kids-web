@@ -6,6 +6,7 @@ import { ProductMediaEditor } from '@/features/seller/ui/product-media-editor'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Страница товара:тонкая сборка из фич seller — форма,кнопки,медиа.
 export default function SellerProductFormPage() {
@@ -13,7 +14,11 @@ export default function SellerProductFormPage() {
   const form = useProductForm(productId)
 
   if (form.profilesPending) {
-    return <Skeleton className="h-32 w-full" />
+    return (
+      <LoadingRegion>
+        <Skeleton className="h-32 w-full" />
+      </LoadingRegion>
+    )
   }
 
   return (

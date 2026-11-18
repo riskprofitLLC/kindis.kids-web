@@ -38,7 +38,8 @@ export default function ChildProfilePage() {
 
   if (profiles.isPending) {
     return (
-      <div className="space-y-4">
+      <div aria-busy="true" className="space-y-4">
+        <span className="sr-only">Загружаем…</span>
         <Skeleton className="h-32 w-full" />
         <Skeleton className="h-64 w-full" />
       </div>

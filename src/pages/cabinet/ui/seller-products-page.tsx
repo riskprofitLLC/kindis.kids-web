@@ -8,6 +8,7 @@ import { formatPrice } from '@/shared/lib/format'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Товары продавца:фильтр по статусу,поиск,инлайн-правка цены и остатка.
 const STATUSES: ProductStatus[] = ['draft', 'pending_review', 'active', 'archived']
@@ -99,7 +100,11 @@ export default function SellerProductsPage() {
         />
       </div>
 
-      {products.isPending && <Skeleton className="h-24 w-full" />}
+      {products.isPending && (
+        <LoadingRegion>
+          <Skeleton className="h-24 w-full" />
+        </LoadingRegion>
+      )}
 
       {!products.isPending && items.length === 0 && (
         <p className="text-sm text-text-muted">Товаров не найдено.</p>

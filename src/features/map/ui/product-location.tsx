@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Карта грузится лениво — maplibre не тянется в начальный бандл.
 const ProductLocationMap = lazy(() => import('@/features/map/ui/product-location-map'))
@@ -28,7 +29,13 @@ export function ProductLocation({ address, latitude, longitude }: ProductLocatio
       )}
 
       {hasPoint ? (
-        <Suspense fallback={<Skeleton className="h-52 w-full rounded-card" />}>
+        <Suspense
+          fallback={
+            <LoadingRegion>
+              <Skeleton className="h-52 w-full rounded-card" />
+            </LoadingRegion>
+          }
+        >
           <ProductLocationMap latitude={latitude} longitude={longitude} />
         </Suspense>
       ) : (

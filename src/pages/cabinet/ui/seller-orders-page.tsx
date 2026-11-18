@@ -11,6 +11,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Заказы продавца:фильтр по статусу,переходы,трек-номер,отмена с причиной.
 const STATUSES = [
@@ -79,7 +80,11 @@ export default function SellerOrdersPage() {
         </label>
       </div>
 
-      {orders.isPending && <Skeleton className="h-24 w-full" />}
+      {orders.isPending && (
+        <LoadingRegion>
+          <Skeleton className="h-24 w-full" />
+        </LoadingRegion>
+      )}
 
       {changeStatus.isError && (
         <Alert variant="danger" title="Не удалось изменить статус">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { useCatalog } from '@/features/catalog/model/use-catalog'
 import { ProductCard } from '@/features/catalog/ui/product-card'
@@ -11,11 +11,11 @@ import { Card } from '@/shared/ui/card/card'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Input } from '@/shared/ui/input/input'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Поиск: крупная строка с живыми подсказками в Card и сетка результатов.
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const navigate = useNavigate()
   const query = searchParams.get('q')?.trim() ?? ''
 
   const [term, setTerm] = useState(query)
@@ -56,8 +56,8 @@ export default function SearchPage() {
     const trimmed = value.trim()
     setOpen(false)
     if (!trimmed) return
+    // URL — единственный источник запроса：setSearchParams сам обновит адрес.
     setSearchParams(trimmed === query ? {} : { q: trimmed }, { replace: true })
-    if (trimmed !== query) void navigate(`${routes.search}?q=${encodeURIComponent(trimmed)}`)
   }
 
   return (
@@ -170,7 +170,9 @@ export default function SearchPage() {
             Array.from({ length: 6 }).map((_, index) => (
               <li key={`skeleton-${index}`}>
                 {/* Скелетон карточки на время загрузки */}
-                <Skeleton className="aspect-[3/4] w-full" />
+                <LoadingRegion>
+                  <Skeleton className="aspect-[3/4] w-full" />
+                </LoadingRegion>
               </li>
             ))}
         </ul>

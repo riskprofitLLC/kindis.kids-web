@@ -14,6 +14,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Корзина:состав,количество,удаление,очистка,итог и проверка остатков.
 export function CartView() {
@@ -41,7 +42,9 @@ export function CartView() {
       <ul className="flex flex-col gap-3">
         {Array.from({ length: 3 }).map((_, index) => (
           <li key={`skeleton-${index}`}>
-            <Skeleton className="h-16 w-full" />
+            <LoadingRegion>
+              <Skeleton className="h-16 w-full" />
+            </LoadingRegion>
           </li>
         ))}
       </ul>

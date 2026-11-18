@@ -12,6 +12,7 @@ import type { SortValue } from '@/shared/domain/catalog'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Публичная страница продавца:шапка,галерея,номенклатура с сортировками.
 export default function SellerPage() {
@@ -25,7 +26,8 @@ export default function SellerPage() {
 
   if (seller.isPending) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-6">
+      <div aria-busy="true" className="mx-auto max-w-6xl px-4 py-6">
+        <span className="sr-only">Загружаем…</span>
         <Skeleton className="h-8 w-48" />
         <Skeleton className="mt-3 h-4 w-64" />
       </div>
@@ -131,7 +133,9 @@ export default function SellerPage() {
             {products.isPending &&
               Array.from({ length: 4 }).map((_, index) => (
                 <li key={`skeleton-${index}`}>
-                  <Skeleton className="aspect-[3/4] w-full" />
+                  <LoadingRegion>
+                    <Skeleton className="aspect-[3/4] w-full" />
+                  </LoadingRegion>
                 </li>
               ))}
           </ul>

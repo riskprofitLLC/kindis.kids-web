@@ -5,6 +5,7 @@ import { ChatConversation } from '@/features/chat/ui/chat-conversation'
 import { sellerApi } from '@/shared/api/seller-api'
 import { cn } from '@/shared/lib/cn'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Чаты по заказам: список диалогов, переписка, непрочитанные.
 // Реального времени нет - опрашиваем раз в 5 секунд.
@@ -25,7 +26,11 @@ export default function ChatsPage() {
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold text-text">Чаты по заказам</h1>
 
-      {dialogs.isPending && <Skeleton className="h-24 w-full" />}
+      {dialogs.isPending && (
+        <LoadingRegion>
+          <Skeleton className="h-24 w-full" />
+        </LoadingRegion>
+      )}
 
       {!dialogs.isPending && items.length === 0 && (
         <p className="text-sm text-text-muted">

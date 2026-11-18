@@ -9,6 +9,7 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Заказы покупателя:список со статусами и составом.
 export default function OrdersPage() {
@@ -19,7 +20,9 @@ export default function OrdersPage() {
       <ul className="flex flex-col gap-3">
         {Array.from({ length: 3 }).map((_, index) => (
           <li key={`skeleton-${index}`}>
-            <Skeleton className="h-16 w-full" />
+            <LoadingRegion>
+              <Skeleton className="h-16 w-full" />
+            </LoadingRegion>
           </li>
         ))}
       </ul>

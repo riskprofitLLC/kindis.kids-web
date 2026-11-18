@@ -6,6 +6,7 @@ import { ApiError } from '@/shared/api/errors'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 // Очередь модерации:профили,товары,медиа,отзывы,жалобы.
 type QueueKind = 'profiles' | 'products' | 'media' | 'reviews' | 'reports'
@@ -77,7 +78,11 @@ export default function ModerationPage() {
         </Alert>
       )}
 
-      {queue.isPending && <Skeleton className="h-24 w-full" />}
+      {queue.isPending && (
+        <LoadingRegion>
+          <Skeleton className="h-24 w-full" />
+        </LoadingRegion>
+      )}
 
       {!queue.isPending && rows.length === 0 && (
         <p className="text-sm text-text-muted">Очередь пуста — всё разобрано.</p>

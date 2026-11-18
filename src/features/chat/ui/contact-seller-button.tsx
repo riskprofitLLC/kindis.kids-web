@@ -8,6 +8,7 @@ import { routes } from '@/shared/config/routes'
 import { Button } from '@/shared/ui/button/button'
 import { Dialog } from '@/shared/ui/dialog/dialog'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
 
 interface ContactSellerButtonProps {
   productId: string
@@ -50,7 +51,11 @@ export function ContactSellerButton({ productId, sellerName }: ContactSellerButt
         title={sellerName ? `Чат с ${sellerName}` : 'Чат с продавцом'}
         description="Переписка идёт по заказу — так видны и товар,и детали сделки."
       >
-        {orders.isPending && <Skeleton className="h-24 w-full" />}
+        {orders.isPending && (
+          <LoadingRegion>
+            <Skeleton className="h-24 w-full" />
+          </LoadingRegion>
+        )}
 
         {!orders.isPending && !order && (
           <div className="flex flex-col gap-3">
