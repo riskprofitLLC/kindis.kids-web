@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useMediaUrl } from '@/features/media/model/use-media-url'
+import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import type { ProductMedia } from '@/shared/api/catalog-api'
 import { Lightbox } from '@/shared/ui/lightbox/lightbox'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
@@ -38,6 +38,7 @@ export function ProductGallery({ title, media }: ProductGalleryProps) {
               preload="metadata"
               playsInline
               aria-label={`Видео товара «${title}»`}
+              onError={() => void renewMediaUrl(activeItem.id)}
               className="aspect-square w-full bg-black object-contain"
             />
           ) : (
@@ -50,6 +51,7 @@ export function ProductGallery({ title, media }: ProductGalleryProps) {
               <img
                 src={activeUrl}
                 alt={title}
+                onError={() => void renewMediaUrl(activeItem.id)}
                 className={`aspect-square w-full object-cover transition-transform ${zoomed ? 'scale-150' : ''}`}
               />
             </button>
@@ -101,12 +103,14 @@ export function ProductGallery({ title, media }: ProductGalleryProps) {
               preload="metadata"
               playsInline
               aria-label={`Видео товара «${title}»`}
+              onError={() => void renewMediaUrl(activeItem.id)}
               className="max-h-[70vh] w-full bg-black object-contain"
             />
           ) : (
             <img
               src={activeUrl}
               alt={title}
+              onError={() => void renewMediaUrl(activeItem.id)}
               className="max-h-[70vh] w-full object-contain"
             />
           ))}
@@ -143,10 +147,17 @@ function ThumbnailButton({ item, index, active, onClick }: ThumbnailButtonProps)
             preload="metadata"
             playsInline
             aria-hidden="true"
+            onError={() => void renewMediaUrl(item.id)}
             className="aspect-square w-full bg-black object-cover"
           />
         ) : (
-          <img src={url} alt="" className="aspect-square w-full object-cover" loading="lazy" />
+          <img
+            src={url}
+            alt=""
+            loading="lazy"
+            onError={() => void renewMediaUrl(item.id)}
+            className="aspect-square w-full object-cover"
+          />
         )
       ) : (
         <Skeleton className="aspect-square w-full rounded-none" />

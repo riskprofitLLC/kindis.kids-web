@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { useMediaUrl } from '@/features/media/model/use-media-url'
+import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import { mediaApi } from '@/shared/api/media-api'
 import { PRODUCT_MEDIA_LIMIT, productsApi } from '@/shared/api/products-api'
 import { Alert } from '@/shared/ui/alert/alert'
@@ -156,6 +156,12 @@ function MediaThumbBox({ mediaId }: { mediaId: string }) {
   }
 
   return (
-    <img src={url} alt="" className="aspect-square w-full rounded object-cover" loading="lazy" />
+    <img
+      src={url}
+      alt=""
+      loading="lazy"
+      onError={() => void renewMediaUrl(mediaId)}
+      className="aspect-square w-full rounded object-cover"
+    />
   )
 }

@@ -9,6 +9,7 @@ import type { ProductMedia } from '@/shared/api/catalog-api'
 // Ссылки на чтение приходят извне — подставляем фиксированный ответ.
 vi.mock('@/features/media/model/use-media-url', () => ({
   useMediaUrl: () => 'https://storage.example/media.jpg',
+  renewMediaUrl: () => undefined,
 }))
 
 afterEach(cleanup)

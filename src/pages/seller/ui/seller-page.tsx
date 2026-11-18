@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useCatalog } from '@/features/catalog/model/use-catalog'
 import { ProductCard } from '@/features/catalog/ui/product-card'
 import { SortSelect } from '@/features/catalog/ui/sort-select'
-import { useMediaUrl } from '@/features/media/model/use-media-url'
+import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import { SellerReviews } from '@/features/reviews/ui/seller-reviews'
 import { useSeller } from '@/features/seller/model/use-seller'
 import { SellerMediaGallery } from '@/features/seller/ui/seller-media-gallery'
@@ -61,6 +61,7 @@ export default function SellerPage() {
           <img
             src={avatarUrl}
             alt={`Портрет:${profile.name}`}
+            onError={() => void renewMediaUrl(seller.data?.avatarMediaId)}
             className="h-24 w-24 rounded-full object-cover"
           />
         ) : (

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { FavoriteButton } from '@/features/favorites/ui/favorite-button'
-import { useMediaUrl } from '@/features/media/model/use-media-url'
+import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import type { ProductCard as ProductCardModel } from '@/shared/api/catalog-api'
 import { routes } from '@/shared/config/routes'
 import { formatPrice, highlightParts } from '@/shared/lib/format'
@@ -28,6 +28,7 @@ function CardPhoto({ mediaId, title }: { mediaId: string | undefined; title: str
       src={url}
       alt={title}
       loading="lazy"
+      onError={() => void renewMediaUrl(mediaId)}
       className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
     />
   )

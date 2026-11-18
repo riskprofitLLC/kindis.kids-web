@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useMediaUrl } from '@/features/media/model/use-media-url'
+import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import type { MediaAsset } from '@/shared/api/media-api'
 import { formatDuration } from '@/shared/domain/media'
 import { Lightbox } from '@/shared/ui/lightbox/lightbox'
@@ -68,13 +68,24 @@ function SellerMediaThumb({ asset }: { asset: MediaAsset }) {
 
   if (asset.kind === 'photo') {
     return (
-      <img src={url} alt="" className="aspect-square w-full rounded object-cover" loading="lazy" />
+      <img
+      src={url}
+      alt=""
+      loading="lazy"
+      onError={() => void renewMediaUrl(asset.id)}
+      className="aspect-square w-full rounded object-cover"
+    />
     )
   }
 
   // Видео — постер-кадр не делаем:браузер возьмёт первый кадр сам.
   return (
-    <video src={url} className="aspect-square w-full rounded object-cover" preload="metadata" />
+    <video
+      src={url}
+      preload="metadata"
+      onError={() => void renewMediaUrl(asset.id)}
+      className="aspect-square w-full rounded object-cover"
+    />
   )
 }
 
@@ -99,5 +110,12 @@ function SellerMediaViewer({ asset }: { asset: MediaAsset }) {
     )
   }
 
-  return <img src={url} alt="" className="max-h-[70vh] w-full object-contain" />
+  return (
+    <img
+      src={url}
+      alt=""
+      onError={() => void renewMediaUrl(asset.id)}
+      className="max-h-[70vh] w-full object-contain"
+    />
+  )
 }

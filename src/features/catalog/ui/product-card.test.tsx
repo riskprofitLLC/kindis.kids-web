@@ -1,18 +1,26 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ProductCard } from '@/features/catalog/ui/product-card'
 import type { ProductCard as ProductCardModel } from '@/shared/api/catalog-api'
 
+const mocks = vi.hoisted(() => ({ url: null as string | null, renew: vi.fn() }))
+
 vi.mock('@/features/media/model/use-media-url', () => ({
-  useMediaUrl: () => null,
+  useMediaUrl: () => mocks.url,
+  renewMediaUrl: mocks.renew,
 }))
 
 // Без globals RTL не чистит DOM сам — делаем это вручную между тестами.
 afterEach(cleanup)
+
+beforeEach(() => {
+  mocks.url = null
+  mocks.renew.mockClear()
+})
 
 function product(overrides: Partial<ProductCardModel> = {}): ProductCardModel {
   return {
@@ -81,6 +89,18 @@ describe('ProductCard', () => {
     renderCard(product({ stock: 0 }))
 
     expect(screen.getByText('Нет в наличии')).toBeTruthy()
+  })
+
+  it('ошибка загрузки фото просит свежую ссылку', () => {
+    mocks.url = 'https://storage/broken.jpg'
+    const { container } = renderCard(product({ media: [{ id: 'media-1', kind: 'photo' }] }))
+
+    const img = container.querySelector('img')
+    expect(img).toBeTruthy()
+
+    fireEvent.error(img as HTMLImageElement)
+
+    expect(mocks.renew).toHaveBeenCalledWith('media-1')
   })
 
   it('приоритетного мастера отмечает бейджем', () => {

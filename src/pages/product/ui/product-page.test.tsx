@@ -46,6 +46,7 @@ vi.mock('@/features/map/ui/product-location-map', () => ({
 
 vi.mock('@/features/media/model/use-media-url', () => ({
   useMediaUrl: () => null,
+  renewMediaUrl: () => undefined,
 }))
 
 import ProductPage from '@/pages/product/ui/product-page'

@@ -15,6 +15,7 @@ vi.mock('@/shared/api/favorites-api', async (importOriginal) => {
 
 vi.mock('@/features/media/model/use-media-url', () => ({
   useMediaUrl: () => null,
+  renewMediaUrl: () => undefined,
 }))
 
 import FavoritesPage from '@/pages/cabinet/ui/favorites-page'
