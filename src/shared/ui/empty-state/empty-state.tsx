@@ -50,7 +50,7 @@ function HeartArt() {
     <svg viewBox="0 0 120 120" fill="none" aria-hidden="true" className="h-full w-full">
       <circle cx="60" cy="60" r="34" fill="var(--color-chip-coral-bg)" />
       <path
-        d="M60PLACEHOLDER_J"
+        d="M60 86 C 40 70 38 57 45 51 C 51 46 57 50 60 56 C 63 50 69 46 75 51 C 82 57 80 70 60 86 Z"
         fill="none"
         stroke="var(--color-primary)"
         strokeWidth="5"

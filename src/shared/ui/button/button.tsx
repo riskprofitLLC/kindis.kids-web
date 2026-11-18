@@ -10,12 +10,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-float active-pressable',
+          'bg-primary text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-float',
         outline:
-          'border border-border bg-surface text-text shadow-soft hover:-translate-y-0.5 hover:border-border-strong hover:shadow-lift active-pressable',
+          'border border-border bg-surface text-text shadow-soft hover:-translate-y-0.5 hover:border-border-strong hover:shadow-lift',
         ghost: 'text-text hover:bg-surface-muted',
         danger:
-          'bg-danger text-danger-foreground shadow-lift hover:-translate-y-0.5 hover:bg-danger/90 hover:shadow-float active-pressable',
+          'bg-danger text-danger-foreground shadow-lift hover:-translate-y-0.5 hover:bg-danger/90 hover:shadow-float',
       },
       size: {
         default: 'h-11 px-5 text-sm',
