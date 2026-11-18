@@ -59,7 +59,11 @@ describe('AdminAttributesPage', () => {
     await user.click(screen.getByRole('button', { name: 'Создать' }))
 
     await waitFor(() =>
-      expect(mocks.createAttribute).toHaveBeenCalledWith({ name: 'Длина', type: 'text', unit: 'см' }),
+      expect(mocks.createAttribute).toHaveBeenCalledWith({
+        name: 'Длина',
+        type: 'text',
+        unit: 'см',
+      }),
     )
   })
 

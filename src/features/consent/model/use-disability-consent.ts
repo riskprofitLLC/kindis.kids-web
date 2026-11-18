@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { type ChildProfile,childrenApi } from '@/shared/api/children-api'
+import { type ChildProfile, childrenApi } from '@/shared/api/children-api'
 import { CONSENT_DOCUMENT_VERSION } from '@/shared/domain/consent'
 
 export const childProfilesKey = ['children', 'mine'] as const

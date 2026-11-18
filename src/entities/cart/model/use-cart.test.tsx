@@ -96,9 +96,7 @@ describe('useUpdateCartItem — оптимистичное обновление'
     })
 
     // Ответа ещё нет, а кеш уже показывает новое количество.
-    await waitFor(() =>
-      expect(client.getQueryData<Cart>(['cart'])?.items[1].quantity).toBe(5),
-    )
+    await waitFor(() => expect(client.getQueryData<Cart>(['cart'])?.items[1].quantity).toBe(5))
 
     await act(async () => {
       resolveUpdate(item('i-2', 5))
@@ -113,9 +111,9 @@ describe('useUpdateCartItem — оптимистичное обновление'
     const { result } = renderHook(() => useUpdateCartItem(), { wrapper })
 
     await act(async () => {
-      await expect(
-        result.current.mutateAsync({ itemId: 'i-2', quantity: 5 }),
-      ).rejects.toThrow('Сервер отклонил')
+      await expect(result.current.mutateAsync({ itemId: 'i-2', quantity: 5 })).rejects.toThrow(
+        'Сервер отклонил',
+      )
     })
 
     const cached = client.getQueryData<Cart>(['cart'])

@@ -24,10 +24,7 @@ describe('reverseGeocode', () => {
   })
 
   it('пустой ответ отдаёт null', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) }),
-    )
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) }))
 
     await expect(reverseGeocode(43.6, 39.7)).resolves.toBeNull()
   })
@@ -39,10 +36,7 @@ describe('reverseGeocode', () => {
   })
 
   it('неуспешный статус отдаёт null', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) }),
-    )
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) }))
 
     await expect(reverseGeocode(43.6, 39.7)).resolves.toBeNull()
   })

@@ -32,6 +32,20 @@ export function useLogin() {
   })
 }
 
+// ВРЕМЕННО: dev-вход без пароля, сессия и слияние корзины как в useLogin.
+export function useDevLogin() {
+  const setSession = useSessionStore((state) => state.setSession)
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (role: 'buyer' | 'seller') => authApi.devLogin(role),
+    onSuccess: (user) => {
+      setSession(user)
+      void mergeGuestCart(queryClient)
+    },
+  })
+}
+
 export function useRegister() {
   return useMutation({
     mutationFn: (input: RegisterInput) => authApi.register(input),

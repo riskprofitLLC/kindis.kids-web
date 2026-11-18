@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 
+import { ProductCard } from '@/features/catalog/ui/product-card'
 import { useFavorites } from '@/features/favorites/model/use-favorites'
-import { FavoriteButton } from '@/features/favorites/ui/favorite-button'
 import { routes } from '@/shared/config/routes'
-import { formatPrice } from '@/shared/lib/format'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
@@ -53,18 +52,9 @@ export default function FavoritesPage() {
   return (
     <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {items.map((product) => (
-        <li
-          key={product.id}
-          className="flex flex-col gap-1 rounded-card border border-border p-3 text-sm"
-        >
-          <div className="flex items-start justify-between gap-2">
-            <Link className="text-text hover:text-primary" to={routes.product(product.id)}>
-              {product.title}
-            </Link>
-            {/* Убрать из избранного — тем же сердечком，что и в каталоге */}
-            <FavoriteButton productId={product.id} />
-          </div>
-          <span className="text-text-muted">{formatPrice(product.priceKopecks)}</span>
+        // Общая карточка каталога: фото, продавец, бейджи и сердечко внутри.
+        <li key={product.id}>
+          <ProductCard product={product} />
         </li>
       ))}
     </ul>

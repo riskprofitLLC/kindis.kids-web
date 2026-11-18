@@ -1,4 +1,4 @@
-import { type FontSize,useUiSettingsStore } from '@/app/model/ui-settings-store'
+import { type FontSize, useUiSettingsStore } from '@/app/model/ui-settings-store'
 import { cn } from '@/shared/lib/cn'
 import { Button } from '@/shared/ui/button/button'
 

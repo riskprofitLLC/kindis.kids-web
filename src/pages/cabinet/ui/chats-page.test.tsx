@@ -54,7 +54,9 @@ describe('ChatsPage', () => {
     renderPage()
 
     await waitFor(() =>
-      expect(screen.getByText('Диалогов пока нет - они появятся, когда покупатели напишут по заказам.')).toBeTruthy(),
+      expect(
+        screen.getByText('Диалогов пока нет - они появятся, когда покупатели напишут по заказам.'),
+      ).toBeTruthy(),
     )
     expect(screen.getByText('Выберите диалог слева.')).toBeTruthy()
   })
@@ -64,7 +66,14 @@ describe('ChatsPage', () => {
       {
         orderId: 'o-1',
         counterpartName: 'Мария',
-        lastMessage: { id: 'm-1', text: 'Когда отправка?', createdAt: '', senderId: 'u-2', readAt: null, mine: false },
+        lastMessage: {
+          id: 'm-1',
+          text: 'Когда отправка?',
+          createdAt: '',
+          senderId: 'u-2',
+          readAt: null,
+          mine: false,
+        },
         unreadCount: 2,
       },
     ])
@@ -87,7 +96,13 @@ describe('ChatsPage', () => {
       },
     ])
     mocks.messages.mockResolvedValue([
-      { id: 'm-1', text: 'Здравствуйте!', senderId: 'u-2', createdAt: '', sender: { id: 'u-2', fullName: 'Мария' } },
+      {
+        id: 'm-1',
+        text: 'Здравствуйте!',
+        senderId: 'u-2',
+        createdAt: '',
+        sender: { id: 'u-2', fullName: 'Мария' },
+      },
     ])
     mocks.markRead.mockResolvedValue(undefined)
 
@@ -125,9 +140,7 @@ describe('ChatsPage', () => {
     await user.type(input, 'Отправляю сегодня')
     await user.click(screen.getByRole('button', { name: 'Отправить' }))
 
-    await waitFor(() =>
-      expect(mocks.sendMessage).toHaveBeenCalledWith('o-1', 'Отправляю сегодня'),
-    )
+    await waitFor(() => expect(mocks.sendMessage).toHaveBeenCalledWith('o-1', 'Отправляю сегодня'))
     expect(input.value).toBe('')
   })
 })

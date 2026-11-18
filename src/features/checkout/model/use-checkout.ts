@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef } from 'react'
 
-import { type CheckoutInput,ordersApi } from '@/shared/api/orders-api'
+import { type CheckoutInput, ordersApi } from '@/shared/api/orders-api'
 
 // Оформление заказа. Ключ идемпотентности выдаётся один раз на попытку：
 // повторный клик или обновление страницы не создадут второй заказ.

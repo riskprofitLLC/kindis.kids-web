@@ -22,12 +22,16 @@ vi.mock('@/features/child-profile/ui/profile-editor', () => ({
 }))
 vi.mock('@/features/child-profile/ui/media-uploader', () => ({
   MediaUploader: ({ ownerId, kind }: { ownerId: string; kind: string }) => (
-    <p>Загрузка {kind} для {ownerId}</p>
+    <p>
+      Загрузка {kind} для {ownerId}
+    </p>
   ),
 }))
 vi.mock('@/features/child-profile/ui/media-gallery', () => ({
   MediaGallery: ({ ownerId, kind }: { ownerId: string; kind: string }) => (
-    <p>Галерея {kind} для {ownerId}</p>
+    <p>
+      Галерея {kind} для {ownerId}
+    </p>
   ),
 }))
 vi.mock('@/pages/cabinet/ui/public-preview', () => ({

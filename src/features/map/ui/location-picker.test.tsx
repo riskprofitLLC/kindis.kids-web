@@ -88,9 +88,7 @@ describe('LocationPicker', () => {
 
   it('сброс места обнуляет точку и адрес', async () => {
     const user = userEvent.setup()
-    render(
-      <ControlledPicker initial={{ address: 'Сочи', latitude: 43.6, longitude: 39.7 }} />,
-    )
+    render(<ControlledPicker initial={{ address: 'Сочи', latitude: 43.6, longitude: 39.7 }} />)
 
     await user.click(screen.getByRole('button', { name: 'Сбросить место' }))
 

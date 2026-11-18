@@ -47,6 +47,12 @@ export const authApi = {
     return persistSession(data)
   },
 
+  // ВРЕМЕННО: вход без пароля под демо-аккаунт (только при VITE_DEV_LOGIN=1).
+  async devLogin(role: 'buyer' | 'seller'): Promise<User> {
+    const { data } = await api.post<TokenPair>('/auth/dev-login', { role })
+    return persistSession(data)
+  },
+
   async verifyEmail(email: string, code: string): Promise<User> {
     const { data } = await api.post<TokenPair>('/auth/verify-email', { email, code })
     return persistSession(data)

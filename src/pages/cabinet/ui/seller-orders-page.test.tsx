@@ -67,9 +67,7 @@ describe('SellerOrdersPage', () => {
 
     renderPage()
 
-    await waitFor(() =>
-      expect(screen.getByText('Заказов с таким статусом пока нет.')).toBeTruthy(),
-    )
+    await waitFor(() => expect(screen.getByText('Заказов с таким статусом пока нет.')).toBeTruthy())
   })
 
   it('показывает заказ и переход в подтверждённый', async () => {
@@ -118,9 +116,7 @@ describe('SellerOrdersPage', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Отменён' })).toBeTruthy())
     await user.click(screen.getByRole('button', { name: 'Отменён' }))
 
-    await waitFor(() =>
-      expect(mocks.cancelOrder).toHaveBeenCalledWith('o-1', 'Отменён продавцом'),
-    )
+    await waitFor(() => expect(mocks.cancelOrder).toHaveBeenCalledWith('o-1', 'Отменён продавцом'))
   })
 
   it('фильтр по статусу уходит в запрос списка', async () => {
@@ -132,8 +128,6 @@ describe('SellerOrdersPage', () => {
     await waitFor(() => expect(mocks.orders).toHaveBeenCalled())
     await user.selectOptions(screen.getByRole('combobox'), 'shipped')
 
-    await waitFor(() =>
-      expect(mocks.orders).toHaveBeenCalledWith({ status: 'shipped' }),
-    )
+    await waitFor(() => expect(mocks.orders).toHaveBeenCalledWith({ status: 'shipped' }))
   })
 })

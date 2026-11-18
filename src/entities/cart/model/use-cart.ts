@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { type Cart,cartApi } from '@/shared/api/cart-api'
+import { type Cart, cartApi } from '@/shared/api/cart-api'
 
 // Корзина живёт на сервере：гость — по сессии в заголовке，пользователь — по токену.
 export function useCart() {

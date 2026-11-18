@@ -79,9 +79,8 @@ export default function CheckoutPage() {
             <span className="font-medium text-text">{placedOrder.id}</span>
           </p>
           <p className="mt-1 text-sm text-text-muted">
-            Сумма товаров: {formatPrice(placedOrder.totalKopecks)}. Доставка
-            согласуется с продавцом отдельно. Следите за статусом в личном
-            кабинете.
+            Сумма товаров: {formatPrice(placedOrder.totalKopecks)}. Доставка согласуется с продавцом
+            отдельно. Следите за статусом в личном кабинете.
           </p>
           <div className="mt-4 flex gap-2">
             <Button asChild>
@@ -156,15 +155,12 @@ export default function CheckoutPage() {
                   {item.title}
                   <span className="text-text-muted"> × {item.quantity}</span>
                 </span>
-                <span className="text-text">
-                  {formatPrice(item.priceKopecks * item.quantity)}
-                </span>
+                <span className="text-text">{formatPrice(item.priceKopecks * item.quantity)}</span>
               </li>
             ))}
           </ul>
           <p className="text-sm text-text">
-            Товары:{' '}
-            <span className="font-medium">{formatPrice(totals.totalKopecks)}</span>
+            Товары: <span className="font-medium">{formatPrice(totals.totalKopecks)}</span>
           </p>
           <div className="flex justify-end">
             <Button type="button" onClick={() => setStep(2)} disabled={conflicts.length > 0}>
@@ -233,9 +229,7 @@ export default function CheckoutPage() {
             </div>
             <div className="flex justify-between">
               <dt className="text-text-muted">Доставка: {DELIVERY_LABELS[method]}</dt>
-              <dd className="text-text">
-                {delivery === 0 ? 'бесплатно' : formatPrice(delivery)}
-              </dd>
+              <dd className="text-text">{delivery === 0 ? 'бесплатно' : formatPrice(delivery)}</dd>
             </div>
             <div className="flex justify-between border-t border-border pt-1">
               <dt className="font-medium text-text">Итого</dt>
@@ -260,9 +254,7 @@ export default function CheckoutPage() {
 
           {checkout.isError && (
             <Alert variant="danger" title="Не удалось оформить заказ">
-              {checkout.error instanceof ApiError
-                ? checkout.error.message
-                : 'Попробуйте ещё раз.'}
+              {checkout.error instanceof ApiError ? checkout.error.message : 'Попробуйте ещё раз.'}
             </Alert>
           )}
 

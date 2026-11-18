@@ -1,4 +1,4 @@
-import { useQuery,useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 import { useSessionStore } from '@/entities/session/model/session-store'

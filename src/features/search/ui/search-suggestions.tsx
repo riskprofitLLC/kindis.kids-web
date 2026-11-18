@@ -90,14 +90,14 @@ export function SearchSuggestions({
           aria-autocomplete="list"
           aria-label="Поиск по каталогу"
           placeholder={placeholder}
-        value={term}
-        onChange={(event) => {
-          setTerm(event.target.value)
-          setOpen(true)
-          setActiveIndex(-1)
-        }}
-        onFocus={() => setOpen(true)}
-        onBlur={() => window.setTimeout(() => setOpen(false), 150)}
+          value={term}
+          onChange={(event) => {
+            setTerm(event.target.value)
+            setOpen(true)
+            setActiveIndex(-1)
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => window.setTimeout(() => setOpen(false), 150)}
           onKeyDown={onKeyDown}
           className={cn(
             'min-h-11 w-full rounded-control border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-text-muted focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary',

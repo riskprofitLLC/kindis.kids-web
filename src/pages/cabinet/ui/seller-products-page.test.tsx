@@ -121,9 +121,7 @@ describe('SellerProductsPage', () => {
     await user.type(price, '700')
     await user.tab()
 
-    await waitFor(() =>
-      expect(mocks.update).toHaveBeenCalledWith('p-1', { priceKopecks: 70_000 }),
-    )
+    await waitFor(() => expect(mocks.update).toHaveBeenCalledWith('p-1', { priceKopecks: 70_000 }))
   })
 
   it('инлайн-правка остатка на blur уходит в продукт-api', async () => {

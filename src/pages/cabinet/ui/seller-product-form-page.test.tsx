@@ -105,7 +105,9 @@ describe('SellerProductFormPage', () => {
 
     renderPage()
 
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Сохранить черновик' })).toBeTruthy())
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Сохранить черновик' })).toBeTruthy(),
+    )
     await user.click(screen.getByRole('button', { name: 'Сохранить черновик' }))
 
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
@@ -113,7 +115,7 @@ describe('SellerProductFormPage', () => {
     expect(mocks.create).not.toHaveBeenCalled()
   })
 
-it('сохраняет черновик и уходит в список товаров', async () => {
+  it('сохраняет черновик и уходит в список товаров', async () => {
     const user = userEvent.setup()
     mocks.mineChildren.mockResolvedValue([{ id: 'cp-1' }])
     mocks.mineProducts.mockResolvedValue([])
@@ -181,9 +183,7 @@ it('сохраняет черновик и уходит в список това
     renderPage('/cabinet/products/p-1/edit')
 
     await waitFor(() => expect(screen.getByText('Редактирование товара')).toBeTruthy())
-    expect((screen.getByLabelText('Название') as HTMLInputElement).value).toBe(
-      'Серьги «Лаванда»',
-    )
+    expect((screen.getByLabelText('Название') as HTMLInputElement).value).toBe('Серьги «Лаванда»')
     expect((screen.getByLabelText(/Цена/) as HTMLInputElement).value).toBe('650')
     expect(screen.getByText('Медиа товара p-1')).toBeTruthy()
   })

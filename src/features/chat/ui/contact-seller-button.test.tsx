@@ -105,11 +105,25 @@ describe('ContactSellerButton', () => {
         trackingNumber: null,
         cancelReason: null,
         createdAt: '2026-11-10T10:00:00Z',
-        items: [{ id: 'oi-1', productId: 'p-1', quantity: 1, priceKopecks: 65000, titleSnapshot: 'Серьги' }],
+        items: [
+          {
+            id: 'oi-1',
+            productId: 'p-1',
+            quantity: 1,
+            priceKopecks: 65000,
+            titleSnapshot: 'Серьги',
+          },
+        ],
       },
     ])
     mocks.messages.mockResolvedValue([
-      { id: 'm-1', text: 'Здравствуйте!', senderId: 'u-2', senderName: 'Коля Иванов', createdAt: '2026-11-10T11:00:00Z' },
+      {
+        id: 'm-1',
+        text: 'Здравствуйте!',
+        senderId: 'u-2',
+        senderName: 'Коля Иванов',
+        createdAt: '2026-11-10T11:00:00Z',
+      },
     ])
     mocks.markRead.mockResolvedValue(undefined)
 
@@ -131,7 +145,9 @@ describe('ContactSellerButton', () => {
 
     await user.click(screen.getByRole('button', { name: 'Написать продавцу' }))
 
-    await waitFor(() => expect(screen.getByText(/Диалог с продавцом открывается по заказу/)).toBeTruthy())
+    await waitFor(() =>
+      expect(screen.getByText(/Диалог с продавцом открывается по заказу/)).toBeTruthy(),
+    )
     expect(mocks.messages).not.toHaveBeenCalled()
   })
 })

@@ -103,7 +103,11 @@ describe('sortByOrder / withMainFirst', () => {
   it('сортирует по сохранённому порядку, новые файлы — в конец', () => {
     const items = [{ id: 'n-1' }, { id: 'm-2' }, { id: 'm-1' }]
 
-    expect(sortByOrder(items, ['m-2', 'm-1'])).toEqual([{ id: 'm-2' }, { id: 'm-1' }, { id: 'n-1' }])
+    expect(sortByOrder(items, ['m-2', 'm-1'])).toEqual([
+      { id: 'm-2' },
+      { id: 'm-1' },
+      { id: 'n-1' },
+    ])
   })
 
   it('главное фото уходит первым, отсутствие главного не меняет порядок', () => {

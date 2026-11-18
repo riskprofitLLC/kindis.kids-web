@@ -5,11 +5,18 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const mocks = vi.hoisted(() => ({ login: vi.fn(), mergeWithSession: vi.fn() }))
+const mocks = vi.hoisted(() => ({
+  login: vi.fn(),
+  devLogin: vi.fn(),
+  mergeWithSession: vi.fn(),
+}))
 
 vi.mock('@/shared/api/auth-api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/api/auth-api')>()
-  return { ...actual, authApi: { ...actual.authApi, login: mocks.login } }
+  return {
+    ...actual,
+    authApi: { ...actual.authApi, login: mocks.login, devLogin: mocks.devLogin },
+  }
 })
 vi.mock('@/shared/api/cart-api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/api/cart-api')>()
@@ -23,16 +30,24 @@ vi.mock('@/shared/lib/guest-session', () => ({
   clearGuestSessionId: vi.fn(),
 }))
 
+import { useSessionStore } from '@/entities/session/model/session-store'
 import LoginPage from '@/pages/login/ui/login-page'
 
 let client: QueryClient
 
 beforeEach(() => {
-  client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
+  client = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  })
   vi.clearAllMocks()
+  vi.unstubAllEnvs()
+  useSessionStore.setState({ user: null, status: 'anonymous' })
 })
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  vi.unstubAllEnvs()
+})
 
 function CurrentPath() {
   return <p data-testid="path">{useLocation().pathname}</p>
@@ -83,14 +98,18 @@ describe('LoginPage', () => {
     await user.type(screen.getByLabelText('Пароль'), 'password123')
     await user.click(screen.getByRole('button', { name: 'Войти' }))
 
-    await waitFor(() => expect(mocks.login).toHaveBeenCalledWith('parent@example.com', 'password123'))
+    await waitFor(() =>
+      expect(mocks.login).toHaveBeenCalledWith('parent@example.com', 'password123'),
+    )
     await waitFor(() => expect(screen.getByTestId('path').textContent).toBe('/cabinet'))
   })
 
   it('неподтверждённый email уводит на экран кода', async () => {
     const user = userEvent.setup()
     const { ApiError } = await import('@/shared/api/errors')
-    mocks.login.mockRejectedValue(new ApiError('Почта не подтверждена', 403, 'AUTH_EMAIL_NOT_VERIFIED'))
+    mocks.login.mockRejectedValue(
+      new ApiError('Почта не подтверждена', 403, 'AUTH_EMAIL_NOT_VERIFIED'),
+    )
 
     renderPage()
 
@@ -113,5 +132,66 @@ describe('LoginPage', () => {
 
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
     expect(screen.getByText('Неверный пароль')).toBeTruthy()
+  })
+})
+
+// ВРЕМЕННО: dev-кнопки входа без пароля под флагом VITE_DEV_LOGIN=1.
+describe('LoginPage dev-вход (временный)', () => {
+  it('без флага dev-кнопки скрыты', () => {
+    // Явно гасим флаг: локальный .env не должен влиять на тест.
+    vi.stubEnv('VITE_DEV_LOGIN', '')
+    renderPage()
+
+    expect(screen.queryByRole('button', { name: 'Войти как покупателя' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Войти как продавца' })).toBeNull()
+  })
+
+  it('под флагом показывает обе dev-кнопки', () => {
+    vi.stubEnv('VITE_DEV_LOGIN', '1')
+    renderPage()
+
+    expect(screen.getByRole('button', { name: 'Войти как покупателя' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Войти как продавца' })).toBeTruthy()
+  })
+
+  it('клик по покупателю ставит сессию и ведёт в /cabinet', async () => {
+    vi.stubEnv('VITE_DEV_LOGIN', '1')
+    const user = userEvent.setup()
+    mocks.devLogin.mockResolvedValue({
+      id: 'u-dev',
+      email: 'demo-buyer@kindis.local',
+      role: 'parent',
+    })
+    mocks.mergeWithSession.mockResolvedValue(undefined)
+
+    renderPage()
+
+    await user.click(screen.getByRole('button', { name: 'Войти как покупателя' }))
+
+    await waitFor(() => expect(mocks.devLogin).toHaveBeenCalledWith('buyer'))
+    await waitFor(() => expect(screen.getByTestId('path').textContent).toBe('/cabinet'))
+    expect(useSessionStore.getState().status).toBe('authenticated')
+    expect(useSessionStore.getState().user?.email).toBe('demo-buyer@kindis.local')
+  })
+
+  it('клик по продавцу ведёт в кабинет продавца /cabinet/products', async () => {
+    vi.stubEnv('VITE_DEV_LOGIN', '1')
+    const user = userEvent.setup()
+    mocks.devLogin.mockResolvedValue({
+      id: 'u-dev',
+      email: 'demo-seller@kindis.local',
+      role: 'parent',
+    })
+    mocks.mergeWithSession.mockResolvedValue(undefined)
+
+    renderPage()
+
+    await user.click(screen.getByRole('button', { name: 'Войти как продавца' }))
+
+    await waitFor(() => expect(mocks.devLogin).toHaveBeenCalledWith('seller'))
+    await waitFor(() =>
+      expect(screen.getByTestId('path').textContent).toBe('/cabinet/products'),
+    )
+    expect(useSessionStore.getState().status).toBe('authenticated')
   })
 })

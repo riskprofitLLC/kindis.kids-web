@@ -63,7 +63,9 @@ describe('ProfileSettingsPage', () => {
     expect(screen.getByText('Доступность')).toBeTruthy()
     expect(screen.getByText('Адреса доставки')).toBeTruthy()
     expect(screen.getByText('Смена пароля')).toBeTruthy()
-    expect(screen.getByRole('button', { name: /Сохранить профиль parent@example.com/ })).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: /Сохранить профиль parent@example.com/ }),
+    ).toBeTruthy()
   })
 
   it('сохранение профиля обновляет пользователя в сессии', async () => {

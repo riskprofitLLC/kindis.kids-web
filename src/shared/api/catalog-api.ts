@@ -17,6 +17,14 @@ export interface SellerRef {
   hasDisability: boolean
 }
 
+// Тип медиа товара: бэкенд отдаёт kind у вложенного media.
+export type MediaKind = 'photo' | 'video'
+
+export interface ProductMedia {
+  id: string
+  kind: MediaKind
+}
+
 export interface ProductCard {
   id: string
   title: string
@@ -26,8 +34,8 @@ export interface ProductCard {
   createdAt: string
   category: CategoryRef | null
   childProfile: SellerRef | null
-  // id медиа для ссылки на чтение — резолвим через /media/:id/url.
-  photoMediaIds: string[]
+  // Медиа товара с типом — для ссылки на чтение резолвим через /media/:id/url.
+  media: ProductMedia[]
   // Место сделки：адрес и точка на карте. Бэкенд отдаёт，когда продавец заполнил.
   address?: string | null
   latitude?: number | null
@@ -83,7 +91,7 @@ export interface ProductDetail {
   createdAt: string
   category: CategoryRef | null
   childProfile: (SellerRef & { about: string | null; avatarMediaId: string | null }) | null
-  photoMediaIds: string[]
+  media: ProductMedia[]
   // Место сделки：адрес и точка на карте — когда продавец заполнил.
   address?: string | null
   latitude?: number | null
@@ -94,7 +102,7 @@ export interface ProductDetail {
 }
 
 // Сырой товар из выдачи каталога: медиа приходят вложенным в ProductMedia.
-interface RawProduct {
+export interface RawProduct {
   id: string
   title: string
   description: string | null
@@ -103,7 +111,7 @@ interface RawProduct {
   createdAt: string
   category: CategoryRef | null
   childProfile: SellerRef | null
-  media?: Array<{ sortOrder: number; media?: { id: string } | null }>
+  media?: Array<{ sortOrder: number; media?: { id: string; kind?: string } | null }>
   address?: string | null
   // Координаты бэкенд может отдать строкой (Decimal) — нормализуем в число.
   latitude?: number | string | null
@@ -120,12 +128,20 @@ function toCoord(value: number | string | null | undefined): number | null {
   return null
 }
 
-function toCard(raw: RawProduct): ProductCard {
-  const photos = (raw.media ?? [])
+// Видео отличаем явно, всё остальное считаем фото — бэкенд отдаёт только эти два типа.
+function toMediaKind(value: string | undefined): MediaKind {
+  return value === 'video' ? 'video' : 'photo'
+}
+
+export function toCard(raw: RawProduct): ProductCard {
+  const media = (raw.media ?? [])
     .slice()
     .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((row) => row.media?.id)
-    .filter((id): id is string => Boolean(id))
+    .flatMap((row) => {
+      const asset = row.media
+      if (!asset?.id) return []
+      return [{ id: asset.id, kind: toMediaKind(asset.kind) }]
+    })
 
   return {
     id: raw.id,
@@ -136,7 +152,7 @@ function toCard(raw: RawProduct): ProductCard {
     createdAt: raw.createdAt,
     category: raw.category ?? null,
     childProfile: raw.childProfile ?? null,
-    photoMediaIds: photos,
+    media,
     address: raw.address ?? null,
     latitude: toCoord(raw.latitude),
     longitude: toCoord(raw.longitude),
@@ -170,23 +186,20 @@ export interface CategoryNode {
 
 // Подсказка для строки поиска: товар + продавец.
 export interface CatalogSuggestion {
-id:
-string ;title:
-string ;priceKopecks :
-number ;sellerSlug :
-string ;sellerName :
-string ;
+  id: string
+  title: string
+  priceKopecks: number
+  sellerSlug: string
+  sellerName: string
 }
 
 export const catalogApi = {
-async suggestions(query :
-string ):
-Promise <CatalogSuggestion[]> {
-const { data } = await api.get <CatalogSuggestion[]>('/catalog/suggestions',{
-params : { query },
-});
-return data;
-},
+  async suggestions(query: string): Promise<CatalogSuggestion[]> {
+    const { data } = await api.get<CatalogSuggestion[]>('/catalog/suggestions', {
+      params: { query },
+    })
+    return data
+  },
 
   async categories(): Promise<CategoryNode[]> {
     const { data } = await api.get<CategoryNode[]>('/categories')

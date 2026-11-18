@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { type Review,reviewsApi } from '@/shared/api/reviews-api'
+import { type Review, reviewsApi } from '@/shared/api/reviews-api'
 
 // Отзывы товара：список и средний рейтинг.
 export function useProductReviews(productId: string | undefined) {

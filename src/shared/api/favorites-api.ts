@@ -1,18 +1,17 @@
+import type { ProductCard, RawProduct } from '@/shared/api/catalog-api'
+import { toCard } from '@/shared/api/catalog-api'
 import { api } from '@/shared/api/client'
 
 // Избранное покупателя.
 
-export interface FavoriteProduct {
-  id: string
-  title: string
-  priceKopecks: number
-  stock: number
-}
+// Товар из избранного — такой же, как карточка каталога: с фото, продавцом и категорией.
+export type FavoriteProduct = ProductCard
 
 // Бэкенд отдаёт запись избранного с вложенным товаром — разворачиваем её плоским списком.
 interface FavoriteRow {
   productId: string
-  product?: FavoriteProduct | null
+  // Сырой товар с бэкенда — приводим к карточке общим маппером каталога.
+  product?: RawProduct | null
 }
 
 export const favoritesApi = {
@@ -20,7 +19,8 @@ export const favoritesApi = {
     const { data } = await api.get<FavoriteRow[]>('/favorites')
     return (data ?? [])
       .map((row) => row.product)
-      .filter((product): product is FavoriteProduct => Boolean(product?.id))
+      .filter((product): product is RawProduct => Boolean(product?.id))
+      .map(toCard)
   },
 
   async add(productId: string): Promise<void> {

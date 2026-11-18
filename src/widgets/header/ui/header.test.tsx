@@ -105,6 +105,10 @@ describe('Header', () => {
     await user.type(screen.getByRole('combobox', { name: 'Поиск по каталогу' }), 'серьги')
     await user.click(screen.getByRole('button', { name: 'Найти' }))
 
-    await waitFor(() => expect(screen.getByTestId('path').textContent).toBe('/search?q=%D1%81%D0%B5%D1%80%D1%8C%D0%B3%D0%B8'))
+    await waitFor(() =>
+      expect(screen.getByTestId('path').textContent).toBe(
+        '/search?q=%D1%81%D0%B5%D1%80%D1%8C%D0%B3%D0%B8',
+      ),
+    )
   })
 })

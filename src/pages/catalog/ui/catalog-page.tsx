@@ -24,10 +24,7 @@ export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
-  const state = useMemo(
-    () => parseCatalogState(Object.fromEntries(searchParams)),
-    [searchParams],
-  )
+  const state = useMemo(() => parseCatalogState(Object.fromEntries(searchParams)), [searchParams])
   const filters = state.filters
 
   const search = useMemo<Omit<CatalogSearchParams, 'cursor'>>(
@@ -164,9 +161,7 @@ export default function CatalogPage() {
           {(items.length > 0 || catalog.isPending) && (
             <>
               {/* Карта с пинами городов выдачи — ленивый чанк */}
-              <Suspense
-                fallback={<Skeleton className="h-64 w-full rounded-card lg:h-80" />}
-              >
+              <Suspense fallback={<Skeleton className="h-64 w-full rounded-card lg:h-80" />}>
                 <CatalogMap products={items} />
               </Suspense>
               <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">

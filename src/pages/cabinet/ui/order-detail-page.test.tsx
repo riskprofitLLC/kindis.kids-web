@@ -43,9 +43,7 @@ const order = {
   status: 'created',
   totalKopecks: 65_000,
   createdAt: '2026-11-01T10:00:00Z',
-  items: [
-    { id: 'i-1', titleSnapshot: 'Серьги «Лаванда»', quantity: 2, priceKopecks: 32_500 },
-  ],
+  items: [{ id: 'i-1', titleSnapshot: 'Серьги «Лаванда»', quantity: 2, priceKopecks: 32_500 }],
 }
 
 describe('OrderDetailPage', () => {
@@ -90,9 +88,7 @@ describe('OrderDetailPage', () => {
     await user.type(screen.getByLabelText('Причина отмены'), 'передумал')
     await user.click(screen.getByRole('button', { name: 'Отменить заказ' }))
 
-    await waitFor(() =>
-      expect(mocks.cancel).toHaveBeenCalledWith('o-1', 'передумал'),
-    )
+    await waitFor(() => expect(mocks.cancel).toHaveBeenCalledWith('o-1', 'передумал'))
   })
 
   it('пустая причина отмены уходит как undefined', async () => {

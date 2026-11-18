@@ -43,6 +43,8 @@ interface ProductCardProps {
 // крупная цена акцентом и мета-строка «город · бейдж».
 export function ProductCard({ product, highlight }: ProductCardProps) {
   const seller = product.childProfile
+  // Превью карточки — первое фото: видео обложкой не подходит.
+  const previewMediaId = product.media.find((item) => item.kind === 'photo')?.id
 
   return (
     <article className="relative flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface transition-shadow duration-200 hover:shadow-lift focus-within:shadow-lift">
@@ -50,7 +52,7 @@ export function ProductCard({ product, highlight }: ProductCardProps) {
         to={routes.product(product.id)}
         className="group relative block overflow-hidden bg-surface-muted"
       >
-        <CardPhoto mediaId={product.photoMediaIds[0]} title={product.title} />
+        <CardPhoto mediaId={previewMediaId} title={product.title} />
       </Link>
 
       {/* Сердце избранного в углу фото — как в ленте Avito */}

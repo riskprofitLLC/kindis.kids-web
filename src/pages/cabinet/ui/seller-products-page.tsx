@@ -59,8 +59,7 @@ export default function SellerProductsPage() {
       (products.data ?? []).filter(
         (product) =>
           (!status || product.status === status) &&
-          (!search.trim() ||
-            product.title.toLowerCase().includes(search.trim().toLowerCase())),
+          (!search.trim() || product.title.toLowerCase().includes(search.trim().toLowerCase())),
       ),
     [products.data, status, search],
   )

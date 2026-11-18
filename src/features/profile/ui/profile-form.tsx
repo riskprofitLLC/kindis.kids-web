@@ -56,7 +56,11 @@ export function ProfileForm({ user, onSaved }: ProfileFormProps) {
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={(event) => void handleSubmit(onSubmit)(event)} noValidate>
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={(event) => void handleSubmit(onSubmit)(event)}
+      noValidate
+    >
       <p className="text-sm text-text-muted">
         Email для входа: <span className="text-text">{user.email}</span>
       </p>

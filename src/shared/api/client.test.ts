@@ -41,13 +41,19 @@ function ok(config: Config, data: unknown): AxiosResponse {
 }
 
 function fail(config: Config, status: number, data?: unknown): never {
-  throw new AxiosError('boom', 'ERR_BAD_RESPONSE', config, {}, {
-    data,
-    status,
-    statusText: String(status),
-    headers: new AxiosHeaders(),
+  throw new AxiosError(
+    'boom',
+    'ERR_BAD_RESPONSE',
     config,
-  })
+    {},
+    {
+      data,
+      status,
+      statusText: String(status),
+      headers: new AxiosHeaders(),
+      config,
+    },
+  )
 }
 
 beforeEach(() => {
@@ -103,8 +109,7 @@ describe('response interceptor — конверт бэкенда', () => {
 
 describe('response interceptor — ошибки', () => {
   it('сообщение и код сервера попадают в ApiError', async () => {
-    responder = (config) =>
-      fail(config, 409, { message: 'Товар закончился', code: 'OUT_OF_STOCK' })
+    responder = (config) => fail(config, 409, { message: 'Товар закончился', code: 'OUT_OF_STOCK' })
 
     const error = await api.get('/cart').catch((caught) => caught)
 
@@ -115,8 +120,7 @@ describe('response interceptor — ошибки', () => {
   })
 
   it('поля валидации пробрасываются насквозь', async () => {
-    responder = (config) =>
-      fail(config, 422, { message: 'Валидация', fields: { email: 'Занят' } })
+    responder = (config) => fail(config, 422, { message: 'Валидация', fields: { email: 'Занят' } })
 
     const error = await api.post('/auth/register').catch((caught) => caught)
 

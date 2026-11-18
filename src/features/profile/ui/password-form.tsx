@@ -46,7 +46,11 @@ export function PasswordForm() {
   }
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={(event) => void handleSubmit(onSubmit)(event)} noValidate>
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={(event) => void handleSubmit(onSubmit)(event)}
+      noValidate
+    >
       <div aria-live="polite">
         {saved && <p className="text-sm text-success">Пароль изменён. Другие сессии завершены.</p>}
         {error && <p className="text-sm text-danger">{error}</p>}

@@ -15,7 +15,12 @@ vi.mock('@/shared/api/admin-api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/api/admin-api')>()
   return {
     ...actual,
-    adminApi: { ...actual.adminApi, profiles: mocks.profiles, products: mocks.products, act: mocks.act },
+    adminApi: {
+      ...actual.adminApi,
+      profiles: mocks.profiles,
+      products: mocks.products,
+      act: mocks.act,
+    },
   }
 })
 

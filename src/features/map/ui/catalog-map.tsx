@@ -89,7 +89,9 @@ export default function CatalogMap({ products, className }: CatalogMapProps) {
   return (
     <div
       ref={containerRef}
-      className={className ?? 'h-64 w-full overflow-hidden rounded-card border border-border lg:h-80'}
+      className={
+        className ?? 'h-64 w-full overflow-hidden rounded-card border border-border lg:h-80'
+      }
       aria-label="Карта поделок"
       role="region"
     />

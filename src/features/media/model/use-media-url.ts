@@ -29,13 +29,13 @@ async function resolveUrl(mediaId: string): Promise<string> {
 export function useMediaUrl(mediaId: string | null | undefined): string | null {
   const [activeMediaId, setActiveMediaId] = useState(mediaId)
   const [url, setUrl] = useState<string | null>(() =>
-    mediaId ? cache.get(mediaId) ?? null : null,
+    mediaId ? (cache.get(mediaId) ?? null) : null,
   )
 
   // Смена медиа во время рендера — сбрасываем состояние (документированный паттерн).
   if (activeMediaId !== mediaId) {
     setActiveMediaId(mediaId)
-    setUrl(mediaId ? cache.get(mediaId) ?? null : null)
+    setUrl(mediaId ? (cache.get(mediaId) ?? null) : null)
   }
 
   useEffect(() => {

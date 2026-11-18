@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
-import { useLogin } from '@/features/auth/model/use-auth'
+import { useDevLogin, useLogin } from '@/features/auth/model/use-auth'
 import { isApiError } from '@/shared/api/errors'
 import { routes } from '@/shared/config/routes'
 import { Alert } from '@/shared/ui/alert/alert'
@@ -22,9 +22,12 @@ type FormValues = z.infer<typeof schema>
 
 // Вход родителя: центрированная карточка, поля столбиком, кнопка на всю ширину.
 export default function LoginPage() {
+  // ВРЕМЕННО: dev-кнопки видны только при VITE_DEV_LOGIN=1.
+  const devLoginEnabled = import.meta.env.VITE_DEV_LOGIN === '1'
   const navigate = useNavigate()
   const location = useLocation()
   const login = useLogin()
+  const devLogin = useDevLogin()
   const [formError, setFormError] = useState<string | null>(null)
 
   const from = (location.state as { from?: string } | null)?.from
@@ -46,6 +49,19 @@ export default function LoginPage() {
         }
         setFormError(error.message)
       },
+    })
+  }
+
+  // Клик по dev-кнопке: вход под демо-аккаунт и переход в соответствующий кабинет.
+  const onDevLogin = (role: 'buyer' | 'seller') => {
+    setFormError(null)
+    devLogin.mutate(role, {
+      onSuccess: () =>
+        void navigate(
+          role === 'buyer' ? routes.cabinet : routes.cabinetProducts,
+          { replace: true },
+        ),
+      onError: (error) => setFormError(error.message),
     })
   }
 
@@ -89,15 +105,44 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={login.isPending}>
               {login.isPending ? 'Входим…' : 'Войти'}
             </Button>
+
+            {devLoginEnabled && (
+              <div className="flex flex-col gap-2 border-t border-border pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  disabled={devLogin.isPending}
+                  onClick={() => onDevLogin('buyer')}
+                >
+                  Войти как покупателя
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  disabled={devLogin.isPending}
+                  onClick={() => onDevLogin('seller')}
+                >
+                  Войти как продавца
+                </Button>
+              </div>
+            )}
           </form>
 
           <div className="mt-4 flex flex-col gap-2 text-sm">
-            <Link className="inline-flex min-h-[44px] items-center text-primary hover:underline" to={routes.forgotPassword}>
+            <Link
+              className="inline-flex min-h-[44px] items-center text-primary hover:underline"
+              to={routes.forgotPassword}
+            >
               Забыли пароль?
             </Link>
             <p className="text-text-muted">
               Нет аккаунта?{' '}
-              <Link className="inline-flex min-h-[44px] items-center text-primary hover:underline" to={routes.register}>
+              <Link
+                className="inline-flex min-h-[44px] items-center text-primary hover:underline"
+                to={routes.register}
+              >
                 Зарегистрироваться
               </Link>
             </p>

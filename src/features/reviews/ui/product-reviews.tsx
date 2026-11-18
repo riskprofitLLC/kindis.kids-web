@@ -38,8 +38,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
   // Свой отзыв в списке — значит，по позиции заказа второй отзыв не оставить.
   const alreadyReviewed = (reviews.data ?? []).some((review) => review.author?.id === userId)
 
-  const canReview =
-    !submitted && !alreadyReviewed && (reviewable.data ?? []).length > 0
+  const canReview = !submitted && !alreadyReviewed && (reviewable.data ?? []).length > 0
 
   return (
     <section className="flex flex-col gap-4">

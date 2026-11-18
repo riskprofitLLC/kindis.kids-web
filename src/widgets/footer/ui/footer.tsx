@@ -7,10 +7,16 @@ export function Footer() {
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-text-muted">
         <nav aria-label="Подвал" className="flex gap-4">
-          <Link to={routes.catalog} className="inline-flex min-h-[44px] items-center hover:text-text">
+          <Link
+            to={routes.catalog}
+            className="inline-flex min-h-[44px] items-center hover:text-text"
+          >
             Каталог
           </Link>
-          <Link to={routes.consent} className="inline-flex min-h-[44px] items-center hover:text-text">
+          <Link
+            to={routes.consent}
+            className="inline-flex min-h-[44px] items-center hover:text-text"
+          >
             Согласие на обработку данных
           </Link>
         </nav>

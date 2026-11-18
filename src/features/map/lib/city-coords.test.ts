@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
-import { CITY_COORDS, cityCoords, nearestCity, POPULAR_CITIES } from '@/features/map/lib/city-coords'
+import {
+  CITY_COORDS,
+  cityCoords,
+  nearestCity,
+  POPULAR_CITIES,
+} from '@/features/map/lib/city-coords'
 
 describe('CITY_COORDS', () => {
   it('содержит города из сид-данных каталога', () => {

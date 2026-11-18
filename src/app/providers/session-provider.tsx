@@ -1,4 +1,4 @@
-import { type ReactNode,useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 import { useSessionStore } from '@/entities/session/model/session-store'
 import { authApi } from '@/shared/api/auth-api'

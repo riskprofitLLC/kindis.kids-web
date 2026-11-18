@@ -8,10 +8,7 @@ const NOMINATIM_URL = import.meta.env.DEV
 
 const TIMEOUT_MS = 8000
 
-export async function reverseGeocode(
-  latitude: number,
-  longitude: number,
-): Promise<string | null> {
+export async function reverseGeocode(latitude: number, longitude: number): Promise<string | null> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
 

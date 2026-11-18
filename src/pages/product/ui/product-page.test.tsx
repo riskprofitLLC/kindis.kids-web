@@ -89,7 +89,7 @@ const detail = {
     about: null,
     avatarMediaId: null,
   },
-  photoMediaIds: [],
+  media: [],
   specs: [],
   rating: null,
   reviewsCount: 0,
@@ -107,30 +107,30 @@ describe('ProductPage', () => {
     mocks.forProduct.mockResolvedValue([])
     mocks.productRating.mockResolvedValue({ average: 0, count: 0 })
 
-renderPage()
+    renderPage()
 
-await waitFor(() =>
-expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
-)
-expect(screen.getByText('Сочи，ул. Ленина，10')).toBeTruthy()
-expect((await screen.findByTestId('mini-map')).textContent).toBe('43.6:39.7')
-expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
-// Форма отзыва гостю недоступна — у него нет заказов.
-expect(screen.queryByRole('button', { name: 'Опубликовать отзыв' })).toBeNull()
-})
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
+    )
+    expect(screen.getByText('Сочи，ул. Ленина，10')).toBeTruthy()
+    expect((await screen.findByTestId('mini-map')).textContent).toBe('43.6:39.7')
+    expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
+    // Форма отзыва гостю недоступна — у него нет заказов.
+    expect(screen.queryByRole('button', { name: 'Опубликовать отзыв' })).toBeNull()
+  })
 
-it('без координат блока места сделки нет', async () => {
-mocks.product.mockResolvedValue(detail)
-mocks.similar.mockResolvedValue([])
-mocks.forProduct.mockResolvedValue([])
-mocks.productRating.mockResolvedValue({ average: 0, count: 0 })
+  it('без координат блока места сделки нет', async () => {
+    mocks.product.mockResolvedValue(detail)
+    mocks.similar.mockResolvedValue([])
+    mocks.forProduct.mockResolvedValue([])
+    mocks.productRating.mockResolvedValue({ average: 0, count: 0 })
 
-renderPage()
+    renderPage()
 
-await waitFor(() =>
-expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
-)
-expect(screen.queryByText('Место сделки')).toBeNull()
-expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
-})
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
+    )
+    expect(screen.queryByText('Место сделки')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
+  })
 })

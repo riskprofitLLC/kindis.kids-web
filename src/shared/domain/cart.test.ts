@@ -56,8 +56,6 @@ describe('findStockConflicts', () => {
       item({ id: 'b', productId: 'p-b', quantity: 1, stock: 5 }),
     ])
 
-    expect(conflicts).toEqual([
-      { productId: 'p-a', title: 'Шар', requested: 4, available: 2 },
-    ])
+    expect(conflicts).toEqual([{ productId: 'p-a', title: 'Шар', requested: 4, available: 2 }])
   })
 })

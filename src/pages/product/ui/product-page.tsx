@@ -71,7 +71,7 @@ export default function ProductPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Галерея с сердешком избранного в углу фото */}
         <div className="relative">
-          <ProductGallery title={item.title} photoMediaIds={item.photoMediaIds} />
+          <ProductGallery title={item.title} media={item.media} />
           <FavoriteButton productId={item.id} className="absolute right-3 top-3" />
         </div>
 

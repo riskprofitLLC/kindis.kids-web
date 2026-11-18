@@ -26,8 +26,7 @@ export default function AdminAttributesPage() {
 
   const remove = useMutation({
     mutationFn: (id: string) => adminApi.deleteAttribute(id),
-    onSuccess: () =>
-      void queryClient.invalidateQueries({ queryKey: ['admin-attributes'] }),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ['admin-attributes'] }),
   })
 
   const rows = (attributes.data ?? []) as Array<{
@@ -79,12 +78,7 @@ export default function AdminAttributesPage() {
               {row.name}
               {row.unit ? `，${row.unit}` : ''}
             </span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => remove.mutate(row.id)}
-            >
+            <Button type="button" variant="ghost" size="sm" onClick={() => remove.mutate(row.id)}>
               Удалить
             </Button>
           </li>

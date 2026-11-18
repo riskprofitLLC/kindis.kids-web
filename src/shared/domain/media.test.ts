@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  formatDuration,
-  formatFileSize,
-  MEDIA_LIMITS,
-  validateMediaFile,
-} from './media'
+import { formatDuration, formatFileSize, MEDIA_LIMITS, validateMediaFile } from './media'
 
 describe('validateMediaFile', () => {
   it('пропускает фото допустимого формата и размера', () => {

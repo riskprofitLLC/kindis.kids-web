@@ -16,9 +16,7 @@ describe('formatPrice', () => {
 
 describe('highlightParts', () => {
   it('без запроса возвращает один обычный фрагмент', () => {
-    expect(highlightParts('Бусы из бисера', '')).toEqual([
-      { text: 'Бусы из бисера', match: false },
-    ])
+    expect(highlightParts('Бусы из бисера', '')).toEqual([{ text: 'Бусы из бисера', match: false }])
   })
 
   it('находит совпадение в начале', () => {

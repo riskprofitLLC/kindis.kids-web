@@ -31,7 +31,7 @@ function product(overrides: Partial<ProductCardModel> = {}): ProductCardModel {
       city: 'Сочи',
       hasDisability: false,
     },
-    photoMediaIds: [],
+    media: [],
     ...overrides,
   }
 }
@@ -72,7 +72,7 @@ describe('ProductCard', () => {
   })
 
   it('без фото показывает заглушку', () => {
-    renderCard(product({ photoMediaIds: [] }))
+    renderCard(product({ media: [] }))
 
     expect(screen.getByText('Фото нет')).toBeTruthy()
   })

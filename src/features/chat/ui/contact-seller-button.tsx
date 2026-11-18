@@ -55,8 +55,8 @@ export function ContactSellerButton({ productId, sellerName }: ContactSellerButt
         {!orders.isPending && !order && (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-text-muted">
-              Диалог с продавцом открывается по заказу. Добавьте товар в корзину и оформите
-              заказ — чат появится здесь.
+              Диалог с продавцом открывается по заказу. Добавьте товар в корзину и оформите заказ —
+              чат появится здесь.
             </p>
             <Button asChild>
               <Link to={routes.catalog}>Открыть каталог</Link>

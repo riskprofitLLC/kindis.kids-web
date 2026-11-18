@@ -13,7 +13,14 @@ import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
 // Заказы продавца：фильтр по статусу，переходы，трек-номер，отмена с причиной.
-const STATUSES = ['created', 'confirmed', 'assembling', 'shipped', 'delivered', 'cancelled'] as const
+const STATUSES = [
+  'created',
+  'confirmed',
+  'assembling',
+  'shipped',
+  'delivered',
+  'cancelled',
+] as const
 
 // Допустимые следующие статусы — зеркалят transitions на бэкенде.
 const NEXT_STATUS: Record<string, string[]> = {
@@ -117,9 +124,7 @@ function SellerOrderRow({ order, pending, onChange }: SellerOrderRowProps) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="text-sm text-text-muted">{formatDate(order.createdAt)}</span>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-text">
-            {formatPrice(order.totalKopecks)}
-          </span>
+          <span className="text-sm font-medium text-text">{formatPrice(order.totalKopecks)}</span>
           <Badge variant={order.status === 'cancelled' ? 'danger' : 'secondary'}>
             {ORDER_STATUS_LABELS[order.status]}
           </Badge>

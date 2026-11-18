@@ -76,9 +76,7 @@ describe('useCancelOrder', () => {
     const { result } = renderHook(() => useCancelOrder(), { wrapper })
 
     await act(async () => {
-      await expect(
-        result.current.mutateAsync({ id: 'o-1' }),
-      ).rejects.toThrow('Статус не позволяет')
+      await expect(result.current.mutateAsync({ id: 'o-1' })).rejects.toThrow('Статус не позволяет')
     })
   })
 })

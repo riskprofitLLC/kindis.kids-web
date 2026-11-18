@@ -4,7 +4,11 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { useCreateReview, useProductReviews, useSellerReviews } from '@/features/reviews/model/use-reviews'
+import {
+  useCreateReview,
+  useProductReviews,
+  useSellerReviews,
+} from '@/features/reviews/model/use-reviews'
 
 const forProduct = vi.fn()
 const productRating = vi.fn()
@@ -99,9 +103,9 @@ describe('useCreateReview', () => {
     const { result } = renderHook(() => useCreateReview(onDone), { wrapper })
 
     await act(async () => {
-      await expect(
-        result.current.mutateAsync({ orderItemId: 'oi-1', rating: 5 }),
-      ).rejects.toThrow('Позиция не завершена')
+      await expect(result.current.mutateAsync({ orderItemId: 'oi-1', rating: 5 })).rejects.toThrow(
+        'Позиция не завершена',
+      )
     })
 
     expect(onDone).not.toHaveBeenCalled()

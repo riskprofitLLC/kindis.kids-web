@@ -21,7 +21,9 @@ describe('getGuestSessionId', () => {
   })
 
   it('идентификатор выглядит как uuid', () => {
-    expect(getGuestSessionId()).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+    expect(getGuestSessionId()).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+    )
   })
 
   it('без crypto.randomUUID падает на резервный генератор', () => {

@@ -22,8 +22,7 @@ export function useCancelOrder() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
-      ordersApi.cancel(id, reason),
+    mutationFn: ({ id, reason }: { id: string; reason?: string }) => ordersApi.cancel(id, reason),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['my-orders'] })
       void queryClient.invalidateQueries({ queryKey: ['order'] })

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { nearestCity,POPULAR_CITIES } from '@/features/map/lib/city-coords'
+import { nearestCity, POPULAR_CITIES } from '@/features/map/lib/city-coords'
 
 interface RegionSelectProps {
   value: string

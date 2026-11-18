@@ -29,10 +29,7 @@ export function ProductLocation({ address, latitude, longitude }: ProductLocatio
 
       {hasPoint ? (
         <Suspense fallback={<Skeleton className="h-52 w-full rounded-card" />}>
-          <ProductLocationMap
-            latitude={latitude}
-            longitude={longitude}
-          />
+          <ProductLocationMap latitude={latitude} longitude={longitude} />
         </Suspense>
       ) : (
         <p className="text-xs text-text-muted">Точку на карте продавец не указал.</p>

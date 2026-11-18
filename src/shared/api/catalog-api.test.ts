@@ -37,20 +37,20 @@ describe('catalogApi.search', () => {
     expect(get).toHaveBeenCalledWith('/catalog', {
       params: { query: 'шкатулка', sort: 'price_asc' },
     })
-    expect(page.items[0]).toMatchObject({ id: 'p-1', title: 'Шкатулка', photoMediaIds: [] })
+    expect(page.items[0]).toMatchObject({ id: 'p-1', title: 'Шкатулка', media: [] })
     expect(page.nextCursor).toBe('cursor-2')
     expect(page.total).toBe(7)
   })
 
-  it('фото сортируются по sortOrder, пустые отбрасываются', async () => {
+  it('медиа сортируются по sortOrder с типом, пустые отбрасываются', async () => {
     get.mockResolvedValueOnce({
       data: {
         items: [
           rawProduct({
             media: [
-              { sortOrder: 2, media: { id: 'm-2' } },
+              { sortOrder: 2, media: { id: 'm-2', kind: 'video' } },
               { sortOrder: 1, media: null },
-              { sortOrder: 3, media: { id: 'm-3' } },
+              { sortOrder: 3, media: { id: 'm-3', kind: 'photo' } },
             ],
           }),
         ],
@@ -61,7 +61,10 @@ describe('catalogApi.search', () => {
 
     const page = await catalogApi.search({})
 
-    expect(page.items[0].photoMediaIds).toEqual(['m-2', 'm-3'])
+    expect(page.items[0].media).toEqual([
+      { id: 'm-2', kind: 'video' },
+      { id: 'm-3', kind: 'photo' },
+    ])
   })
 
   it('пустая выдача не ломает маппинг', async () => {

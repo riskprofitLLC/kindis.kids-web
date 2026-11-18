@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import {
- CONSENT_DOCUMENT_DATE,
- CONSENT_DOCUMENT_VERSION,
- consentParagraphs,
+  CONSENT_DOCUMENT_DATE,
+  CONSENT_DOCUMENT_VERSION,
+  consentParagraphs,
 } from '@/shared/domain/consent'
 
 describe('согласие на спецданные', () => {

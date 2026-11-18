@@ -7,3 +7,6 @@ coverage/
 .env
 .env.local
 .DS_Store
+
+# Временный env для режима verify (vite --mode verify)
+.env.verify

@@ -156,8 +156,7 @@ export function CatalogFiltersPanel({
             onChange={(event) =>
               onChange({
                 ...filters,
-                priceToKopecks:
-                  event.target.value === '' ? null : Number(event.target.value) * 100,
+                priceToKopecks: event.target.value === '' ? null : Number(event.target.value) * 100,
               })
             }
           />

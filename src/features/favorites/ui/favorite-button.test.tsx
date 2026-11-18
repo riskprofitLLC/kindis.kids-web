@@ -104,9 +104,7 @@ describe('FavoriteButton', () => {
 
     renderButton()
 
-    const button = await waitFor(() =>
-      screen.getByRole('button', { name: 'Убрать из избранного' }),
-    )
+    const button = await waitFor(() => screen.getByRole('button', { name: 'Убрать из избранного' }))
     expect(button.getAttribute('aria-pressed')).toBe('true')
     await user.click(button)
 

@@ -18,9 +18,9 @@ describe('Footer', () => {
     const nav = screen.getByRole('navigation', { name: 'Подвал' })
     expect(nav).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Каталог' }).getAttribute('href')).toBe('/catalog')
-    expect(screen.getByRole('link', { name: 'Согласие на обработку данных' }).getAttribute('href')).toBe(
-      '/consent',
-    )
+    expect(
+      screen.getByRole('link', { name: 'Согласие на обработку данных' }).getAttribute('href'),
+    ).toBe('/consent')
   })
 
   it('показывает копирайт проекта', () => {
