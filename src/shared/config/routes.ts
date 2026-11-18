@@ -17,6 +17,7 @@ export const routes = {
   cabinetOrders: '/cabinet/orders',
   cabinetOrderDetail: (orderId: string) => `/cabinet/orders/${orderId}`,
   cabinetFavorites: '/cabinet/favorites',
+  cabinetChildProfile: '/cabinet/child-profile',
   cabinetProfile: '/cabinet/profile',
   cabinetProducts: '/cabinet/products',
   cabinetProductNew: '/cabinet/products/new',

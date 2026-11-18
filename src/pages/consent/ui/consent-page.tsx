@@ -71,7 +71,7 @@ export default function ConsentPage() {
 
       {authenticated && (
         <Button asChild variant="outline">
-          <Link to={`${routes.cabinet}/child-profile`}>Перейти к профилю ребёнка</Link>
+          <Link to={routes.cabinetChildProfile}>Перейти к профилю ребёнка</Link>
         </Button>
       )}
     </div>
