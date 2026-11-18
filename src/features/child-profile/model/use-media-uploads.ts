@@ -20,21 +20,37 @@ export interface UploadTask {
   mediaId?: string
 }
 
-// Загрузка одного файла: превью → проверка → хранилище → фиксация.
+interface PendingUpload {
+  file: File
+  durationSeconds?: number
+}
+
+// Загрузка одного файла: проверка → превью → метаданные → хранилище → фиксация.
 export function useMediaUploads(ownerId: string, kind: MediaKind) {
   const [tasks, setTasks] = useState<UploadTask[]>([])
   const controllers = useRef(new Map<string, AbortController>())
-  const files = useRef(new Map<string, File>())
+  // Файл и длительность в ref — retry работает с актуальным состоянием, а не с замыканием рендера.
+  const pending = useRef(new Map<string, PendingUpload>())
   const queryClient = useQueryClient()
 
   const patch = useCallback((id: string, values: Partial<UploadTask>) => {
     setTasks((current) => current.map((task) => (task.id === id ? { ...task, ...values } : task)))
   }, [])
 
+  // Превью живёт до терминального статуса — дальше ссылку освобождаем.
+  const releasePreview = useCallback((id: string) => {
+    setTasks((current) => {
+      const task = current.find((item) => item.id === id)
+      if (!task?.previewUrl) return current
+      URL.revokeObjectURL(task.previewUrl)
+      return current.map((item) => (item.id === id ? { ...item, previewUrl: undefined } : item))
+    })
+  }, [])
+
   const remove = useCallback((id: string) => {
     controllers.current.get(id)?.abort()
     controllers.current.delete(id)
-    files.current.delete(id)
+    pending.current.delete(id)
     setTasks((current) => {
       const task = current.find((item) => item.id === id)
       if (task?.previewUrl) URL.revokeObjectURL(task.previewUrl)
@@ -46,9 +62,10 @@ export function useMediaUploads(ownerId: string, kind: MediaKind) {
     async (id: string, file: File, durationSeconds?: number) => {
       const controller = new AbortController()
       controllers.current.set(id, controller)
-      patch(id, { status: 'uploading', percent: 0, error: undefined })
 
       try {
+        patch(id, { status: 'uploading', percent: 0 })
+
         const ticket = await mediaApi.requestUploadUrl({
           ownerType: 'child_profile',
           ownerId,
@@ -68,32 +85,50 @@ export function useMediaUploads(ownerId: string, kind: MediaKind) {
         patch(id, { status: 'completing', percent: 100 })
 
         // Длительность уходит на сервер — он проверяет лимит и ставит сжатие в очередь.
-        const asset = await mediaApi.completeUpload(ticket.mediaId, {
-          durationSeconds,
-        })
+        const asset = await mediaApi.completeUpload(ticket.mediaId, { durationSeconds })
         patch(id, { status: 'done', mediaId: asset.id })
+        releasePreview(id)
         void queryClient.invalidateQueries({ queryKey: profileMediaKey(ownerId) })
       } catch (error) {
         if (controller.signal.aborted) {
           patch(id, { status: 'canceled' })
+          releasePreview(id)
           return
         }
         patch(id, {
           status: 'error',
           error: error instanceof Error ? error.message : 'Не удалось загрузить файл',
         })
+        releasePreview(id)
       } finally {
         controllers.current.delete(id)
       }
     },
-    [ownerId, kind, patch, queryClient],
+    [ownerId, kind, patch, releasePreview, queryClient],
   )
 
   const start = useCallback(
     async (file: File) => {
+      // Формат и размер проверяем первыми — невалидный файл не должен выглядеть загружаемым.
+      const validation = validateMediaFile(kind, file)
+      if (!validation.ok) {
+        setTasks((current) => [
+          ...current,
+          {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            fileName: file.name,
+            kind,
+            sizeBytes: file.size,
+            status: 'error',
+            percent: 0,
+            error: validation.message,
+          },
+        ])
+        return
+      }
+
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
       const previewUrl = URL.createObjectURL(file)
-      files.current.set(id, file)
 
       let durationSeconds: number | undefined
 
@@ -105,32 +140,40 @@ export function useMediaUploads(ownerId: string, kind: MediaKind) {
         }
       }
 
-      const task: UploadTask = {
-        id,
-        fileName: file.name,
-        kind,
-        sizeBytes: file.size,
-        status: 'uploading',
-        percent: 0,
-        previewUrl,
-        durationSeconds,
-      }
-      setTasks((current) => [...current, task])
-
-      const validation = validateMediaFile(kind, file)
-      if (!validation.ok) {
-        patch(id, { status: 'error', error: validation.message })
-        return
-      }
+      pending.current.set(id, { file, durationSeconds })
 
       // Та же проверка, что на сервере: файл дольше лимита он удалит.
       if (durationSeconds !== undefined && durationSeconds > MEDIA_LIMITS.maxVideoSeconds) {
-        patch(id, {
-          status: 'error',
-          error: `Видео длиннее ${MEDIA_LIMITS.maxVideoSeconds} секунд`,
-        })
+        URL.revokeObjectURL(previewUrl)
+        setTasks((current) => [
+          ...current,
+          {
+            id,
+            fileName: file.name,
+            kind,
+            sizeBytes: file.size,
+            status: 'error',
+            percent: 0,
+            error: `Видео длиннее ${MEDIA_LIMITS.maxVideoSeconds} секунд`,
+            durationSeconds,
+          },
+        ])
         return
       }
+
+      setTasks((current) => [
+        ...current,
+        {
+          id,
+          fileName: file.name,
+          kind,
+          sizeBytes: file.size,
+          status: 'uploading',
+          percent: 0,
+          previewUrl,
+          durationSeconds,
+        },
+      ])
 
       if (kind === 'video') {
         try {
@@ -148,21 +191,37 @@ export function useMediaUploads(ownerId: string, kind: MediaKind) {
 
   const retry = useCallback(
     (id: string) => {
-      const file = files.current.get(id)
-      if (!file) return
+      // Берём файл и длительность из ref — замыкание могло остаться от прошлого рендера.
+      const entry = pending.current.get(id)
+      if (!entry) return
 
-      const task = tasks.find((item) => item.id === id)
-      void upload(id, file, task?.durationSeconds)
+      // Превью освобождалось на терминальном статусе — пересоздаём для повтора.
+      setTasks((current) =>
+        current.map((task) =>
+          task.id === id
+            ? {
+                ...task,
+                status: 'uploading',
+                percent: 0,
+                error: undefined,
+                previewUrl: URL.createObjectURL(entry.file),
+              }
+            : task,
+        ),
+      )
+
+      void upload(id, entry.file, entry.durationSeconds)
     },
-    [tasks, upload],
+    [upload],
   )
 
   const cancel = useCallback(
     (id: string) => {
       controllers.current.get(id)?.abort()
       patch(id, { status: 'canceled' })
+      releasePreview(id)
     },
-    [patch],
+    [patch, releasePreview],
   )
 
   return { tasks, start, cancel, retry, remove }
