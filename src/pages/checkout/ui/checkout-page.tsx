@@ -75,8 +75,7 @@ export default function CheckoutPage() {
         <div className="rounded-card border border-border p-6">
           <h1 className="text-xl font-semibold text-text">Заказ оформлен</h1>
           <p className="mt-2 text-sm text-text-muted">
-            Номер заказа:
-            <span className="font-medium text-text">{placedOrder.id}</span>
+            Номер заказа: <span className="font-medium text-text">{placedOrder.id}</span>
           </p>
           <p className="mt-1 text-sm text-text-muted">
             Сумма товаров: {formatPrice(placedOrder.totalKopecks)}. Доставка согласуется с продавцом
@@ -84,7 +83,7 @@ export default function CheckoutPage() {
           </p>
           <div className="mt-4 flex gap-2">
             <Button asChild>
-              <Link to={routes.cabinet}>Мои заказы</Link>
+              <Link to={routes.cabinetOrders}>Мои заказы</Link>
             </Button>
             <Button asChild variant="outline">
               <Link to={routes.home}>На главную</Link>
@@ -164,7 +163,7 @@ export default function CheckoutPage() {
           </p>
           <div className="flex justify-end">
             <Button type="button" onClick={() => setStep(2)} disabled={conflicts.length > 0}>
-              Далее:доставка
+              Далее: доставка
             </Button>
           </div>
         </section>
@@ -212,7 +211,7 @@ export default function CheckoutPage() {
             </Button>
             {method !== 'post' && (
               <Button type="button" onClick={() => setStep(3)}>
-                Далее:подтверждение
+                Далее: подтверждение
               </Button>
             )}
           </div>
@@ -228,7 +227,10 @@ export default function CheckoutPage() {
               <dd className="text-text">{formatPrice(totals.totalKopecks)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-text-muted">Доставка: {DELIVERY_LABELS[method]}</dt>
+              {/* Заказ создаётся без доставки,поэтому сумма названа ориентировочной. */}
+              <dt className="text-text-muted">
+                Доставка (ориентировочно): {DELIVERY_LABELS[method]}
+              </dt>
               <dd className="text-text">{delivery === 0 ? 'бесплатно' : formatPrice(delivery)}</dd>
             </div>
             <div className="flex justify-between border-t border-border pt-1">
@@ -238,6 +240,9 @@ export default function CheckoutPage() {
               </dd>
             </div>
           </dl>
+          <p className="text-xs text-text-muted">
+            Стоимость доставки ориентировочная, рассчитывается при оплате.
+          </p>
 
           {/* Комментарий к заказу */}
           <label className="flex flex-col gap-1 text-sm">
@@ -247,7 +252,7 @@ export default function CheckoutPage() {
               maxLength={1000}
               value={comment}
               onChange={(event) => setComment(event.target.value)}
-              placeholder="Пожелания по доставке,времени связи — необязательно"
+              placeholder="Пожелания по доставке, времени связи — необязательно"
               className="rounded-md border border-border px-3 py-2 text-sm"
             />
           </label>
