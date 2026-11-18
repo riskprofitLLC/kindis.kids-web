@@ -7,22 +7,31 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Dialog } from '@/shared/ui/dialog/dialog'
 
-interface ConsentManagerProps {
-  profiles: ChildProfile[]
-  onGrant: (childId: string) => void
-  onRevoke: (childId: string) => void
-  pendingChildId: string | null
+// Состояние мутации согласия из useDisabilityConsent — блокировка кнопок и сообщения по факту ответа сервера.
+interface ConsentMutationState {
+  mutate(
+    childId: string,
+    options?: { onSuccess?: () => void; onError?: (error: Error) => void },
+  ): void
+  isPending: boolean
 }
 
+interface ConsentManagerProps {
+  profiles: ChildProfile[]
+  grant: ConsentMutationState
+  revoke: ConsentMutationState
+}
+
+type ConsentMessage = { variant: 'success' | 'danger'; text: string }
+
+const CONSENT_ERROR_FALLBACK = 'Не удалось сохранить согласие. Попробуйте ещё раз.'
+
 // Управление согласием на спецданные по каждому профилю ребёнка
-export function ConsentManager({
-  profiles,
-  onGrant,
-  onRevoke,
-  pendingChildId,
-}: ConsentManagerProps) {
+export function ConsentManager({ profiles, grant, revoke }: ConsentManagerProps) {
   const [revokeTarget, setRevokeTarget] = useState<ChildProfile | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
+  const [message, setMessage] = useState<ConsentMessage | null>(null)
+
+  const busy = grant.isPending || revoke.isPending
 
   if (profiles.length === 0) {
     return (
@@ -38,16 +47,20 @@ export function ConsentManager({
         Ваши профили детей
       </h2>
 
-      <div aria-live="polite">{message && <Alert variant="success">{message}</Alert>}</div>
+      <div aria-live="polite">
+        {message && <Alert variant={message.variant}>{message.text}</Alert>}
+      </div>
 
       <ul className="flex flex-col gap-3">
         {profiles.map((profile) => {
-          const busy = pendingChildId === profile.id
+          // Согласие считаем данным только когда сервер его зафиксировал:
+          // hasDisability описывает факт инвалидности, а не согласие.
+          const hasConsent = Boolean(profile.disabilityConsentAt)
           return (
             <li key={profile.id} className="rounded-card border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-medium text-text">{profile.name}</span>
-                {profile.hasDisability ? (
+                {hasConsent ? (
                   <Badge variant="success">Согласие дано</Badge>
                 ) : (
                   <Badge variant="secondary">Согласие не дано</Badge>
@@ -62,21 +75,30 @@ export function ConsentManager({
               </p>
 
               <div className="mt-3 flex flex-wrap gap-2">
-                {!profile.hasDisability && (
+                {!hasConsent && (
                   <Button
                     type="button"
                     size="sm"
                     disabled={busy}
-                    onClick={() => {
-                      setMessage(null)
-                      onGrant(profile.id)
-                      setMessage(`Согласие для «${profile.name}» сохранено.`)
-                    }}
+                    onClick={() =>
+                      grant.mutate(profile.id, {
+                        onSuccess: () =>
+                          setMessage({
+                            variant: 'success',
+                            text: `Согласие для «${profile.name}» сохранено.`,
+                          }),
+                        onError: (error) =>
+                          setMessage({
+                            variant: 'danger',
+                            text: error.message || CONSENT_ERROR_FALLBACK,
+                          }),
+                      })
+                    }
                   >
                     Согласен
                   </Button>
                 )}
-                {profile.hasDisability && (
+                {hasConsent && (
                   <Button
                     type="button"
                     size="sm"
@@ -114,13 +136,23 @@ export function ConsentManager({
             type="button"
             variant="danger"
             size="sm"
-            disabled={pendingChildId !== null}
+            disabled={busy}
             onClick={() => {
               if (!revokeTarget) return
               const target = revokeTarget
               setRevokeTarget(null)
-              onRevoke(target.id)
-              setMessage(`Согласие для «${target.name}» отозвано.`)
+              revoke.mutate(target.id, {
+                onSuccess: () =>
+                  setMessage({
+                    variant: 'success',
+                    text: `Согласие для «${target.name}» отозвано.`,
+                  }),
+                onError: (error) =>
+                  setMessage({
+                    variant: 'danger',
+                    text: error.message || CONSENT_ERROR_FALLBACK,
+                  }),
+              })
             }}
           >
             Отозвать

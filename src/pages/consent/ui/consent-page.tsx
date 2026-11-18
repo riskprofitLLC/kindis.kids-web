@@ -66,26 +66,7 @@ export default function ConsentPage() {
       )}
 
       {authenticated && profiles.isSuccess && (
-        <>
-          {(consent.grant.isError || consent.revoke.isError) && (
-            <Alert variant="danger">
-              {(consent.grant.error ?? consent.revoke.error)?.message ??
-                'Не удалось сохранить согласие. Попробуйте ещё раз.'}
-            </Alert>
-          )}
-          <ConsentManager
-            profiles={profiles.data}
-            pendingChildId={
-              consent.grant.isPending
-                ? consent.grant.variables
-                : consent.revoke.isPending
-                  ? consent.revoke.variables
-                  : null
-            }
-            onGrant={(childId) => consent.grant.mutate(childId)}
-            onRevoke={(childId) => consent.revoke.mutate(childId)}
-          />
-        </>
+        <ConsentManager profiles={profiles.data} grant={consent.grant} revoke={consent.revoke} />
       )}
 
       {authenticated && (
