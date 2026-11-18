@@ -6,7 +6,7 @@ import { routes } from '@/shared/config/routes'
 import { formatPrice } from '@/shared/lib/format'
 import { Button } from '@/shared/ui/button/button'
 
-// Мини-корзина в шапке：dropdown без перехода на страницу.
+// Мини-корзина в шапке:dropdown без перехода на страницу.
 export function MiniCart() {
   const cart = useCart()
   const [open, setOpen] = useState(false)

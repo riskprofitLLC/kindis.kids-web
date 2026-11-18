@@ -72,7 +72,7 @@ function SellerMediaThumb({ asset }: { asset: MediaAsset }) {
     )
   }
 
-  // Видео — постер-кадр не делаем：браузер возьмёт первый кадр сам.
+  // Видео — постер-кадр не делаем:браузер возьмёт первый кадр сам.
   return (
     <video src={url} className="aspect-square w-full rounded object-cover" preload="metadata" />
   )

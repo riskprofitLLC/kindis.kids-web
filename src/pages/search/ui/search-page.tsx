@@ -46,7 +46,7 @@ export default function SearchPage() {
   const results = catalog.data?.pages.flatMap((page) => page.items) ?? []
   const total = catalog.data?.pages[0]?.total ?? 0
 
-  // Подсказки по расширению：убираем последнее слово запроса.
+  // Подсказки по расширению:убираем последнее слово запроса.
   const broaderTips = useMemo(() => {
     const words = query.split(/\s+/).filter(Boolean)
     return words.length > 1 ? [words.slice(0, -1).join(' ')] : []

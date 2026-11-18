@@ -7,7 +7,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Очередь модерации：профили，товары，медиа，отзывы，жалобы.
+// Очередь модерации:профили,товары,медиа,отзывы,жалобы.
 type QueueKind = 'profiles' | 'products' | 'media' | 'reviews' | 'reports'
 
 const QUEUES: Array<{ kind: QueueKind; label: string }> = [

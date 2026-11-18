@@ -14,7 +14,7 @@ const TILE_URL = import.meta.env.DEV
   ? '/osm-tiles/{z}/{x}/{y}.png'
   : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 
-// Мини-карта точки сделки：растр OSM и один маркер по координатам товара.
+// Мини-карта точки сделки:растр OSM и один маркер по координатам товара.
 export default function ProductLocationMap({
   latitude,
   longitude,

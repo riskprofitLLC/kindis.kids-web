@@ -11,7 +11,7 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card/card'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Рабочий стол：продавцу — сводка по его витрине，покупателю — быстрые ссылки.
+// Рабочий стол:продавцу — сводка по его витрине,покупателю — быстрые ссылки.
 export default function DashboardPage() {
   const profiles = useQuery({
     queryKey: ['my-children'],
@@ -33,7 +33,7 @@ export default function DashboardPage() {
   )
 }
 
-// Сводка продавца：новые заказы，товары на исходе，просмотры，выручка.
+// Сводка продавца:новые заказы,товары на исходе,просмотры,выручка.
 function SellerSummary() {
   const dashboard = useQuery({
     queryKey: ['seller-dashboard'],
@@ -84,7 +84,7 @@ function StatCard({ title, value, hint }: StatCardProps) {
   )
 }
 
-// Сводка покупателя：последние заказы и ссылки на разделы.
+// Сводка покупателя:последние заказы и ссылки на разделы.
 function BuyerSummary() {
   const orders = useMyOrders()
   const recent = (orders.data ?? []).slice(0, 3)

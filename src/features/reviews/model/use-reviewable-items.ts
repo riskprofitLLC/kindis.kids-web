@@ -9,7 +9,7 @@ export function useReviewableItems(productId: string | undefined) {
 
   return useQuery({
     queryKey: ['reviewable-items', productId],
-    // Гости не могут иметь заказов：запрос ушёл бы в 401.
+    // Гости не могут иметь заказов:запрос ушёл бы в 401.
     enabled: Boolean(productId) && status === 'authenticated',
     queryFn: async () => {
       const orders = await ordersApi.mine()

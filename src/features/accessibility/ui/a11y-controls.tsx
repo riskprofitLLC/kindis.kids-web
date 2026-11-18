@@ -8,7 +8,7 @@ const FONT_SIZES: Array<{ value: FontSize; label: string; short: string }> = [
   { value: 'xlarge', label: 'Очень крупный текст', short: 'А++' },
 ]
 
-// Переключатели доступности：размер текста и высокая контрастность.
+// Переключатели доступности:размер текста и высокая контрастность.
 // Состояние живёт в ui-settings-store и применяется к <html> провайдером.
 export function AccessibilityControls({ compact = false }: { compact?: boolean }) {
   const fontSize = useUiSettingsStore((state) => state.fontSize)

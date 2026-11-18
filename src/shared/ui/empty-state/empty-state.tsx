@@ -96,7 +96,7 @@ interface EmptyStateProps {
   className?: string
 }
 
-// Дружелюбное пустое состояние：иллюстрация，заголовок，следующий шаг.
+// Дружелюбное пустое состояние:иллюстрация,заголовок,следующий шаг.
 export function EmptyState({ kind, title, description, action, className }: EmptyStateProps) {
   const Art = ART[kind]
 

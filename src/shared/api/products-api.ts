@@ -1,6 +1,6 @@
 import { api } from '@/shared/api/client'
 
-// Товары продавца в кабинете：CRUD，медиа，быстрое редактирование.
+// Товары продавца в кабинете:CRUD,медиа,быстрое редактирование.
 
 export type ProductStatus = 'draft' | 'pending_review' | 'active' | 'archived'
 
@@ -23,7 +23,7 @@ export interface SellerProduct {
   status: ProductStatus
   categoryId: string | null
   createdAt: string
-  // Место сделки：бэкенд отдаёт поля，когда продавец заполнил точку на карте.
+  // Место сделки:бэкенд отдаёт поля,когда продавец заполнил точку на карте.
   // Координаты могут прийти строкой — форму приводит их к числу.
   address?: string | null
   latitude?: number | string | null
@@ -36,7 +36,7 @@ export interface ProductInput {
   priceKopecks: number
   stock?: number
   categoryId?: string | null
-  // Адрес и координаты пункта — опциональны，уходят только когда заданы.
+  // Адрес и координаты пункта — опциональны,уходят только когда заданы.
   address?: string | null
   latitude?: number | null
   longitude?: number | null
@@ -49,9 +49,9 @@ export interface ProductMediaRow {
 }
 
 export const productsApi = {
-  // Товары продавца：свои профили + их товары.
+  // Товары продавца:свои профили + их товары.
   async mine(): Promise<SellerProduct[]> {
-    // Товары лежат в профилях детей：собираем со всех профилей продавца.
+    // Товары лежат в профилях детей:собираем со всех профилей продавца.
     const { data: profiles } = await api.get<Array<{ id: string }>>('/children/mine')
     const lists = await Promise.all(
       profiles.map(async (profile) => {
@@ -73,7 +73,7 @@ export const productsApi = {
     return data
   },
 
-  // Статусы：на модерацию，в архив，из архива，удаление.
+  // Статусы:на модерацию,в архив,из архива,удаление.
   async submit(id: string): Promise<SellerProduct> {
     const { data } = await api.post<SellerProduct>(`/products/${id}/submit`)
     return data
@@ -105,7 +105,7 @@ export const productsApi = {
     return data
   },
 
-  // Порядок фото：первое в списке — главное.
+  // Порядок фото:первое в списке — главное.
   async reorderMedia(productId: string, mediaIds: string[]): Promise<ProductMediaRow[]> {
     const { data } = await api.patch<ProductMediaRow[]>(`/products/${productId}/media/order`, {
       mediaIds,

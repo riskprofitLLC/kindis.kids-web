@@ -11,7 +11,7 @@ interface FavoriteButtonProps {
   className?: string
 }
 
-// Сердце «в избранное»：гостей отправляем на вход，покупателю переключаем.
+// Сердце «в избранное»:гостей отправляем на вход,покупателю переключаем.
 export function FavoriteButton({ productId, className }: FavoriteButtonProps) {
   const status = useSessionStore((state) => state.status)
   const navigate = useNavigate()

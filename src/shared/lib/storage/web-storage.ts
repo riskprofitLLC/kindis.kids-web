@@ -15,7 +15,7 @@ const memoryFallback: KeyValueStorage = {
 }
 
 // Приватный режим Safari и запрет cookies бросают SecurityError на само обращение
-// к window.localStorage，поэтому доступ проверяем реальной записью，а не наличием свойства.
+// к window.localStorage,поэтому доступ проверяем реальной записью,а не наличием свойства.
 function resolveLocalStorage(): KeyValueStorage | null {
   try {
     const probeKey = '__kindis_storage_probe__'

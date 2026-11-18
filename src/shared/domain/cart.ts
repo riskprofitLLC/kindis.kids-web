@@ -1,5 +1,5 @@
 // Чистые правила корзины (без React и DOM) — тестируются и переиспользуются в RN.
-// Цены — в копейках，как на бэкенде.
+// Цены — в копейках,как на бэкенде.
 
 export interface CartItem {
   id: string
@@ -57,7 +57,7 @@ export interface StockConflict {
   available: number
 }
 
-// Позиции，которые не пройдут по остатку：показываем до оформления，
+// Позиции,которые не пройдут по остатку:показываем до оформления,
 // чтобы покупатель не упёрся в ошибку на последнем шаге.
 export function findStockConflicts(items: CartItem[]): StockConflict[] {
   return items

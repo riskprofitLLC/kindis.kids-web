@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { type Cart, cartApi } from '@/shared/api/cart-api'
 
-// Корзина живёт на сервере：гость — по сессии в заголовке，пользователь — по токену.
+// Корзина живёт на сервере:гость — по сессии в заголовке,пользователь — по токену.
 export function useCart() {
   return useQuery({
     queryKey: ['cart'],
@@ -27,7 +27,7 @@ export function useUpdateCartItem() {
   return useMutation({
     mutationFn: ({ itemId, quantity }: { itemId: string; quantity: number }) =>
       cartApi.updateQuantity(itemId, quantity),
-    // Оптимистично меняем количество：ответ сервера только подтверждает.
+    // Оптимистично меняем количество:ответ сервера только подтверждает.
     onMutate: async ({ itemId, quantity }) => {
       await queryClient.cancelQueries({ queryKey: ['cart'] })
       const previous = queryClient.getQueryData<Cart>(['cart'])

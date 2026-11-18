@@ -96,10 +96,10 @@ const detail = {
 }
 
 describe('ProductPage', () => {
-  it('показывает адрес，мини-карту и кнопку чата с продавцом', async () => {
+  it('показывает адрес,мини-карту и кнопку чата с продавцом', async () => {
     mocks.product.mockResolvedValue({
       ...detail,
-      address: 'Сочи，ул. Ленина，10',
+      address: 'Сочи,ул. Ленина,10',
       latitude: 43.6,
       longitude: 39.7,
     })
@@ -112,7 +112,7 @@ describe('ProductPage', () => {
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
     )
-    expect(screen.getByText('Сочи，ул. Ленина，10')).toBeTruthy()
+    expect(screen.getByText('Сочи,ул. Ленина,10')).toBeTruthy()
     expect((await screen.findByTestId('mini-map')).textContent).toBe('43.6:39.7')
     expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
     // Форма отзыва гостю недоступна — у него нет заказов.

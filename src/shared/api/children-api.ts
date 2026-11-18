@@ -17,7 +17,7 @@ export interface ChildProfile {
   consentDocumentVersion: string | null
 }
 
-// Публичная витрина продавца：профиль + медиа (спецполя бэкенд не отдаёт).
+// Публичная витрина продавца:профиль + медиа (спецполя бэкенд не отдаёт).
 export interface SellerPublic {
   id: string
   slug: string

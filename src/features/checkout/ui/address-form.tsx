@@ -32,7 +32,7 @@ interface AddressFormProps {
   onSubmit: (values: AddressValues) => void
 }
 
-// Форма адреса：для почты — полная，для остальных способов поля скрыты.
+// Форма адреса:для почты — полная,для остальных способов поля скрыты.
 export function AddressForm({ method, onSubmit }: AddressFormProps) {
   const isPost = method === 'post'
 

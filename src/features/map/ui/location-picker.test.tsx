@@ -28,7 +28,7 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-// Управляемая обёртка：как в форме，значение живёт в состоянии родителя.
+// Управляемая обёртка:как в форме,значение живёт в состоянии родителя.
 function ControlledPicker({ initial }: { initial?: LocationValue }) {
   const [value, setValue] = useState<LocationValue>(
     initial ?? { address: '', latitude: null, longitude: null },
@@ -58,7 +58,7 @@ describe('LocationPicker', () => {
         'Сочи, улица Ленина, 10',
       ),
     )
-    expect(screen.getByText(/Точка：43.60000/)).toBeTruthy()
+    expect(screen.getByText(/Точка:43.60000/)).toBeTruthy()
   })
 
   it('сбой геокодирования просит ввести адрес вручную', async () => {
@@ -81,7 +81,7 @@ describe('LocationPicker', () => {
     await user.type(screen.getByLabelText('Адрес'), 'Мой адрес')
     await user.click(screen.getByRole('button', { name: 'Клик по карте' }))
 
-    await waitFor(() => expect(screen.getByText(/Точка：43.60000/)).toBeTruthy())
+    await waitFor(() => expect(screen.getByText(/Точка:43.60000/)).toBeTruthy())
     expect((screen.getByLabelText('Адрес') as HTMLInputElement).value).toBe('Мой адрес')
     expect(mocks.reverseGeocode).not.toHaveBeenCalled()
   })

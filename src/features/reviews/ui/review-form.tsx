@@ -10,7 +10,7 @@ interface ReviewFormProps {
   error?: string | null
 }
 
-// Форма отзыва：оценка звёздами + текст. Доступна только по завершённым
+// Форма отзыва:оценка звёздами + текст. Доступна только по завершённым
 // заказам — бэкенд перепроверяет и вернёт понятную ошибку.
 export function ReviewForm({ onSubmit, pending, error }: ReviewFormProps) {
   const [rating, setRating] = useState(5)
@@ -57,7 +57,7 @@ export function ReviewForm({ onSubmit, pending, error }: ReviewFormProps) {
           maxLength={1000}
           value={text}
           onChange={(event) => setText(event.target.value)}
-          placeholder="Что понравилось，как шла сделка — необязательно"
+          placeholder="Что понравилось,как шла сделка — необязательно"
           className="rounded-md border border-border px-3 py-2 text-sm"
         />
       </label>

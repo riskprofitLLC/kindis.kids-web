@@ -1,7 +1,7 @@
 import { api } from '@/shared/api/client'
 import type { Order } from '@/shared/api/orders-api'
 
-// Кабинет продавца:сводка，графики，заказы по товарам，чаты.
+// Кабинет продавца:сводка,графики,заказы по товарам,чаты.
 
 export interface DashboardSummary {
   newOrders: number

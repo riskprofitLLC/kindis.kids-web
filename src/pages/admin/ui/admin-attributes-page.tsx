@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { adminApi } from '@/shared/api/admin-api'
 import { Button } from '@/shared/ui/button/button'
 
-// Справочник характеристик：создание и удаление.
+// Справочник характеристик:создание и удаление.
 export default function AdminAttributesPage() {
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
@@ -76,7 +76,7 @@ export default function AdminAttributesPage() {
           >
             <span className="text-text">
               {row.name}
-              {row.unit ? `，${row.unit}` : ''}
+              {row.unit ? `,${row.unit}` : ''}
             </span>
             <Button type="button" variant="ghost" size="sm" onClick={() => remove.mutate(row.id)}>
               Удалить

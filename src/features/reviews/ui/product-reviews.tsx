@@ -14,7 +14,7 @@ interface ProductReviewsProps {
   productId: string
 }
 
-// Отзывы товара：средний рейтинг，список，форма для покупателей
+// Отзывы товара:средний рейтинг,список,форма для покупателей
 // с завершённым заказом этого товара.
 export function ProductReviews({ productId }: ProductReviewsProps) {
   const queryClient = useQueryClient()
@@ -24,7 +24,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
   const [error, setError] = useState<string | null>(null)
   // Счётчик перемонтирует форму после успеха — поля очищаются.
   const [formKey, setFormKey] = useState(0)
-  // Отзыв отправлен — форму скрываем：бэкенд не даёт второй отзыв по позиции.
+  // Отзыв отправлен — форму скрываем:бэкенд не даёт второй отзыв по позиции.
   const [submitted, setSubmitted] = useState(false)
 
   const createReview = useCreateReview(() => {
@@ -35,7 +35,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
     void queryClient.invalidateQueries({ queryKey: ['reviewable-items', productId] })
   })
 
-  // Свой отзыв в списке — значит，по позиции заказа второй отзыв не оставить.
+  // Свой отзыв в списке — значит,по позиции заказа второй отзыв не оставить.
   const alreadyReviewed = (reviews.data ?? []).some((review) => review.author?.id === userId)
 
   const canReview = !submitted && !alreadyReviewed && (reviewable.data ?? []).length > 0

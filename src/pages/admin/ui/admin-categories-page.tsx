@@ -5,7 +5,7 @@ import { adminApi } from '@/shared/api/admin-api'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 
-// Управление категориями：дерево + создание + удаление пустых.
+// Управление категориями:дерево + создание + удаление пустых.
 export default function AdminCategoriesPage() {
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
@@ -65,7 +65,7 @@ export default function AdminCategoriesPage() {
 
       {(create.isError || remove.isError) && (
         <Alert variant="danger" title="Не получилось">
-          Проверьте поля: slug уникален，категория пуста перед удалением.
+          Проверьте поля: slug уникален,категория пуста перед удалением.
         </Alert>
       )}
 

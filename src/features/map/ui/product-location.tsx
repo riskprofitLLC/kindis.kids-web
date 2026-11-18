@@ -11,7 +11,7 @@ interface ProductLocationProps {
   longitude?: number | null
 }
 
-// Блок места сделки на карточке товара：адрес текстом и мини-карта с маркером.
+// Блок места сделки на карточке товара:адрес текстом и мини-карта с маркером.
 export function ProductLocation({ address, latitude, longitude }: ProductLocationProps) {
   const hasPoint = typeof latitude === 'number' && typeof longitude === 'number'
   if (!hasPoint && !address) return null

@@ -13,7 +13,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Публичная страница продавца：шапка，галерея，номенклатура с сортировками.
+// Публичная страница продавца:шапка,галерея,номенклатура с сортировками.
 export default function SellerPage() {
   const { slug = '' } = useParams()
   const seller = useSeller(slug)
@@ -36,7 +36,7 @@ export default function SellerPage() {
     return (
       <div className="mx-auto max-w-6xl px-4 py-6">
         <Alert variant="danger" title="Продавец не найден">
-          Возможно，витрина снята с публикации. Вернитесь в{' '}
+          Возможно,витрина снята с публикации. Вернитесь в{' '}
           <Link className="text-primary hover:underline" to="/catalog">
             каталог
           </Link>
@@ -50,7 +50,7 @@ export default function SellerPage() {
   const items = products.data?.pages.flatMap((page) => page.items) ?? []
 
   // Спецполя профиля бэкенд публично не отдаёт — бейдж приоритета берём
-  // из карточек каталога，где флаг мастера уже есть.
+  // из карточек каталога,где флаг мастера уже есть.
   const isPriority = items.some((product) => product.childProfile?.hasDisability)
 
   return (
@@ -60,7 +60,7 @@ export default function SellerPage() {
         {avatarUrl ? (
           <img
             src={avatarUrl}
-            alt={`Портрет：${profile.name}`}
+            alt={`Портрет:${profile.name}`}
             className="h-24 w-24 rounded-full object-cover"
           />
         ) : (

@@ -15,7 +15,7 @@ import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Корзина：состав，количество，удаление，очистка，итог и проверка остатков.
+// Корзина:состав,количество,удаление,очистка,итог и проверка остатков.
 export function CartView() {
   const cart = useCart()
   const updateItem = useUpdateCartItem()
@@ -72,7 +72,7 @@ export function CartView() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Конфликты остатков — до оформления，а не на последнем шаге */}
+      {/* Конфликты остатков — до оформления,а не на последнем шаге */}
       {conflicts.length > 0 && (
         <Alert variant="danger" title="Часть товаров недоступна в нужном количестве">
           <ul className="list-disc pl-5">
@@ -173,7 +173,7 @@ export function CartView() {
                   setConfirmClear(false)
                 }}
               >
-                Да，очистить
+                Да,очистить
               </Button>
               <Button
                 type="button"

@@ -10,7 +10,7 @@ export function useProductOrders(productId: string | undefined, enabled = true) 
 
   return useQuery({
     queryKey: ['product-orders', productId],
-    // Гости заказов не имеют：запрос ушёл бы в 401.
+    // Гости заказов не имеют:запрос ушёл бы в 401.
     enabled: Boolean(productId) && status === 'authenticated' && enabled,
     queryFn: async () => {
       const orders = await ordersApi.mine()

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-// Баннер офлайна：браузер сообщает о потере сети событиями online/offline.
+// Баннер офлайна:браузер сообщает о потере сети событиями online/offline.
 export function OfflineBanner() {
   const [offline, setOffline] = useState(
     typeof navigator !== 'undefined' ? !navigator.onLine : false,

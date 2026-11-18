@@ -12,7 +12,7 @@ interface ProductMediaEditorProps {
   productId: string
 }
 
-// Редактор медиа товара: загрузка до 30 фото，порядок，главное，отвязка.
+// Редактор медиа товара: загрузка до 30 фото,порядок,главное,отвязка.
 export function ProductMediaEditor({ productId }: ProductMediaEditorProps) {
   const queryClient = useQueryClient()
   const [order, setOrder] = useState<string[]>([])
@@ -28,7 +28,7 @@ export function ProductMediaEditor({ productId }: ProductMediaEditorProps) {
   const invalidate = () =>
     void queryClient.invalidateQueries({ queryKey: ['product-media', productId] })
 
-  // Загрузка：билет → хранилище → complete → привязка к товару.
+  // Загрузка:билет → хранилище → complete → привязка к товару.
   const upload = useMutation({
     mutationFn: async (file: File) => {
       const ticket = await mediaApi.requestUploadUrl({

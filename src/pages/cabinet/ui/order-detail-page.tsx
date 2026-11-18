@@ -11,7 +11,7 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Детали заказа：состав，адрес，статус，отмена в допустимых статусах.
+// Детали заказа:состав,адрес,статус,отмена в допустимых статусах.
 export default function OrderDetailPage() {
   const { orderId = '' } = useParams()
   const order = useOrder(orderId)

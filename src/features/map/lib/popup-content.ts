@@ -1,7 +1,7 @@
 import type { ProductCard } from '@/shared/api/catalog-api'
 import { formatPrice } from '@/shared/lib/format'
 
-// Попап строим через DOM：город и названия поделок — пользовательский ввод，
+// Попап строим через DOM:город и названия поделок — пользовательский ввод,
 // поэтому setHTML с подстановкой был XSS.
 export function buildPopupContent(city: string, items: ProductCard[]): HTMLElement {
   const root = document.createElement('div')

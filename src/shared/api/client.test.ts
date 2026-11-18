@@ -202,7 +202,7 @@ describe('response interceptor — обновление сессии по 401', 
       if (config.url === '/auth/refresh') {
         return ok(config, { accessToken: 'new-access', refreshToken: 'new-refresh' })
       }
-      // Первый заход каждого запроса — 401，повтор（_retried）успешен.
+      // Первый заход каждого запроса — 401,повтор（_retried）успешен.
       if (config.headers.Authorization === 'Bearer new-access') return ok(config, { data: 'ok' })
       fail(config, 401)
     }
@@ -213,7 +213,7 @@ describe('response interceptor — обновление сессии по 401', 
     const refreshes = requests.filter((config) => config.url === '/auth/refresh')
     expect(refreshes).toHaveLength(1)
     // Оба исходных запроса ушли повторно с новым токеном（конфиг ретрая тот же
-    // объект，поэтому считаем уникальные url，а не записи в requests）.
+    // объект,поэтому считаем уникальные url,а не записи в requests）.
     const retried = requests.filter(
       (config) => config.url !== '/auth/refresh' && (config as Config & { _retried?: boolean })._retried,
     )

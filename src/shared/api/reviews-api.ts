@@ -1,6 +1,6 @@
 import { api } from '@/shared/api/client'
 
-// Отзывы：создание по позиции завершённого заказа，публичные списки и рейтинг.
+// Отзывы:создание по позиции завершённого заказа,публичные списки и рейтинг.
 
 export interface Review {
   id: string
@@ -18,7 +18,7 @@ export interface ProductRating {
 }
 
 export const reviewsApi = {
-  // Отзыв по позиции заказа：бэкенд принимает только из завершённых заказов.
+  // Отзыв по позиции заказа:бэкенд принимает только из завершённых заказов.
   async create(orderItemId: string, input: { rating: number; text?: string }): Promise<Review> {
     const { data } = await api.post<Review>(`/order-items/${orderItemId}/review`, input)
     return data

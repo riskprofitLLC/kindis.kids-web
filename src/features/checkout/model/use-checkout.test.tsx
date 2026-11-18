@@ -130,7 +130,7 @@ describe('useCheckout', () => {
     await act(async () => {
       client.setQueryData(['cart'], cart([]))
       await result.current.mutateAsync(input).catch(() => undefined)
-      // Пока заказ не создан，в корзину добавился товар — старая попытка неактуальна.
+      // Пока заказ не создан,в корзину добавился товар — старая попытка неактуальна.
       client.setQueryData(['cart'], cart([item]))
       await result.current.mutateAsync(input).catch(() => undefined)
     })

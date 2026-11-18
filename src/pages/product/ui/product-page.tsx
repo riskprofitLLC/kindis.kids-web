@@ -39,7 +39,7 @@ export default function ProductPage() {
     return (
       <div className="mx-auto max-w-6xl px-4 py-6">
         <Alert variant="danger" title="Товар не найден">
-          Возможно，его сняли с продажи. Вернитесь в{' '}
+          Возможно,его сняли с продажи. Вернитесь в{' '}
           <Link className="text-primary hover:underline" to={routes.catalog}>
             каталог
           </Link>
@@ -86,7 +86,7 @@ export default function ProductPage() {
           )}
 
           <p className="text-sm text-text-muted">
-            {item.stock > 0 ? `В наличии：${item.stock} шт.` : 'Нет в наличии'}
+            {item.stock > 0 ? `В наличии:${item.stock} шт.` : 'Нет в наличии'}
             {' · размещено '}
             {formatDate(item.createdAt)}
           </p>
@@ -147,7 +147,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Место сделки：адрес и мини-карта с маркером */}
+      {/* Место сделки:адрес и мини-карта с маркером */}
       <div className="mt-10 max-w-2xl">
         <ProductLocation
           address={item.address}

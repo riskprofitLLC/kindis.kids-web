@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui/button/button'
 import { EmptyState } from '@/shared/ui/empty-state/empty-state'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Заказы покупателя：список со статусами и составом.
+// Заказы покупателя:список со статусами и составом.
 export default function OrdersPage() {
   const orders = useMyOrders()
 

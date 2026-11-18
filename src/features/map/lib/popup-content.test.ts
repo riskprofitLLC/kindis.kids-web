@@ -13,7 +13,7 @@ const item = (title: string): ProductCard =>
   }) as ProductCard
 
 describe('buildPopupContent', () => {
-  it('показывает город，счётчик и до трёх поделок с ценой', () => {
+  it('показывает город,счётчик и до трёх поделок с ценой', () => {
     const root = buildPopupContent('Москва', [item('Кукла'), item('Матрёшка')])
 
     expect(root.textContent).toContain('Москва')
@@ -29,7 +29,7 @@ describe('buildPopupContent', () => {
     expect(root.textContent).not.toContain('d')
   })
 
-  it('<img src=x onerror=...> остаётся текстом，а не элементом', () => {
+  it('<img src=x onerror=...> остаётся текстом,а не элементом', () => {
     const root = buildPopupContent('<img src=x onerror="alert(1)">', [
       item('<img src=x onerror="alert(2)">'),
     ])

@@ -5,15 +5,15 @@ import { authApi, type RegisterInput } from '@/shared/api/auth-api'
 import { cartApi } from '@/shared/api/cart-api'
 import { clearGuestSessionId, getGuestSessionId } from '@/shared/lib/guest-session'
 
-// После входа гостевая корзина сливается с пользовательской：товары，которые
-// гость набрал до регистрации，не теряются.
+// После входа гостевая корзина сливается с пользовательской:товары,которые
+// гость набрал до регистрации,не теряются.
 async function mergeGuestCart(queryClient: ReturnType<typeof useQueryClient>) {
   try {
     await cartApi.mergeWithSession(getGuestSessionId())
     clearGuestSessionId()
     void queryClient.invalidateQueries({ queryKey: ['cart'] })
   } catch {
-    // Слияние не должно ломать вход：корзина останется гостевой до следующего раза.
+    // Слияние не должно ломать вход:корзина останется гостевой до следующего раза.
   }
 }
 

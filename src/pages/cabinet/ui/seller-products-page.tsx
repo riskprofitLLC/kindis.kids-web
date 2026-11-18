@@ -9,7 +9,7 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Товары продавца：фильтр по статусу，поиск，инлайн-правка цены и остатка.
+// Товары продавца:фильтр по статусу,поиск,инлайн-правка цены и остатка.
 const STATUSES: ProductStatus[] = ['draft', 'pending_review', 'active', 'archived']
 
 export default function SellerProductsPage() {

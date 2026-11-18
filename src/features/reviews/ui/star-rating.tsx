@@ -9,7 +9,7 @@ interface StarRatingProps {
   size?: 'sm' | 'md'
 }
 
-// Средний рейтинг звёздами：целые и половинные звёзды，подпись для скринридера.
+// Средний рейтинг звёздами:целые и половинные звёзды,подпись для скринридера.
 export function StarRating({ value, count, size = 'md' }: StarRatingProps) {
   const rounded = Math.round(value * 2) / 2
   const px = size === 'sm' ? 14 : 18
@@ -18,7 +18,7 @@ export function StarRating({ value, count, size = 'md' }: StarRatingProps) {
     <span
       className="inline-flex items-center gap-1"
       role="img"
-      aria-label={`Рейтинг ${value.toFixed(1)} из 5${count !== undefined ? `，${count} отзывов` : ''}`}
+      aria-label={`Рейтинг ${value.toFixed(1)} из 5${count !== undefined ? `,${count} отзывов` : ''}`}
     >
       <span className="flex" aria-hidden="true">
         {[1, 2, 3, 4, 5].map((star) => {

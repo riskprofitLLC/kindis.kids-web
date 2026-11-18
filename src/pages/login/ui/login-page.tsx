@@ -22,7 +22,7 @@ type FormValues = z.infer<typeof schema>
 
 // Вход родителя: центрированная карточка, поля столбиком, кнопка на всю ширину.
 export default function LoginPage() {
-  // ВРЕМЕННЫЙ dev-механизм：только в dev-сборке и только при VITE_DEV_LOGIN=1,
+  // ВРЕМЕННЫЙ dev-механизм:только в dev-сборке и только при VITE_DEV_LOGIN=1,
   // в production-бандл ветка не попадает. Подробнее — .env.example.
   const devLoginEnabled = import.meta.env.DEV && import.meta.env.VITE_DEV_LOGIN === '1'
   const navigate = useNavigate()

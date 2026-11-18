@@ -14,7 +14,7 @@ interface ContactSellerButtonProps {
   sellerName?: string
 }
 
-// Кнопка «Написать продавцу»：гостей отправляем на вход，покупателю
+// Кнопка «Написать продавцу»:гостей отправляем на вход,покупателю
 // открываем диалог по его заказу с этим товаром.
 export function ContactSellerButton({ productId, sellerName }: ContactSellerButtonProps) {
   const status = useSessionStore((state) => state.status)
@@ -48,7 +48,7 @@ export function ContactSellerButton({ productId, sellerName }: ContactSellerButt
         open={open}
         onOpenChange={setOpen}
         title={sellerName ? `Чат с ${sellerName}` : 'Чат с продавцом'}
-        description="Переписка идёт по заказу — так видны и товар，и детали сделки."
+        description="Переписка идёт по заказу — так видны и товар,и детали сделки."
       >
         {orders.isPending && <Skeleton className="h-24 w-full" />}
 

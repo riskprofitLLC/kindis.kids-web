@@ -9,7 +9,7 @@ interface ProductFormFieldsProps {
 
 const inputClass = 'min-h-11 rounded-md border border-border px-3 text-sm'
 
-// Поля товара：название，описание，цена в рублях，остаток，категория.
+// Поля товара:название,описание,цена в рублях,остаток,категория.
 export function ProductFormFields({ values, onChange }: ProductFormFieldsProps) {
   const set = <K extends keyof ProductFormValues>(key: K, value: ProductFormValues[K]) =>
     onChange({ ...values, [key]: value })
@@ -37,7 +37,7 @@ export function ProductFormFields({ values, onChange }: ProductFormFieldsProps) 
 
       <div className="flex gap-3">
         <label className="flex flex-1 flex-col gap-1 text-sm">
-          Цена，₽
+          Цена,₽
           <input
             type="number"
             min={0}
@@ -60,7 +60,7 @@ export function ProductFormFields({ values, onChange }: ProductFormFieldsProps) 
 
       <CategorySelect value={values.categoryId} onChange={(id) => set('categoryId', id)} />
 
-      {/* Место сделки：карта с выбором точки и адресом */}
+      {/* Место сделки:карта с выбором точки и адресом */}
       <LocationPicker
         value={{
           address: values.address,

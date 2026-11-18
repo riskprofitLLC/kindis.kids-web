@@ -1,6 +1,6 @@
 import { api } from '@/shared/api/client'
 
-// Кабинет администратора：модерация，справочники，аудит спецданных.
+// Кабинет администратора:модерация,справочники,аудит спецданных.
 
 export interface QueueCounts {
   profiles: number
@@ -41,7 +41,7 @@ export const adminApi = {
     return data
   },
 
-  // Действия модерации — пути разные для профилей，товаров，медиа и отзывов.
+  // Действия модерации — пути разные для профилей,товаров,медиа и отзывов.
   async act(kind: string, id: string, action: 'approve' | 'reject' | 'block'): Promise<void> {
     await api.post(`/admin/moderation/${kind}/${id}/${action}`)
   },

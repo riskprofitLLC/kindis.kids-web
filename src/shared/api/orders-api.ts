@@ -1,7 +1,7 @@
 import { api } from '@/shared/api/client'
 import type { DeliveryMethod } from '@/shared/domain/cart'
 
-// Заказы：оформление из серверной корзины，история，отмена.
+// Заказы:оформление из серверной корзины,история,отмена.
 
 export interface Order {
   id: string
@@ -63,8 +63,8 @@ export const ordersApi = {
     return data
   },
 
-  // Ключ идемпотентности на стороне клиента：повторный запрос не создаст
-  // второй заказ，а вернёт уже созданный.
+  // Ключ идемпотентности на стороне клиента:повторный запрос не создаст
+  // второй заказ,а вернёт уже созданный.
   async checkout(input: CheckoutInput, idempotencyKey: string): Promise<Order> {
     const { data } = await api.post<Order>('/orders', input, {
       params: { idempotencyKey },

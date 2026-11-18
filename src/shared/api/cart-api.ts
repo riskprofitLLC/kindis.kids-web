@@ -1,6 +1,6 @@
 import { api } from '@/shared/api/client'
 
-// Корзина на сервере：гость опознаётся заголовком X-Cart-Session,
+// Корзина на сервере:гость опознаётся заголовком X-Cart-Session,
 // авторизованный — своим токеном. Цены в копейках.
 
 export interface CartProduct {
@@ -52,7 +52,7 @@ export const cartApi = {
     await api.post('/cart/merge')
   },
 
-  // Тот же merge，но с явной сессией：после входа токен уже стоит，
+  // Тот же merge,но с явной сессией:после входа токен уже стоит,
   // и перехватчик сам заголовок не добавит.
   async mergeWithSession(sessionId: string): Promise<void> {
     await api.post('/cart/merge', undefined, {

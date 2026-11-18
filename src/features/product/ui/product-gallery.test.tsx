@@ -40,7 +40,7 @@ describe('ProductGallery', () => {
     expect(image?.getAttribute('alt')).toBe('Шкатулка')
   })
 
-  it('видео рисует плеером，а не битой картинкой', () => {
+  it('видео рисует плеером,а не битой картинкой', () => {
     const { container } = render(
       <MemoryRouter>
         <ProductGallery title="Шкатулка" media={[video]} />

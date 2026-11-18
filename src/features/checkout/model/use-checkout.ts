@@ -9,7 +9,7 @@ interface Attempt {
   signature: string
 }
 
-// Подпись попытки：состав корзины，способ доставки，адрес，комментарий.
+// Подпись попытки:состав корзины,способ доставки,адрес,комментарий.
 function attemptSignature(input: CheckoutInput, cart: Cart | null | undefined): string {
   const items = (cart?.items ?? []).map((item) => [item.productId, item.quantity])
   return JSON.stringify([items, input.deliveryMethod, input.address ?? null, input.comment ?? null])
@@ -21,8 +21,8 @@ function newKey(): string {
     : `order-${Date.now()}`
 }
 
-// Оформление заказа. Ключ идемпотентности живёт на одну попытку：новые данные —
-// новый ключ，повтор с теми же данными（сетевой сбой）переиспользует старый，
+// Оформление заказа. Ключ идемпотентности живёт на одну попытку:новые данные —
+// новый ключ,повтор с теми же данными（сетевой сбой）переиспользует старый,
 // успех ключ сбрасывает.
 export function useCheckout() {
   const queryClient = useQueryClient()
@@ -37,7 +37,7 @@ export function useCheckout() {
       return ordersApi.checkout(input, attemptRef.current.key)
     },
     onSuccess: () => {
-      // Заказ создан：следующая попытка обязана получить свой ключ.
+      // Заказ создан:следующая попытка обязана получить свой ключ.
       attemptRef.current = null
       void queryClient.invalidateQueries({ queryKey: ['cart'] })
     },

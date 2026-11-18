@@ -9,7 +9,7 @@ interface AddToCartButtonProps {
   stock: number
 }
 
-// Добавление в корзину：остаток и конфликты проверяет сервер，
+// Добавление в корзину:остаток и конфликты проверяет сервер,
 // его ответ показываем как есть — без выдумывания причин.
 export function AddToCartButton({ productId, stock }: AddToCartButtonProps) {
   const addToCart = useAddToCart()

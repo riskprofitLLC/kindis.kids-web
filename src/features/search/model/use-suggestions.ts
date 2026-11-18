@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { catalogApi, type CatalogSuggestion } from '@/shared/api/catalog-api'
 
-// Живые подсказки：отдельная лёгкая выдача бэкенда，без фасетов и total.
+// Живые подсказки:отдельная лёгкая выдача бэкенда,без фасетов и total.
 export function useSuggestions(query: string) {
   const term = query.trim()
 

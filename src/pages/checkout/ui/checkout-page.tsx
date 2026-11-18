@@ -23,7 +23,7 @@ import { Button } from '@/shared/ui/button/button'
 
 type Step = 1 | 2 | 3
 
-// Оформление заказа：состав → адрес → подтверждение. Без входа не работает —
+// Оформление заказа:состав → адрес → подтверждение. Без входа не работает —
 // заказ создаётся на сервере из пользовательской корзины.
 export default function CheckoutPage() {
   const location = useLocation()
@@ -68,14 +68,14 @@ export default function CheckoutPage() {
     )
   }
 
-  // Финальный экран：номер заказа и что дальше.
+  // Финальный экран:номер заказа и что дальше.
   if (placedOrder) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
         <div className="rounded-card border border-border p-6">
           <h1 className="text-xl font-semibold text-text">Заказ оформлен</h1>
           <p className="mt-2 text-sm text-text-muted">
-            Номер заказа：
+            Номер заказа:
             <span className="font-medium text-text">{placedOrder.id}</span>
           </p>
           <p className="mt-1 text-sm text-text-muted">
@@ -142,7 +142,7 @@ export default function CheckoutPage() {
         </Alert>
       )}
 
-      {/* Шаг 1：состав */}
+      {/* Шаг 1:состав */}
       {step === 1 && (
         <section className="flex flex-col gap-3">
           <ul className="flex flex-col gap-2">
@@ -164,13 +164,13 @@ export default function CheckoutPage() {
           </p>
           <div className="flex justify-end">
             <Button type="button" onClick={() => setStep(2)} disabled={conflicts.length > 0}>
-              Далее：доставка
+              Далее:доставка
             </Button>
           </div>
         </section>
       )}
 
-      {/* Шаг 2：доставка и адрес */}
+      {/* Шаг 2:доставка и адрес */}
       {step === 2 && (
         <section className="flex flex-col gap-4">
           <fieldset className="flex flex-col gap-2">
@@ -212,14 +212,14 @@ export default function CheckoutPage() {
             </Button>
             {method !== 'post' && (
               <Button type="button" onClick={() => setStep(3)}>
-                Далее：подтверждение
+                Далее:подтверждение
               </Button>
             )}
           </div>
         </section>
       )}
 
-      {/* Шаг 3：подтверждение */}
+      {/* Шаг 3:подтверждение */}
       {step === 3 && (
         <section className="flex flex-col gap-4">
           <dl className="flex flex-col gap-1 text-sm">
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
               maxLength={1000}
               value={comment}
               onChange={(event) => setComment(event.target.value)}
-              placeholder="Пожелания по доставке，времени связи — необязательно"
+              placeholder="Пожелания по доставке,времени связи — необязательно"
               className="rounded-md border border-border px-3 py-2 text-sm"
             />
           </label>
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
             <Button type="button" variant="ghost" onClick={() => setStep(2)}>
               Назад
             </Button>
-            {/* Защита от двойного клика：кнопка заблокирована на время запроса，
+            {/* Защита от двойного клика:кнопка заблокирована на время запроса,
                 а ключ идемпотентности не даст создать второй заказ. */}
             <Button
               type="button"

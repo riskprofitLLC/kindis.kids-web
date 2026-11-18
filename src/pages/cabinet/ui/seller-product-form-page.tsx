@@ -7,7 +7,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Страница товара：тонкая сборка из фич seller — форма，кнопки，медиа.
+// Страница товара:тонкая сборка из фич seller — форма,кнопки,медиа.
 export default function SellerProductFormPage() {
   const { productId } = useParams()
   const form = useProductForm(productId)
@@ -28,7 +28,7 @@ export default function SellerProductFormPage() {
         </Alert>
       )}
 
-      {/* Место не сохранилось，пока бэкенд не принимает поля — остальное сохранено */}
+      {/* Место не сохранилось,пока бэкенд не принимает поля — остальное сохранено */}
       {form.locationNotice && <Alert>{form.locationNotice}</Alert>}
 
       <form className="flex flex-col gap-3">

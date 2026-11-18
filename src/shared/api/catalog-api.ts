@@ -36,7 +36,7 @@ export interface ProductCard {
   childProfile: SellerRef | null
   // Медиа товара с типом — для ссылки на чтение резолвим через /media/:id/url.
   media: ProductMedia[]
-  // Место сделки：адрес и точка на карте. Бэкенд отдаёт，когда продавец заполнил.
+  // Место сделки:адрес и точка на карте. Бэкенд отдаёт,когда продавец заполнил.
   address?: string | null
   latitude?: number | null
   longitude?: number | null
@@ -92,7 +92,7 @@ export interface ProductDetail {
   category: CategoryRef | null
   childProfile: (SellerRef & { about: string | null; avatarMediaId: string | null }) | null
   media: ProductMedia[]
-  // Место сделки：адрес и точка на карте — когда продавец заполнил.
+  // Место сделки:адрес и точка на карте — когда продавец заполнил.
   address?: string | null
   latitude?: number | null
   longitude?: number | null
@@ -118,7 +118,7 @@ export interface RawProduct {
   longitude?: number | string | null
 }
 
-// Координата к числу：число，числовая строка или null.
+// Координата к числу:число,числовая строка или null.
 function toCoord(value: number | string | null | undefined): number | null {
   if (typeof value === 'number') return Number.isFinite(value) ? value : null
   if (typeof value === 'string' && value.trim() !== '') {

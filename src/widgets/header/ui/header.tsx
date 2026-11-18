@@ -65,7 +65,7 @@ function MobileNavLink({ to, children }: { to: string; children: React.ReactNode
   )
 }
 
-// Шапка в визуальном языке Avito：тонкий utilities-бар + строка с крупным поиском.
+// Шапка в визуальном языке Avito:тонкий utilities-бар + строка с крупным поиском.
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -90,7 +90,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface">
-      {/* Utilities-бар：служебные ссылки и действия справа */}
+      {/* Utilities-бар:служебные ссылки и действия справа */}
       <div className="border-b border-border bg-surface-muted">
         <div className="mx-auto flex max-w-[1600px] items-center gap-4 px-4 py-1 text-xs">
           {/* Текстовые ссылки прячем на телефоне — остаются в бургер-меню */}
@@ -116,7 +116,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Главная строка：бургер + словомарка + крупный поиск с кнопкой «Найти» */}
+      {/* Главная строка:бургер + словомарка + крупный поиск с кнопкой «Найти» */}
       <div
         ref={menuRef}
         className="mx-auto flex max-w-[1600px] items-center gap-2 px-4 py-3 md:gap-4"

@@ -18,12 +18,12 @@ interface LocationPickerProps {
   onChange: (next: LocationValue) => void
 }
 
-// Пикер места сделки：клик по карте ставит точку，адрес подтягивается обратным
-// геокодированием，при отказе или ошибке продавец вводит его вручную.
+// Пикер места сделки:клик по карте ставит точку,адрес подтягивается обратным
+// геокодированием,при отказе или ошибке продавец вводит его вручную.
 export function LocationPicker({ value, onChange }: LocationPickerProps) {
   const [geocoding, setGeocoding] = useState(false)
   const [geocodeError, setGeocodeError] = useState<string | null>(null)
-  // Адрес，введённый продавцом вручную，автоподстановка не перезаписывает.
+  // Адрес,введённый продавцом вручную,автоподстановка не перезаписывает.
   const [addressTouched, setAddressTouched] = useState(false)
 
   const pick = async (latitude: number, longitude: number) => {
@@ -60,7 +60,7 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
         <input
           className="min-h-11 rounded-md border border-border px-3 text-sm"
           value={value.address}
-          placeholder="Например：Сочи，ул. Ленина，10"
+          placeholder="Например:Сочи,ул. Ленина,10"
           onChange={(event) => {
             setAddressTouched(true)
             onChange({ ...value, address: event.target.value })
@@ -71,7 +71,7 @@ export function LocationPicker({ value, onChange }: LocationPickerProps) {
       <div className="flex flex-wrap items-center gap-3">
         <span className="text-xs text-text-muted">
           {value.latitude !== null && value.longitude !== null
-            ? `Точка：${value.latitude.toFixed(5)}, ${value.longitude.toFixed(5)}`
+            ? `Точка:${value.latitude.toFixed(5)}, ${value.longitude.toFixed(5)}`
             : 'Точка не выбрана — кликните по карте'}
         </span>
         {(value.latitude !== null || value.address) && (

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAddresses } from '@/features/profile/model/use-addresses'
 import { Button } from '@/shared/ui/button/button'
 
-// Адресная книга：сохранённые адреса покупателя для оформления заказа.
+// Адресная книга:сохранённые адреса покупателя для оформления заказа.
 export function AddressBook() {
   const { items, add, remove } = useAddresses()
   const [label, setLabel] = useState('')

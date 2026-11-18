@@ -2,7 +2,7 @@ import { storage } from '@/shared/lib/storage/web-storage'
 
 const GUEST_SESSION_KEY = 'kindis-cart-session'
 
-// Идентификатор гостевой корзины：свой на устройство，уходит на бэкенд
+// Идентификатор гостевой корзины:свой на устройство,уходит на бэкенд
 // заголовком X-Cart-Session. После входа сливается с пользовательской.
 export function getGuestSessionId(): string {
   const existing = storage.getItem(GUEST_SESSION_KEY)

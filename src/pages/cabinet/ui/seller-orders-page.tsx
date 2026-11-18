@@ -12,7 +12,7 @@ import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Заказы продавца：фильтр по статусу，переходы，трек-номер，отмена с причиной.
+// Заказы продавца:фильтр по статусу,переходы,трек-номер,отмена с причиной.
 const STATUSES = [
   'created',
   'confirmed',

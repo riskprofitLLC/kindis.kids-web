@@ -6,7 +6,7 @@ import { Alert } from '@/shared/ui/alert/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card/card'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
-// Аналитика витрины：просмотры и продажи по дням из /seller/stats.
+// Аналитика витрины:просмотры и продажи по дням из /seller/stats.
 export default function AnalyticsPage() {
   const stats = useQuery({
     queryKey: ['seller-stats'],
@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
         </Card>
       </div>
 
-      {/* Столбцы просмотров по дням — простой SVG，без графических библиотей */}
+      {/* Столбцы просмотров по дням — простой SVG,без графических библиотей */}
       <Card>
         <CardHeader>
           <CardTitle>Просмотры по дням</CardTitle>

@@ -136,7 +136,7 @@ describe('ContactSellerButton', () => {
     expect(mocks.markRead).toHaveBeenCalledWith('o-1')
   })
 
-  it('без заказов объясняет，что диалог открывается по заказу', async () => {
+  it('без заказов объясняет,что диалог открывается по заказу', async () => {
     const user = userEvent.setup()
     authenticate()
     mocks.mine.mockResolvedValue([])

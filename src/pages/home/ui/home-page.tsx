@@ -85,7 +85,7 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      {/* Hero：приветственный баннер без поля поиска — единственный поиск в шапке */}
+      {/* Hero:приветственный баннер без поля поиска — единственный поиск в шапке */}
       <section className="rounded-card border border-border bg-surface-muted px-4 py-6 sm:px-8 sm:py-7">
         <h1 className="text-center text-lg font-extrabold tracking-tight text-text sm:text-left sm:text-2xl">
           Поделки детей — с пользой для дела
@@ -116,7 +116,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Категории：скруглённые карточки с эмодзи из реального дерева */}
+      {/* Категории:скруглённые карточки с эмодзи из реального дерева */}
       <section className="mt-8">
         <h2 className="mb-3 text-lg font-bold tracking-tight text-text">Категории</h2>
         {categories.isPending && (

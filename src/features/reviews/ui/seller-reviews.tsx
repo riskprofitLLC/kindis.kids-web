@@ -7,7 +7,7 @@ interface SellerReviewsProps {
   slug: string
 }
 
-// Отзывы на витрине продавца：средний рейтинг по всем его товарам.
+// Отзывы на витрине продавца:средний рейтинг по всем его товарам.
 export function SellerReviews({ slug }: SellerReviewsProps) {
   const reviews = useSellerReviews(slug)
 

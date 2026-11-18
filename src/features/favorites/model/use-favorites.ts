@@ -17,7 +17,7 @@ export function useFavoriteIds(): string[] {
   const favorites = useQuery({
     queryKey: ['favorites'],
     queryFn: () => favoritesApi.list(),
-    // Гостям нечего показывать：запрос ушёл бы в 401.
+    // Гостям нечего показывать:запрос ушёл бы в 401.
     enabled: status === 'authenticated',
   })
 

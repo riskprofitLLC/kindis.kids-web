@@ -61,7 +61,7 @@ export default function CatalogMap({ products, className }: CatalogMapProps) {
       const coords = cityCoords(city)
       if (!coords) return null
 
-      // Город и названия приходят от продавцов — только textContent，без HTML.
+      // Город и названия приходят от продавцов — только textContent,без HTML.
       const popup = new Popup({ offset: 18 }).setDOMContent(buildPopupContent(city, items))
 
       return new Marker({ color: '#e0533a' })

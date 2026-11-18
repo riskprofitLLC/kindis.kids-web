@@ -17,7 +17,7 @@ const TILE_URL = import.meta.env.DEV
 
 const DEFAULT_CENTER: [number, number] = [60.0, 55.0]
 
-// Проверка WebGL до создания карты：без него maplibre бросает исключение.
+// Проверка WebGL до создания карты:без него maplibre бросает исключение.
 function webglSupported(): boolean {
   try {
     const canvas = document.createElement('canvas')
@@ -27,18 +27,18 @@ function webglSupported(): boolean {
   }
 }
 
-// Интерактивная карта：клик ставит точку，маркер следует за выбранной точкой.
-// Без WebGL (старые устройства，тесты) показываем заглушку — форма остаётся рабочей.
+// Интерактивная карта:клик ставит точку,маркер следует за выбранной точкой.
+// Без WebGL (старые устройства,тесты) показываем заглушку — форма остаётся рабочей.
 export default function LocationMap({ latitude, longitude, onPick }: LocationMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MlMap | null>(null)
   const markerRef = useRef<Marker | null>(null)
   const pickRef = useRef(onPick)
   const pointRef = useRef({ latitude, longitude })
-  // Без WebGL (старые устройства，тесты) карту не строим вовсе.
+  // Без WebGL (старые устройства,тесты) карту не строим вовсе.
   const failed = !webglSupported()
 
-  // Синхронизация ref до эффектов：колбэк и стартовая точка без ререндеров карты.
+  // Синхронизация ref до эффектов:колбэк и стартовая точка без ререндеров карты.
   useEffect(() => {
     pickRef.current = onPick
     pointRef.current = { latitude, longitude }
@@ -84,7 +84,7 @@ export default function LocationMap({ latitude, longitude, onPick }: LocationMap
       mapRef.current = null
     }
     // Карта создаётся один раз；точку и клик подхватывают следующие эффекты.
-    // failed постоянен на жизнь компонента，поэтому повторного создания не будет.
+    // failed постоянен на жизнь компонента,поэтому повторного создания не будет.
   }, [failed])
 
   // Маркер и центрирование следуют за выбранной точкой.
@@ -112,7 +112,7 @@ export default function LocationMap({ latitude, longitude, onPick }: LocationMap
       ref={containerRef}
       className="h-64 w-full overflow-hidden rounded-card border border-border"
       role="application"
-      aria-label="Карта：кликните，чтобы указать место сделки"
+      aria-label="Карта:кликните,чтобы указать место сделки"
     />
   )
 }

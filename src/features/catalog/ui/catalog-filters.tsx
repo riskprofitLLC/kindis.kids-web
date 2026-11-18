@@ -320,7 +320,7 @@ function FilterChip({ label, onRemove }: FilterChipProps) {
       {label}
       <button
         type="button"
-        aria-label={`Убрать фильтр：${label}`}
+        aria-label={`Убрать фильтр:${label}`}
         className="min-h-6 min-w-6 rounded-full text-text-muted hover:text-danger"
         onClick={onRemove}
       >

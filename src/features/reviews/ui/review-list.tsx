@@ -7,7 +7,7 @@ interface ReviewListProps {
   emptyText: string
 }
 
-// Список отзывов：автор，звёзды，дата，текст.
+// Список отзывов:автор,звёзды,дата,текст.
 export function ReviewList({ items, emptyText }: ReviewListProps) {
   if (items.length === 0) {
     return <p className="text-sm text-text-muted">{emptyText}</p>
@@ -24,7 +24,7 @@ export function ReviewList({ items, emptyText }: ReviewListProps) {
             <StarRating value={review.rating} size="sm" />
           </div>
           {review.orderItem && (
-            <p className="text-xs text-text-muted">Товар：{review.orderItem.titleSnapshot}</p>
+            <p className="text-xs text-text-muted">Товар:{review.orderItem.titleSnapshot}</p>
           )}
           {review.text && <p className="text-sm text-text">{review.text}</p>}
           <p className="text-xs text-text-muted">{formatDate(review.createdAt)}</p>

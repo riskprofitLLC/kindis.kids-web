@@ -8,10 +8,10 @@ import { getGuestSessionId } from '@/shared/lib/guest-session'
 
 const REFRESH_URL = '/auth/refresh'
 
-// Single-flight：параллельные 401 делят один промис обновления，иначе каждый
+// Single-flight:параллельные 401 делят один промис обновления,иначе каждый
 // запрос сам по себе ротирует refresh-токен и ломает сессию.
 let refreshInFlight: Promise<string> | null = null
-// Один упавший refresh на всю пачку ожидавших：без дубля события истёкшей сессии.
+// Один упавший refresh на всю пачку ожидавших:без дубля события истёкшей сессии.
 let expiredNotified = false
 
 interface ApiEnvelope<T> {
@@ -76,7 +76,7 @@ api.interceptors.response.use(
   },
 )
 
-// Общий промис обновления：второй параллельный 401 ждёт его же，а не шлёт свой refresh.
+// Общий промис обновления:второй параллельный 401 ждёт его же,а не шлёт свой refresh.
 async function requestRefresh(): Promise<string> {
   refreshInFlight ??= (async () => {
     try {
