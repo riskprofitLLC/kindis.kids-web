@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import {
   useCart,
@@ -17,6 +17,7 @@ import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 
 // Корзина:состав,количество,удаление,очистка,итог и проверка остатков.
 export function CartView() {
+  const navigate = useNavigate()
   const cart = useCart()
   const updateItem = useUpdateCartItem()
   const removeItem = useRemoveCartItem()
@@ -156,8 +157,13 @@ export function CartView() {
         </p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button asChild disabled={conflicts.length > 0}>
-            <Link to={routes.checkout}>Оформить заказ</Link>
+          {/* Обычная кнопка с navigate:disabled на asChild не блокирует переход по Link */}
+          <Button
+            type="button"
+            disabled={conflicts.length > 0}
+            onClick={() => void navigate(routes.checkout)}
+          >
+            Оформить заказ
           </Button>
 
           {confirmClear ? (
