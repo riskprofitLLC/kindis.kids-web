@@ -8,6 +8,12 @@ import { getGuestSessionId } from '@/shared/lib/guest-session'
 
 const REFRESH_URL = '/auth/refresh'
 
+// Single-flight：параллельные 401 делят один промис обновления，иначе каждый
+// запрос сам по себе ротирует refresh-токен и ломает сессию.
+let refreshInFlight: Promise<string> | null = null
+// Один упавший refresh на всю пачку ожидавших：без дубля события истёкшей сессии.
+let expiredNotified = false
+
 interface ApiEnvelope<T> {
   data: T
   traceId?: string
@@ -49,18 +55,16 @@ api.interceptors.response.use(
     // Один раз пробуем обновить access и повторить исходный запрос
     if (status === 401 && original && !original._retried && original.url !== REFRESH_URL) {
       original._retried = true
-      const refreshToken = tokenStorage.getRefresh()
-      if (refreshToken) {
-        try {
-          const { data } = await api.post<{ accessToken: string; refreshToken: string }>(
-            REFRESH_URL,
-            { refreshToken },
-          )
-          tokenStorage.set(data.accessToken)
-          tokenStorage.setRefresh(data.refreshToken)
-          original.headers.Authorization = `Bearer ${data.accessToken}`
-          return api(original)
-        } catch {
+      if (!tokenStorage.getRefresh()) {
+        return Promise.reject(toApiError(error))
+      }
+      try {
+        const accessToken = await requestRefresh()
+        original.headers.Authorization = `Bearer ${accessToken}`
+        return api(original)
+      } catch {
+        if (!expiredNotified) {
+          expiredNotified = true
           tokenStorage.clear()
           tokenStorage.clearRefresh()
           authEvents.emitExpired()
@@ -71,6 +75,26 @@ api.interceptors.response.use(
     return Promise.reject(toApiError(error))
   },
 )
+
+// Общий промис обновления：второй параллельный 401 ждёт его же，а не шлёт свой refresh.
+async function requestRefresh(): Promise<string> {
+  refreshInFlight ??= (async () => {
+    try {
+      const { data } = await api.post<{ accessToken: string; refreshToken: string }>(
+        REFRESH_URL,
+        { refreshToken: tokenStorage.getRefresh() },
+      )
+      tokenStorage.set(data.accessToken)
+      tokenStorage.setRefresh(data.refreshToken)
+      expiredNotified = false
+      return data.accessToken
+    } finally {
+      // Промис уже захвачен ожидающими — сброс только для следующих 401.
+      refreshInFlight = null
+    }
+  })()
+  return refreshInFlight
+}
 
 function toApiError(
   error: AxiosError<{ message?: string; code?: string; fields?: Record<string, string> }>,

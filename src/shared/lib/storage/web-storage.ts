@@ -14,5 +14,18 @@ const memoryFallback: KeyValueStorage = {
   removeItem: (key) => void memory.delete(key),
 }
 
+// Приватный режим Safari и запрет cookies бросают SecurityError на само обращение
+// к window.localStorage，поэтому доступ проверяем реальной записью，а не наличием свойства.
+function resolveLocalStorage(): KeyValueStorage | null {
+  try {
+    const probeKey = '__kindis_storage_probe__'
+    window.localStorage.setItem(probeKey, '1')
+    window.localStorage.removeItem(probeKey)
+    return window.localStorage
+  } catch {
+    return null
+  }
+}
+
 export const storage: KeyValueStorage =
-  typeof window !== 'undefined' && window.localStorage ? window.localStorage : memoryFallback
+  typeof window !== 'undefined' ? resolveLocalStorage() ?? memoryFallback : memoryFallback

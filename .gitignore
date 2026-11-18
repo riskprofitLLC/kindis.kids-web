@@ -8,5 +8,8 @@ coverage/
 .env.local
 .DS_Store
 
+# Служебные промпты для агентов，в репозитории не нужны
+promts/
+
 # Временный env для режима verify (vite --mode verify)
 .env.verify

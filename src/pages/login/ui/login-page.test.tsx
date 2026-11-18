@@ -137,6 +137,16 @@ describe('LoginPage', () => {
 
 // ВРЕМЕННО: dev-кнопки входа без пароля под флагом VITE_DEV_LOGIN=1.
 describe('LoginPage dev-вход (временный)', () => {
+  it('в production-сборке dev-кнопки скрыты даже с флагом', () => {
+    // Флаг включён，но бандл продовый：ветка не должна попасть в прод.
+    vi.stubEnv('VITE_DEV_LOGIN', '1')
+    vi.stubEnv('DEV', false)
+    renderPage()
+
+    expect(screen.queryByRole('button', { name: 'Войти как покупателя' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Войти как продавца' })).toBeNull()
+  })
+
   it('без флага dev-кнопки скрыты', () => {
     // Явно гасим флаг: локальный .env не должен влиять на тест.
     vi.stubEnv('VITE_DEV_LOGIN', '')

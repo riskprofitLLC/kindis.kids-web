@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { useCheckout } from '@/features/checkout/model/use-checkout'
+import type { Cart } from '@/shared/api/cart-api'
 
 const checkout = vi.fn()
 
@@ -55,7 +56,22 @@ describe('useCheckout', () => {
     expect(key).toBeTruthy()
   })
 
-  it('повторная попытка переиспользует тот же ключ — второй заказ не создастся', async () => {
+  it('повтор после сетевой ошибки с теми же данными переиспускает тот же ключ', async () => {
+    checkout.mockRejectedValueOnce(new Error('network down'))
+    checkout.mockResolvedValueOnce({ id: 'o-1' })
+
+    const { result } = renderHook(() => useCheckout(), { wrapper })
+
+    await act(async () => {
+      await result.current.mutateAsync(input).catch(() => undefined)
+      await result.current.mutateAsync(input)
+    })
+
+    expect(checkout).toHaveBeenCalledTimes(2)
+    expect(checkout.mock.calls[1][1]).toBe(checkout.mock.calls[0][1])
+  })
+
+  it('вторая попытка после успеха получает новый ключ', async () => {
     checkout.mockResolvedValue({ id: 'o-1' })
 
     const { result } = renderHook(() => useCheckout(), { wrapper })
@@ -66,9 +82,60 @@ describe('useCheckout', () => {
     })
 
     expect(checkout).toHaveBeenCalledTimes(2)
-    const firstKey = checkout.mock.calls[0][1]
-    const secondKey = checkout.mock.calls[1][1]
-    expect(secondKey).toBe(firstKey)
+    expect(checkout.mock.calls[1][1]).not.toBe(checkout.mock.calls[0][1])
+  })
+
+  it('смена способа доставки даёт новый ключ', async () => {
+    checkout.mockResolvedValue({ id: 'o-1' })
+
+    const { result } = renderHook(() => useCheckout(), { wrapper })
+
+    await act(async () => {
+      await result.current.mutateAsync(input).catch(() => undefined)
+      await result.current.mutateAsync({ ...input, deliveryMethod: 'pickup' }).catch(() => undefined)
+    })
+
+    expect(checkout.mock.calls[1][1]).not.toBe(checkout.mock.calls[0][1])
+  })
+
+  it('смена адреса или комментария даёт новый ключ', async () => {
+    checkout.mockResolvedValue({ id: 'o-1' })
+
+    const { result } = renderHook(() => useCheckout(), { wrapper })
+
+    await act(async () => {
+      await result.current.mutateAsync(input).catch(() => undefined)
+      await result.current.mutateAsync({ ...input, comment: 'Позвонить' }).catch(() => undefined)
+      await result.current
+        .mutateAsync({ ...input, address: { ...input.address, house: '2' }, comment: undefined })
+        .catch(() => undefined)
+    })
+
+    expect(checkout.mock.calls[1][1]).not.toBe(checkout.mock.calls[0][1])
+    expect(checkout.mock.calls[2][1]).not.toBe(checkout.mock.calls[0][1])
+  })
+
+  it('изменение состава корзины даёт новый ключ', async () => {
+    checkout.mockResolvedValue({ id: 'o-1' })
+    const item = {
+      id: 'i-1',
+      productId: 'p-1',
+      quantity: 1,
+      product: { id: 'p-1', title: 'Поделка', priceKopecks: 1000, stock: 5, status: 'active' },
+    }
+    const cart = (items: Cart['items']): Cart => ({ id: 'cart-1', items })
+
+    const { result } = renderHook(() => useCheckout(), { wrapper })
+
+    await act(async () => {
+      client.setQueryData(['cart'], cart([]))
+      await result.current.mutateAsync(input).catch(() => undefined)
+      // Пока заказ не создан，в корзину добавился товар — старая попытка неактуальна.
+      client.setQueryData(['cart'], cart([item]))
+      await result.current.mutateAsync(input).catch(() => undefined)
+    })
+
+    expect(checkout.mock.calls[1][1]).not.toBe(checkout.mock.calls[0][1])
   })
 
   it('после успеха инвалидирует корзину', async () => {

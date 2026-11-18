@@ -1,25 +1,44 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRef } from 'react'
 
+import type { Cart } from '@/shared/api/cart-api'
 import { type CheckoutInput, ordersApi } from '@/shared/api/orders-api'
 
-// Оформление заказа. Ключ идемпотентности выдаётся один раз на попытку：
-// повторный клик или обновление страницы не создадут второй заказ.
+interface Attempt {
+  key: string
+  signature: string
+}
+
+// Подпись попытки：состав корзины，способ доставки，адрес，комментарий.
+function attemptSignature(input: CheckoutInput, cart: Cart | null | undefined): string {
+  const items = (cart?.items ?? []).map((item) => [item.productId, item.quantity])
+  return JSON.stringify([items, input.deliveryMethod, input.address ?? null, input.comment ?? null])
+}
+
+function newKey(): string {
+  return typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `order-${Date.now()}`
+}
+
+// Оформление заказа. Ключ идемпотентности живёт на одну попытку：новые данные —
+// новый ключ，повтор с теми же данными（сетевой сбой）переиспользует старый，
+// успех ключ сбрасывает.
 export function useCheckout() {
   const queryClient = useQueryClient()
-  const keyRef = useRef<string | null>(null)
+  const attemptRef = useRef<Attempt | null>(null)
 
   return useMutation({
     mutationFn: (input: CheckoutInput) => {
-      if (!keyRef.current) {
-        keyRef.current =
-          typeof crypto !== 'undefined' && 'randomUUID' in crypto
-            ? crypto.randomUUID()
-            : `order-${Date.now()}`
+      const signature = attemptSignature(input, queryClient.getQueryData<Cart>(['cart']))
+      if (!attemptRef.current || attemptRef.current.signature !== signature) {
+        attemptRef.current = { key: newKey(), signature }
       }
-      return ordersApi.checkout(input, keyRef.current)
+      return ordersApi.checkout(input, attemptRef.current.key)
     },
     onSuccess: () => {
+      // Заказ создан：следующая попытка обязана получить свой ключ.
+      attemptRef.current = null
       void queryClient.invalidateQueries({ queryKey: ['cart'] })
     },
   })

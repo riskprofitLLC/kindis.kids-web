@@ -196,6 +196,45 @@ describe('response interceptor — обновление сессии по 401', 
     expect(authEvents.emitExpired).toHaveBeenCalledTimes(1)
   })
 
+  it('два параллельных 401 делают один refresh и оба повторяются', async () => {
+    vi.mocked(tokenStorage.getRefresh).mockReturnValue('refresh-1')
+    responder = (config) => {
+      if (config.url === '/auth/refresh') {
+        return ok(config, { accessToken: 'new-access', refreshToken: 'new-refresh' })
+      }
+      // Первый заход каждого запроса — 401，повтор（_retried）успешен.
+      if (config.headers.Authorization === 'Bearer new-access') return ok(config, { data: 'ok' })
+      fail(config, 401)
+    }
+
+    const results = await Promise.allSettled([api.get('/catalog'), api.get('/cart')])
+
+    expect(results.every((result) => result.status === 'fulfilled')).toBe(true)
+    const refreshes = requests.filter((config) => config.url === '/auth/refresh')
+    expect(refreshes).toHaveLength(1)
+    // Оба исходных запроса ушли повторно с новым токеном（конфиг ретрая тот же
+    // объект，поэтому считаем уникальные url，а не записи в requests）.
+    const retried = requests.filter(
+      (config) => config.url !== '/auth/refresh' && (config as Config & { _retried?: boolean })._retried,
+    )
+    expect([...new Set(retried.map((config) => config.url))].sort()).toEqual(['/cart', '/catalog'])
+    expect(retried.every((config) => config.headers.Authorization === 'Bearer new-access')).toBe(true)
+  })
+
+  it('параллельные 401 с умершим refresh не дублируют событие истечения', async () => {
+    vi.mocked(tokenStorage.getRefresh).mockReturnValue('refresh-1')
+    responder = (config) => {
+      if (config.url === '/auth/refresh') fail(config, 401, { message: 'Refresh истёк' })
+      fail(config, 401)
+    }
+
+    const results = await Promise.allSettled([api.get('/catalog'), api.get('/cart')])
+
+    expect(results.every((result) => result.status === 'rejected')).toBe(true)
+    expect(requests.filter((config) => config.url === '/auth/refresh')).toHaveLength(1)
+    expect(authEvents.emitExpired).toHaveBeenCalledTimes(1)
+  })
+
   it('401 на самом refresh не пытается обновиться повторно', async () => {
     vi.mocked(tokenStorage.getRefresh).mockReturnValue(null)
     responder = (config) => fail(config, 401, { message: 'Refresh истёк' })

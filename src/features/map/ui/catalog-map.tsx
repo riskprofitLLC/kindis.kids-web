@@ -4,8 +4,8 @@ import { Map as MlMap, Marker, Popup } from 'maplibre-gl'
 import { useEffect, useMemo, useRef } from 'react'
 
 import { cityCoords } from '@/features/map/lib/city-coords'
+import { buildPopupContent } from '@/features/map/lib/popup-content'
 import type { ProductCard } from '@/shared/api/catalog-api'
-import { formatPrice } from '@/shared/lib/format'
 
 // В dev тайлы идут через прокси vite, в проде — напрямую с OSM.
 const TILE_URL = import.meta.env.DEV
@@ -61,13 +61,8 @@ export default function CatalogMap({ products, className }: CatalogMapProps) {
       const coords = cityCoords(city)
       if (!coords) return null
 
-      const popup = new Popup({ offset: 18 }).setHTML(
-        `<strong>${city}</strong><br/>Поделок: ${items.length}<br/>` +
-          items
-            .slice(0, 3)
-            .map((item) => `${item.title} — ${formatPrice(item.priceKopecks)}`)
-            .join('<br/>'),
-      )
+      // Город и названия приходят от продавцов — только textContent，без HTML.
+      const popup = new Popup({ offset: 18 }).setDOMContent(buildPopupContent(city, items))
 
       return new Marker({ color: '#e0533a' })
         .setLngLat([coords[1], coords[0]])
