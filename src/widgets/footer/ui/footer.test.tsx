@@ -8,7 +8,7 @@ import { Footer } from '@/widgets/footer/ui/footer'
 afterEach(cleanup)
 
 describe('Footer', () => {
-  it('ведёт в каталог и на страницу согласия', () => {
+  it('ведёт в каталог, на согласие и на новые страницы', () => {
     render(
       <MemoryRouter>
         <Footer />
@@ -21,6 +21,11 @@ describe('Footer', () => {
     expect(
       screen.getByRole('link', { name: 'Согласие на обработку данных' }).getAttribute('href'),
     ).toBe('/consent')
+    expect(screen.getByRole('link', { name: 'Помощь' }).getAttribute('href')).toBe('/help')
+    expect(screen.getByRole('link', { name: 'О проекте' }).getAttribute('href')).toBe('/about')
+    expect(screen.getByRole('link', { name: 'Для бизнеса' }).getAttribute('href')).toBe(
+      '/for-business',
+    )
   })
 
   it('показывает копирайт проекта', () => {

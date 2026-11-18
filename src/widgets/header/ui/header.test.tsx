@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -60,6 +60,38 @@ describe('Header', () => {
     expect(screen.getByRole('link', { name: 'Избранное' })).toBeTruthy()
     expect(screen.getByRole('combobox', { name: 'Поиск по каталогу' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Найти' })).toBeTruthy()
+  })
+
+  it('служебные ссылки ведут на реальные страницы, а не в каталог', () => {
+    mocks.cart.mockResolvedValue(null)
+
+    renderHeader()
+
+    const nav = screen.getByRole('navigation', { name: 'Служебная навигация' })
+    expect(nav).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Для бизнеса' }).getAttribute('href')).toBe(
+      '/for-business',
+    )
+    expect(screen.getByRole('link', { name: 'Помощь' }).getAttribute('href')).toBe('/help')
+    expect(screen.getByRole('link', { name: 'О проекте' }).getAttribute('href')).toBe('/about')
+  })
+
+  it('мобильное меню дублирует служебные ссылки с теми же адресами', async () => {
+    const user = userEvent.setup()
+    mocks.cart.mockResolvedValue(null)
+
+    renderHeader()
+
+    await user.click(screen.getByRole('button', { name: 'Открыть меню' }))
+
+    const mobileNav = screen.getByRole('navigation', { name: 'Мобильная навигация' })
+    const forBusiness = within(mobileNav).getByRole('link', { name: 'Для бизнеса' })
+    const help = within(mobileNav).getByRole('link', { name: 'Помощь' })
+    const about = within(mobileNav).getByRole('link', { name: 'О проекте' })
+
+    expect(forBusiness.getAttribute('href')).toBe('/for-business')
+    expect(help.getAttribute('href')).toBe('/help')
+    expect(about.getAttribute('href')).toBe('/about')
   })
 
   it('бургер открывает и закрывает мобильное меню', async () => {

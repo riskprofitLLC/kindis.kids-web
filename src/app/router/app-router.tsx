@@ -21,11 +21,14 @@ import {
   SellerProductsPage,
 } from '@/app/router/lazy-cabinet-pages'
 import {
+  AboutPage,
   CartPage,
   CatalogPage,
   CheckoutPage,
   ConsentPage,
+  ForBusinessPage,
   ForgotPasswordPage,
+  HelpPage,
   HomePage,
   LoginPage,
   NotFoundPage,
@@ -74,6 +77,9 @@ export function AppRouter() {
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
             <Route path="reset-password" element={<ResetPasswordPage />} />
             <Route path="consent" element={<ConsentPage />} />
+            <Route path="help" element={<HelpPage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="for-business" element={<ForBusinessPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
 

@@ -95,8 +95,9 @@ export function Header() {
         <div className="mx-auto flex max-w-[1600px] items-center gap-4 px-4 py-1 text-xs">
           {/* Текстовые ссылки прячем на телефоне — остаются в бургер-меню */}
           <nav aria-label="Служебная навигация" className="hidden items-center gap-4 sm:flex">
-            <UtilityLink to={routes.register}>Для бизнеса</UtilityLink>
-            <UtilityLink to={routes.catalog}>Помощь</UtilityLink>
+            <UtilityLink to={routes.forBusiness}>Для бизнеса</UtilityLink>
+            <UtilityLink to={routes.help}>Помощь</UtilityLink>
+            <UtilityLink to={routes.about}>О проекте</UtilityLink>
           </nav>
           <div className="ml-auto flex items-center gap-1 sm:gap-3">
             <FavoritesLink />
@@ -202,16 +203,22 @@ export function Header() {
               </MobileNavLink>
             ))}
             <Link
-              to={routes.register}
+              to={routes.forBusiness}
               className="flex min-h-[44px] items-center rounded-control px-3 text-sm font-medium text-text-muted transition-colors hover:text-primary focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Для бизнеса
             </Link>
             <Link
-              to={routes.catalog}
+              to={routes.help}
               className="flex min-h-[44px] items-center rounded-control px-3 text-sm font-medium text-text-muted transition-colors hover:text-primary focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Помощь
+            </Link>
+            <Link
+              to={routes.about}
+              className="flex min-h-[44px] items-center rounded-control px-3 text-sm font-medium text-text-muted transition-colors hover:text-primary focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              О проекте
             </Link>
           </nav>
         </div>

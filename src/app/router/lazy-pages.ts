@@ -16,4 +16,7 @@ export const ForgotPasswordPage = lazy(
 )
 export const ResetPasswordPage = lazy(() => import('@/pages/reset-password/ui/reset-password-page'))
 export const ConsentPage = lazy(() => import('@/pages/consent/ui/consent-page'))
+export const HelpPage = lazy(() => import('@/pages/help/ui/help-page'))
+export const AboutPage = lazy(() => import('@/pages/about/ui/about-page'))
+export const ForBusinessPage = lazy(() => import('@/pages/for-business/ui/for-business-page'))
 export const NotFoundPage = lazy(() => import('@/pages/not-found/ui/not-found-page'))
