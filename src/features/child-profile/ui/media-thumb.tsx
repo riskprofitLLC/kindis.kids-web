@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import type { MediaAsset, MediaStatus } from '@/shared/api/media-api'
-import { mediaApi } from '@/shared/api/media-api'
-
-const STATUS_LABEL: Record<MediaStatus, string> = {
-  uploading: 'Загружается',
-  processing: 'Обрабатывается',
-  ready: 'Готово',
-  failed: 'Не удалось обработать',
-}
+import type { MediaAsset } from '@/shared/api/media-api'
+import { MEDIA_STATUS_LABELS, mediaApi } from '@/shared/api/media-api'
 
 // Ссылка на чтение для владельца: работает до прохождения модерации.
 export function useOwnerUrl(mediaId: string): string | null {
@@ -39,7 +32,7 @@ export function MediaThumb({ asset }: { asset: MediaAsset }) {
   if (!url) {
     return (
       <span className="flex aspect-square w-full items-center justify-center rounded bg-surface-muted px-2 text-center text-xs text-text-muted">
-        {STATUS_LABEL[asset.status]}
+        {MEDIA_STATUS_LABELS[asset.status]}
       </span>
     )
   }

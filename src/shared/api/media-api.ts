@@ -5,6 +5,14 @@ import { api } from '@/shared/api/client'
 // uploading — файл в хранилище, processing — видео сжимается, ready — готово.
 export type MediaStatus = 'uploading' | 'processing' | 'ready' | 'failed'
 
+// Подписи статусов медиа — общие для галереи профиля и карточек товара.
+export const MEDIA_STATUS_LABELS: Record<MediaStatus, string> = {
+  uploading: 'Загружается',
+  processing: 'Обрабатывается',
+  ready: 'Готово',
+  failed: 'Не удалось обработать',
+}
+
 export interface MediaAsset {
   id: string
   ownerType: 'child_profile' | 'product' | 'review'

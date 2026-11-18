@@ -54,7 +54,6 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
       )}
 
       {/* Форма только по завершённому заказу — иначе бэкенд отклонит */}
-      {reviewable.isPending && canReview === false && null}
       {canReview && (
         <div className="rounded-card border border-border p-4">
           <h3 className="mb-3 text-sm font-semibold text-text">Оставить отзыв</h3>

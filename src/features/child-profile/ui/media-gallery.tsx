@@ -13,20 +13,14 @@ import {
   useProfileMedia,
 } from '@/features/child-profile/model/use-profile-media'
 import { MediaThumb, MediaViewer } from '@/features/child-profile/ui/media-thumb'
-import type { MediaAsset, MediaStatus } from '@/shared/api/media-api'
+import type { MediaAsset } from '@/shared/api/media-api'
+import { MEDIA_STATUS_LABELS } from '@/shared/api/media-api'
 import type { MediaKind } from '@/shared/domain/media'
 import { formatDuration } from '@/shared/domain/media'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Button } from '@/shared/ui/button/button'
 import { Dialog } from '@/shared/ui/dialog/dialog'
 import { Lightbox } from '@/shared/ui/lightbox/lightbox'
-
-const STATUS_LABEL: Record<MediaStatus, string> = {
-  uploading: 'Загружается',
-  processing: 'Обрабатывается',
-  ready: 'Готово',
-  failed: 'Не удалось обработать',
-}
 
 const EMPTY_TEXT: Record<MediaKind, string> = {
   photo: 'Фото пока нет — загрузите до пяти снимков профиля.',
@@ -89,7 +83,7 @@ export function MediaGallery({ ownerId, kind }: MediaGalleryProps) {
 
               <div className="mt-2 flex flex-wrap items-center gap-1">
                 <Badge variant={asset.status === 'ready' ? 'secondary' : 'default'}>
-                  {STATUS_LABEL[asset.status]}
+                  {MEDIA_STATUS_LABELS[asset.status]}
                 </Badge>
                 {isMain && <Badge variant="success">Главное</Badge>}
                 {!asset.moderatedAt && <Badge variant="secondary">На проверке</Badge>}
