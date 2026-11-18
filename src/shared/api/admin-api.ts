@@ -42,8 +42,14 @@ export const adminApi = {
   },
 
   // Действия модерации — пути разные для профилей,товаров,медиа и отзывов.
-  async act(kind: string, id: string, action: 'approve' | 'reject' | 'block'): Promise<void> {
-    await api.post(`/admin/moderation/${kind}/${id}/${action}`)
+  // Причина необязательна: сервер её пока не хранит, но диалог её собирает.
+  async act(
+    kind: string,
+    id: string,
+    action: 'approve' | 'reject' | 'block',
+    reason?: string,
+  ): Promise<void> {
+    await api.post(`/admin/moderation/${kind}/${id}/${action}`, reason ? { reason } : undefined)
   },
 
   async resolveReport(id: string, status: 'resolved' | 'rejected'): Promise<void> {
