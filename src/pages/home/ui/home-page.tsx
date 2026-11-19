@@ -5,8 +5,11 @@ import { useCategories } from '@/features/catalog/model/use-categories'
 import { ProductCard } from '@/features/catalog/ui/product-card'
 import type { CategoryNode, ProductCard as ProductCardModel } from '@/shared/api/catalog-api'
 import { routes } from '@/shared/config/routes'
+import { Button } from '@/shared/ui/button/button'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
 import { LoadingRegion } from '@/shared/ui/skeleton/skeleton-loading-region'
+import { HowItWorks } from '@/widgets/home/ui/how-it-works'
+import { TrustBlock } from '@/widgets/home/ui/trust-block'
 
 // Эмодзи направлений каталога — по slug реального дерева, с запасным вариантом.
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -88,24 +91,21 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      {/* Hero:приветственный баннер без поля поиска — единственный поиск в шапке */}
-      <section className="rounded-card border border-border bg-surface-muted px-4 py-6 sm:px-8 sm:py-7">
-        <h1 className="text-center text-lg font-extrabold tracking-tight text-text sm:text-left sm:text-2xl">
-          Поделки детей — с пользой для дела
+      {/* Hero:история проекта без поля поиска - единственный поиск в шапке */}
+      <section className="rounded-card border border-border bg-surface-muted px-4 py-8 sm:px-8 sm:py-10">
+        <h1 className="text-center text-xl font-extrabold tracking-tight text-text sm:text-left sm:text-3xl">
+          Каждая покупка поддерживает молодого мастера
         </h1>
-        <p className="mx-auto mt-2 max-w-prose text-center text-sm leading-relaxed text-text-muted sm:mx-0 sm:text-left">
-          Маркетплейс handmade-товаров, которые делают дети с особыми потребностями. Каждая покупка
-          поддерживает молодого мастера и его семью.
+        <p className="mx-auto mt-3 max-w-prose text-center text-sm leading-relaxed text-text-muted sm:mx-0 sm:text-left">
+          kindis.kids - место, где родители продают поделки своих детей. Ребенок делает работу руками,
+          а семья получает доход и повод гордиться его успехом.
         </p>
 
         {/* Кнопка в каталог и быстрые ссылки на популярные направления */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-medium sm:justify-start">
-          <Link
-            to={routes.catalog}
-            className="inline-flex min-h-[44px] items-center rounded-control bg-primary px-5 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
-            Смотреть каталог
-          </Link>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-medium sm:justify-start">
+          <Button asChild>
+            <Link to={routes.catalog}>Смотреть каталог</Link>
+          </Button>
 
           {roots.slice(0, 3).map((node) => (
             <Link
@@ -118,6 +118,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Как это работает и блок доверия - выше лент товаров */}
+      <HowItWorks />
+      <TrustBlock />
 
       {/* Категории:скруглённые карточки с эмодзи из реального дерева */}
       <section className="mt-8">
