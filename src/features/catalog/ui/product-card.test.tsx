@@ -85,10 +85,43 @@ describe('ProductCard', () => {
     expect(screen.getByText('Фото нет')).toBeTruthy()
   })
 
-  it('нулевой остаток помечается бейджем', () => {
-    renderCard(product({ stock: 0 }))
+  it('нулевой остаток помечается бейджем и гасит карточку', () => {
+    const { container } = renderCard(product({ stock: 0 }))
 
     expect(screen.getByText('Нет в наличии')).toBeTruthy()
+
+    const article = container.querySelector('article')
+    expect(article?.className).toContain('opacity-60')
+    expect(article?.className).toContain('grayscale')
+  })
+
+  it('остаток 1 показывает «Остался 1»', () => {
+    renderCard(product({ stock: 1 }))
+
+    expect(screen.getByText('Остался 1')).toBeTruthy()
+  })
+
+  it('остаток 2 показывает «Осталось 2»', () => {
+    renderCard(product({ stock: 2 }))
+
+    expect(screen.getByText('Осталось 2')).toBeTruthy()
+  })
+
+  it('остаток 3 показывает «Осталось 3»', () => {
+    renderCard(product({ stock: 3 }))
+
+    expect(screen.getByText('Осталось 3')).toBeTruthy()
+  })
+
+  it('запаса хватает — бейджа остатка нет', () => {
+    renderCard(product({ stock: 5 }))
+
+    expect(screen.queryByText(/^Остал/)).toBeNull()
+    expect(screen.queryByText('Нет в наличии')).toBeNull()
+
+    const { container } = renderCard(product({ stock: 5 }))
+    const article = container.querySelector('article')
+    expect(article?.className).not.toContain('grayscale')
   })
 
   it('ошибка загрузки фото просит свежую ссылку', () => {
@@ -118,5 +151,16 @@ describe('ProductCard', () => {
     )
 
     expect(screen.getByText('Приоритетный мастер')).toBeTruthy()
+
+    // Пояснение без диагноза и доступность с клавиатуры.
+    const note = screen.getByRole('note')
+    expect(note.getAttribute('title')).toContain(
+      'Мастер с особыми потребностями. Поддержите его работу.',
+    )
+    expect(note.getAttribute('tabindex')).toBe('0')
+
+    // Бейдж остаётся янтарным, медицинских данных нет.
+    const badge = screen.getByText('Приоритетный мастер')
+    expect(badge.className).toContain('bg-chip-amber-bg')
   })
 })

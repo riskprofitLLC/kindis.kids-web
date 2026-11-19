@@ -4,6 +4,7 @@ import { FavoriteButton } from '@/features/favorites/ui/favorite-button'
 import { renewMediaUrl, useMediaUrl } from '@/features/media/model/use-media-url'
 import type { ProductCard as ProductCardModel } from '@/shared/api/catalog-api'
 import { routes } from '@/shared/config/routes'
+import { cn } from '@/shared/lib/cn'
 import { formatPrice, highlightParts } from '@/shared/lib/format'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
@@ -47,8 +48,17 @@ export function ProductCard({ product, highlight }: ProductCardProps) {
   // Превью карточки — первое фото: видео обложкой не подходит.
   const previewMediaId = product.media.find((item) => item.kind === 'photo')?.id
 
+  const soldOut = product.stock === 0
+  const lowStock = product.stock > 0 && product.stock <= 3
+
   return (
-    <article className="relative flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface transition-shadow duration-200 hover:shadow-lift focus-within:shadow-lift">
+    <article
+      className={cn(
+        'relative flex h-full flex-col overflow-hidden rounded-card border border-border bg-surface transition-shadow duration-200 hover:shadow-lift focus-within:shadow-lift',
+        // Распроданное гасим целиком, цену не подсвечиваем отдельно.
+        soldOut && 'opacity-60 grayscale',
+      )}
+    >
       <Link
         to={routes.product(product.id)}
         className="group relative block overflow-hidden bg-surface-muted"
@@ -79,11 +89,27 @@ export function ProductCard({ product, highlight }: ProductCardProps) {
         {/* Мета-строка: город и бейджи через точку */}
         <div className="mt-auto flex flex-wrap items-center gap-x-1.5 gap-y-1 pt-1 text-xs text-text-muted">
           {seller?.city && <span>{seller.city}</span>}
-          {seller?.city && (seller.hasDisability || product.stock === 0) && (
+          {seller?.city && (lowStock || seller.hasDisability || soldOut) && (
             <span aria-hidden="true">·</span>
           )}
-          {seller?.hasDisability && <Badge variant="amber">Приоритетный мастер</Badge>}
-          {product.stock === 0 && <Badge variant="secondary">Нет в наличии</Badge>}
+          {lowStock && (
+            <Badge variant="amber">
+              {product.stock === 1 ? 'Остался 1' : `Осталось ${product.stock}`}
+            </Badge>
+          )}
+          {/* Пояснение без медицинских данных: только поддержка работы мастера */}
+          {seller?.hasDisability && (
+            <span
+              tabIndex={0}
+              role="note"
+              aria-label="Приоритетный мастер с особыми потребностями"
+              title="Мастер с особыми потребностями. Поддержите его работу."
+              className="rounded-chip focus-visible:outline-2 focus-visible:outline-primary"
+            >
+              <Badge variant="amber">Приоритетный мастер</Badge>
+            </span>
+          )}
+          {soldOut && <Badge variant="danger">Нет в наличии</Badge>}
         </div>
       </div>
     </article>
