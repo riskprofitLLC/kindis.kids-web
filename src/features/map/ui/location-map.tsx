@@ -93,7 +93,7 @@ export default function LocationMap({ latitude, longitude, onPick }: LocationMap
     if (!map || typeof latitude !== 'number' || typeof longitude !== 'number') return
 
     if (!markerRef.current) {
-      markerRef.current = new Marker({ color: '#e0533a' })
+      markerRef.current = new Marker({ color: 'var(--color-map-marker)' })
     }
     markerRef.current.setLngLat([longitude, latitude]).addTo(map)
     map.easeTo({ center: [longitude, latitude], zoom: Math.max(map.getZoom(), 15) })

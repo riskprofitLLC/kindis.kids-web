@@ -64,7 +64,7 @@ export default function CatalogMap({ products, className }: CatalogMapProps) {
       // Город и названия приходят от продавцов — только textContent,без HTML.
       const popup = new Popup({ offset: 18 }).setDOMContent(buildPopupContent(city, items))
 
-      return new Marker({ color: '#e0533a' })
+      return new Marker({ color: 'var(--color-map-marker)' })
         .setLngLat([coords[1], coords[0]])
         .setPopup(popup)
         .addTo(map)

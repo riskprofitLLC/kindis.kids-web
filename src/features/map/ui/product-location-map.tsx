@@ -44,7 +44,7 @@ export default function ProductLocationMap({
       zoom: 15,
     })
 
-    const marker = new Marker({ color: '#e0533a' }).setLngLat([longitude, latitude]).addTo(map)
+    const marker = new Marker({ color: 'var(--color-map-marker)' }).setLngLat([longitude, latitude]).addTo(map)
 
     return () => {
       marker.remove()
