@@ -26,12 +26,19 @@ export function SearchSuggestions({
   const [debounced, setDebounced] = useState('')
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
+  // Таймер закрытия по blur живёт вне эффекта — храним в ref, чтобы снять его при размонтировании.
+  const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Debounce 300 мс — не дёргаем каталог на каждую букву.
   useEffect(() => {
-    const timer = window.setTimeout(() => setDebounced(term), 300)
-    return () => window.clearTimeout(timer)
+    const timer = setTimeout(() => setDebounced(term), 300)
+    return () => clearTimeout(timer)
   }, [term])
+
+  // Снимаем отложенный blur-таймер при размонтировании — иначе setState после теста.
+  useEffect(() => () => {
+    if (blurTimer.current !== null) clearTimeout(blurTimer.current)
+  }, [])
 
   const suggestions = useSuggestions(debounced)
   const items = useMemo(
@@ -97,7 +104,13 @@ export function SearchSuggestions({
             setActiveIndex(-1)
           }}
           onFocus={() => setOpen(true)}
-          onBlur={() => window.setTimeout(() => setOpen(false), 150)}
+          onBlur={() => {
+            if (blurTimer.current !== null) clearTimeout(blurTimer.current)
+            blurTimer.current = setTimeout(() => {
+              blurTimer.current = null
+              setOpen(false)
+            }, 150)
+          }}
           onKeyDown={onKeyDown}
           className={cn(
             'min-h-11 w-full rounded-control border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-text-muted focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary',
