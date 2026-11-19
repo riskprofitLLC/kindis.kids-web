@@ -40,7 +40,7 @@ interface ProductCardProps {
   highlight?: string
 }
 
-// Карточка объявления в визуальном языке Avito: квадратное фото, заголовок в две строки,
+// Карточка поделки: квадратное фото, заголовок в две строки,
 // крупная цена акцентом и мета-строка «город · бейдж».
 export function ProductCard({ product, highlight }: ProductCardProps) {
   const seller = product.childProfile
@@ -56,7 +56,7 @@ export function ProductCard({ product, highlight }: ProductCardProps) {
         <CardPhoto mediaId={previewMediaId} title={product.title} />
       </Link>
 
-      {/* Сердце избранного в углу фото — как в ленте Avito */}
+      {/* Сердце избранного в углу фото */}
       <FavoriteButton productId={product.id} className="absolute right-2 top-2" />
       <div className="flex flex-1 flex-col gap-1 p-3">
         <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-text">
@@ -76,7 +76,7 @@ export function ProductCard({ product, highlight }: ProductCardProps) {
           {formatPrice(product.priceKopecks)}
         </p>
 
-        {/* Мета-строка: город и бейджи через точку — как в ленте Avito */}
+        {/* Мета-строка: город и бейджи через точку */}
         <div className="mt-auto flex flex-wrap items-center gap-x-1.5 gap-y-1 pt-1 text-xs text-text-muted">
           {seller?.city && <span>{seller.city}</span>}
           {seller?.city && (seller.hasDisability || product.stock === 0) && (

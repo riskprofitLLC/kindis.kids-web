@@ -65,7 +65,7 @@ function MobileNavLink({ to, children }: { to: string; children: React.ReactNode
   )
 }
 
-// Шапка в визуальном языке Avito:тонкий utilities-бар + строка с крупным поиском.
+// Шапка: тонкий служебный бар + строка с крупным поиском.
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)

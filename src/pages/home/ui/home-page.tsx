@@ -43,7 +43,7 @@ interface ProductFeedProps {
   isLoading: boolean
 }
 
-// Лента объявлений — сетка карточек как витрина Avito.
+// Лента поделок — сетка карточек витрины.
 function ProductFeed({ title, hint, items, isLoading }: ProductFeedProps) {
   return (
     <section className="mt-10 flex flex-col gap-4">
