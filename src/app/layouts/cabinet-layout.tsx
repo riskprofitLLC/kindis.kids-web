@@ -4,6 +4,7 @@ import { useSessionStore } from '@/entities/session/model/session-store'
 import { routes } from '@/shared/config/routes'
 import type { UserRole } from '@/shared/domain/user'
 import { cn } from '@/shared/lib/cn'
+import { usePageMeta } from '@/shared/lib/use-page-meta'
 import { Header } from '@/widgets/header/ui/header'
 import { OfflineBanner } from '@/widgets/offline-banner/ui/offline-banner'
 
@@ -71,6 +72,9 @@ function CabinetNavLink({ item }: { item: NavItem }) {
 
 // Кабинетный layout: сайдбар на десктопе, горизонтальная лента на мобильном.
 export function CabinetLayout() {
+  // Личный кабинет в поиске не нужен — закрываем страницу от индексации.
+  usePageMeta({ noindex: true })
+
   const role = useSessionStore((state) => state.user?.role ?? null)
   const groups = getCabinetNav(role)
 

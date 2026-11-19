@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
   forProduct: vi.fn(),
   productRating: vi.fn(),
   mine: vi.fn(),
+  mediaUrl: vi.fn(),
 }))
 
 vi.mock('@/shared/api/catalog-api', async (importOriginal) => {
@@ -45,17 +46,21 @@ vi.mock('@/features/map/ui/product-location-map', () => ({
 }))
 
 vi.mock('@/features/media/model/use-media-url', () => ({
-  useMediaUrl: () => null,
+  useMediaUrl: (mediaId: string | null) => mocks.mediaUrl(mediaId),
   renewMediaUrl: () => undefined,
 }))
 
 import ProductPage from '@/pages/product/ui/product-page'
+import { clearRecent, listRecent } from '@/shared/lib/recently-viewed'
 
 let client: QueryClient
 
 beforeEach(() => {
   client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   vi.clearAllMocks()
+  mocks.mediaUrl.mockReset()
+  mocks.mediaUrl.mockReturnValue(null)
+  clearRecent()
 })
 
 afterEach(cleanup)
@@ -133,5 +138,54 @@ describe('ProductPage', () => {
     )
     expect(screen.queryByText('Место сделки')).toBeNull()
     expect(screen.getByRole('button', { name: 'Написать продавцу' })).toBeTruthy()
+  })
+  it('выставляет мету страницы и пишет товар в недавно смотрели', async () => {
+    mocks.product.mockResolvedValue(detail)
+    mocks.similar.mockResolvedValue([])
+    mocks.forProduct.mockResolvedValue([])
+    mocks.productRating.mockResolvedValue({ average: 0, count: 0 })
+
+    renderPage()
+
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
+    )
+
+    expect(document.title).toBe('Серьги «Лаванда» — kindis.kids')
+    const description = document.head.querySelector('meta[name="description"]')
+    expect(description?.getAttribute('content')).toBe('Ручная работа')
+    expect(listRecent()).toEqual([{ id: 'p-1', title: 'Серьги «Лаванда»' }])
+    // Блок «Недавно смотрели» отрисован внизу страницы со ссылкой на этот товар.
+    const recentNav = screen.getByRole('navigation', { name: 'Недавно смотрели' })
+    expect(recentNav.textContent).toContain('Серьги «Лаванда»')
+  })
+
+  it('первое фото товара уходит в og-image', async () => {
+    mocks.product.mockResolvedValue({
+      ...detail,
+      media: [
+        { id: 'm-1', kind: 'photo' },
+        { id: 'm-2', kind: 'video' },
+      ],
+    })
+    mocks.mediaUrl.mockImplementation((mediaId) =>
+      mediaId === 'm-1' ? 'https://cdn.test/lavanda.jpg' : null,
+    )
+    mocks.similar.mockResolvedValue([])
+    mocks.forProduct.mockResolvedValue([])
+    mocks.productRating.mockResolvedValue({ average: 0, count: 0 })
+
+    renderPage()
+
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { name: 'Серьги «Лаванда»' })).toBeTruthy(),
+    )
+
+    await waitFor(() => {
+      const ogImage = Array.from(document.head.querySelectorAll('meta')).find(
+        (meta) => meta.getAttribute('property') === 'og:image',
+      )
+      expect(ogImage?.getAttribute('content')).toBe('https://cdn.test/lavanda.jpg')
+    })
   })
 })

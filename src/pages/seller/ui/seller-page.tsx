@@ -9,6 +9,7 @@ import { SellerReviews } from '@/features/reviews/ui/seller-reviews'
 import { useSeller } from '@/features/seller/model/use-seller'
 import { SellerMediaGallery } from '@/features/seller/ui/seller-media-gallery'
 import type { SortValue } from '@/shared/domain/catalog'
+import { usePageMeta } from '@/shared/lib/use-page-meta'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
@@ -20,6 +21,12 @@ export default function SellerPage() {
   const seller = useSeller(slug)
   const [sort, setSort] = useState<SortValue>('newest')
   const [inStockOnly, setInStockOnly] = useState(false)
+
+  // Мета витрины: имя мастера и его описание, когда оно заполнено.
+  usePageMeta({
+    title: seller.data ? seller.data.name + ' — kindis.kids' : undefined,
+    description: seller.data?.about || undefined,
+  })
 
   const products = useCatalog({ childSlug: slug, sort, inStockOnly })
   const avatarUrl = useMediaUrl(seller.data?.avatarMediaId)

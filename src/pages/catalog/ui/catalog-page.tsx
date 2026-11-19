@@ -10,6 +10,7 @@ import { RegionSelect } from '@/features/map/ui/region-select'
 import type { CatalogSearchParams } from '@/shared/api/catalog-api'
 import type { CatalogFilters as Filters } from '@/shared/domain/catalog'
 import { parseCatalogState, serializeCatalogState } from '@/shared/domain/catalog'
+import { usePageMeta } from '@/shared/lib/use-page-meta'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Button } from '@/shared/ui/button/button'
 import { Card } from '@/shared/ui/card/card'
@@ -24,6 +25,13 @@ const CatalogMap = lazy(() => import('@/features/map/ui/catalog-map'))
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+
+  // Каталог индексируется: мета фиксированная, фильтры в URL на неё не влияют.
+  usePageMeta({
+    title: 'Каталог поделок — kindis.kids',
+    description:
+      'Ручная работа для детей: игрушки, одежда, декор и аксессуары от небольших мастерских — выбирайте по категории, цене и городу.',
+  })
 
   const state = useMemo(() => parseCatalogState(Object.fromEntries(searchParams)), [searchParams])
   const filters = state.filters

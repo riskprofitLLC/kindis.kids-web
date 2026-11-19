@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { AddToCartButton } from '@/features/cart/ui/add-to-cart-button'
@@ -5,15 +6,25 @@ import { ProductCard } from '@/features/catalog/ui/product-card'
 import { ContactSellerButton } from '@/features/chat/ui/contact-seller-button'
 import { FavoriteButton } from '@/features/favorites/ui/favorite-button'
 import { ProductLocation } from '@/features/map/ui/product-location'
+import { useMediaUrl } from '@/features/media/model/use-media-url'
 import { useProduct, useSimilarProducts } from '@/features/product/model/use-product'
 import { ProductGallery } from '@/features/product/ui/product-gallery'
 import { ProductReviews } from '@/features/reviews/ui/product-reviews'
 import { StarRating } from '@/features/reviews/ui/star-rating'
 import { routes } from '@/shared/config/routes'
 import { formatDate, formatPrice } from '@/shared/lib/format'
+import { addRecent } from '@/shared/lib/recently-viewed'
+import { usePageMeta } from '@/shared/lib/use-page-meta'
 import { Alert } from '@/shared/ui/alert/alert'
 import { Badge } from '@/shared/ui/badge/badge'
 import { Skeleton } from '@/shared/ui/skeleton/skeleton'
+import { RecentlyViewed } from '@/widgets/product-recent/ui/recently-viewed'
+
+// Описание для меты режем до ~150 символов — в сниппете поиска длинное не нужно.
+function toMetaDescription(text: string | null): string | undefined {
+  if (!text) return undefined
+  return text.length > 150 ? text.slice(0, 147) + '…' : text
+}
 
 // Карточка товара: галерея до 30 фото, характеристики, автор, цена и остаток.
 export default function ProductPage() {
@@ -21,6 +32,25 @@ export default function ProductPage() {
   const { slug = '' } = useParams()
   const product = useProduct(slug)
   const similar = useSimilarProducts(slug)
+
+  // Мета и «недавно смотрели» заполняем только для загруженного товара.
+  const loaded = product.data
+  const firstPhotoId = loaded?.media.find((media) => media.kind === 'photo')?.id
+  const imageUrl = useMediaUrl(firstPhotoId)
+
+  usePageMeta({
+    title: loaded ? loaded.title + ' — kindis.kids' : undefined,
+    description: toMetaDescription(loaded?.description ?? null),
+    image: imageUrl ?? undefined,
+  })
+
+  // Товар пишем в «недавно смотрели» на рендере и меняем ключ блока ниже —
+  // виджет читает хранилище при монтировании и покажется сразу же.
+  const recentKey = useMemo(() => {
+    if (!loaded) return 'empty'
+    addRecent({ id: loaded.id, title: loaded.title })
+    return loaded.id
+  }, [loaded])
 
   if (product.isPending) {
     return (
@@ -173,6 +203,9 @@ export default function ProductPage() {
           </ul>
         </section>
       )}
+
+      {/* Недавно смотрели — локальный список, без сети */}
+      <RecentlyViewed key={recentKey} />
     </div>
   )
 }
