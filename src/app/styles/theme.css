@@ -11,9 +11,9 @@
   --color-text: #101418;
   --color-text-muted: #6b7280;
   --color-primary: #c2603f;
-  --color-primary-hover: #08529b;
+  --color-primary-hover: #a94e30;
   --color-primary-foreground: #ffffff;
-  --color-accent: #1c4e80;
+  --color-accent: #8a4b2a;
   --color-accent-foreground: #ffffff;
   --color-danger: #b42318;
   --color-danger-foreground: #ffffff;
@@ -32,12 +32,12 @@
   --shadow-soft: 0 1px 2px rgb(16 20 24 / 0.06);
   --shadow-lift: 0 2px 8px rgb(16 20 24 / 0.1);
   --shadow-float: 0 4px 16px rgb(16 20 24 / 0.12);
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 .hero-warm {
   background:
-    radial-gradient(1200px 500px at 85% -10%, rgb(10 102 194 / 0.06), transparent 60%),
+    radial-gradient(1200px 500px at 85% -10%, rgb(194 96 63 / 0.08), transparent 60%),
     linear-gradient(160deg, #ffffff 0%, #f4f5f7 100%);
 }
 
@@ -55,12 +55,16 @@
   --color-border-strong: #ffffff;
   --color-text: #ffffff;
   --color-text-muted: #e5e7eb;
-  --color-primary: #7fb2e5;
-  --color-primary-hover: #a8ccf0;
+  --color-primary: #ffb59d;
+  --color-primary-hover: #ffd0bf;
   --color-primary-foreground: #101418;
   --color-accent: #7fb2e5;
   --color-danger: #ff9d9d;
   --color-success: #86e0a8;
+  --color-chip-coral-bg: #3a1207;
+  --color-chip-coral-text: #ffd9d2;
+  --color-chip-amber-bg: #3a2607;
+  --color-chip-amber-text: #ffe6c2;
   --shadow-soft: none;
   --shadow-lift: none;
   --shadow-float: none;
